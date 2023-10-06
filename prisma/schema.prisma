@@ -67,3 +67,18 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+// Profile schema
+enum Role {
+  ADMIN
+  MENTOR
+  MENTEE
+}
+
+model Profile {
+    user            User    @id @unique
+    preferred_name  String?
+    phone_number    String?
+    bio             String?
+    role            Role    @default(USER)
+}
