@@ -77,11 +77,11 @@ model Profile {
     preferredName String?
     phoneNumber   String?
     bio           String?
-    role          UserRole @relation(fields: [roleId], references: [id])
-    roleId        String @default("MENTEE")
+    role          UserRole @relation(fields: [roleId], references: [roleName])
+    roleId        String
 }
 
 model UserRole {
-    id String @id
+    roleName String @id
     profiles Profile[]
 }
