@@ -58,6 +58,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    Profile       Profile?
 }
 
 model VerificationToken {
@@ -69,16 +70,18 @@ model VerificationToken {
 }
 
 // Profile schema
-enum Role {
-  ADMIN
-  MENTOR
-  MENTEE
+model Profile {
+    id            Int     @id @default(autoincrement())
+    user          User    @relation(fields: [userId], references: [id])
+    userId        String  @unique
+    preferredName String?
+    phoneNumber   String?
+    bio           String?
+    role          UserRole @relation(fields: [roleId], references: [id])
+    roleId        String @default("MENTEE")
 }
 
-model Profile {
-    user            User    @id @unique
-    preferred_name  String?
-    phone_number    String?
-    bio             String?
-    role            Role    @default(USER)
+model UserRole {
+    id String @id
+    profiles Profile[]
 }
