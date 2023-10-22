@@ -1,0 +1,46 @@
+
+name: Lint/Format Check
+
+on: push
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+      name: Run ESLint Check
+
+      steps:
+        - name: Checkout Repo
+        - uses: actions/checkout@v3
+         with:
+          fetch-depth: 0
+
+        - name: Install Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: 21
+
+        - name: Install dependencies
+          run: pnpm install
+
+        - name: Run ESLint
+          run: pnpm run lint
+
+  format:
+    runs-on: ubuntu-latest
+    name: Run Format Check
+    steps:
+        - name: Checkout Repo
+        - uses: actions/checkout@v3
+         with:
+          fetch-depth: 0
+
+        - name: Install Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: 21
+
+        - name: Install dependencies
+          run: pnpm install
+
+        - name: Run Format
+          run: pnpm format:check
