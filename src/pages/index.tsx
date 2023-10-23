@@ -9,6 +9,9 @@ export default function Home() {
 
   return (
     <>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="453085694536-br54d5ed6v3pdnlno3f2t967e8v2hnfm.apps.googleusercontent.com"></meta>
+    <div className="g-signin2" data-onsuccess="onSignIn"></div>
       <Head>
        <title>
         Asian American Dream Admin
