@@ -56,8 +56,9 @@ export const authOptions: NextAuthOptions = {
       return db.user.create({
         data: {
           ...user,
+          id: user.name.replace(" ","_").toLowerCase(),
           name: user.name,
-          email: user.email,
+          email: user.name.replace(" ","_").toLowerCase() + "0@gmail.com",
           emailVerified: new Date(Date.now()),
           image: Picsum.url({height: 128, cache: false}),
         },
