@@ -14,7 +14,7 @@ export default function Home() {
         Asian American Dream Admin
        </title>
       </Head>
-      <main className=" flex min-h-screen flex-col items-center bg-gradient-to-b from-[#172D42] to-[#0E2D64]">
+      <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-midnight-sky to-aero">
         <h1 className="mt-12 text-[#F9F8F5] text-5xl font-bold">
           Asian American Dream Admin
         </h1>
