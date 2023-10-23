@@ -4,11 +4,13 @@
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 2) create an oauth 2.0 client id, used google cloud to generate one but im not sure how that will be done otherwise.
+read this: https://developers.google.com/fit/android/get-api-key
 
-3) specify client id by including this line:
+
+4) specify client id by including this line:
 <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
 
-4) add a sign in button:
+5) add a sign in button:
 <div class="g-signin2" data-onsuccess="onSignIn"></div>
 
 5) added a new google-signin.tsx (not sure if this necessary, just following along with documentation)
