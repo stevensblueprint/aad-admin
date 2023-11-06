@@ -5,8 +5,9 @@ import {
   type DefaultSession,
   type NextAuthOptions,
 } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { Picsum } from "picsum-photos";
 
 import { env } from "~/env.mjs";
 import { db } from "~/server/db";
@@ -32,31 +33,69 @@ declare module "next-auth" {
   // }
 }
 
+const prismaAdapter = PrismaAdapter(db);
+
+const credentialsAuthAvailable = () => process.env.NODE_ENV !== "production";
+
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
  *
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
-  callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+  session: {
+    strategy: "jwt",
   },
-  adapter: PrismaAdapter(db),
+  callbacks: {},
+  adapter: {
+    ...prismaAdapter,
+    async createUser(user) {
+      if (!user.name || !user.email) {
+        throw new Error("Missing name");
+      }
+      return db.user.create({
+        data: {
+          ...user,
+          name: user.name,
+          email: user.email,
+          emailVerified: new Date(Date.now()),
+          image: Picsum.url({ height: 128, cache: false }),
+        },
+      });
+    },
+  },
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
+    ...(credentialsAuthAvailable()
+      ? [
+          CredentialsProvider({
+            name: "Credentials",
+            credentials: {
+              email: {
+                label: "Email",
+                type: "text",
+              },
+            },
+            async authorize(credentials) {
+              if (!credentials) {
+                return null;
+              }
+              const user = await db.user.findFirst({
+                where: {
+                  email: credentials.email,
+                },
+              });
+              if (!user) {
+                return null;
+              }
+              return user;
+            },
+          }),
+        ]
+      : []),
     /**
      * ...add more providers here.
      *
