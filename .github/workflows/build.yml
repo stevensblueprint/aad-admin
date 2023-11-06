@@ -16,5 +16,5 @@ jobs:
           node-version-file: "package.json"
       - run: |
           cp .env.example .env
-          pnpm i
+          pnpm i --frozen-lockfile
           pnpm build
