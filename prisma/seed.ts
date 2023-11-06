@@ -7,7 +7,7 @@ const createUser = async (
   prisma: PrismaClient,
   id: string,
   email: string,
-  name: string,
+  name: string
 ) => {
   const user = await prisma.user.upsert({
     where: {
@@ -29,19 +29,19 @@ const main = async () => {
     prisma,
     "admin0",
     "admin0@email.com",
-    "First Admin",
+    "First Admin"
   );
   const mentor = await createUser(
     prisma,
     "mentor0",
     "mentor0@email.com",
-    "First Mentor",
+    "First Mentor"
   );
   const mentee = await createUser(
     prisma,
     "mentee0",
     "mentee0@email.com",
-    "First Mentee",
+    "First Mentee"
   );
 };
 
