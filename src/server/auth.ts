@@ -7,7 +7,7 @@ import {
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import {Picsum} from "picsum-photos"
+import { Picsum } from "picsum-photos";
 
 import { env } from "~/env.mjs";
 import { db } from "~/server/db";
@@ -59,7 +59,7 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           email: user.email,
           emailVerified: new Date(Date.now()),
-          image: Picsum.url({height: 128, cache: false}),
+          image: Picsum.url({ height: 128, cache: false }),
         },
       });
     },
@@ -69,31 +69,33 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
-    ... credentialsAuthAvailable() ? [
-      CredentialsProvider({
-        name: "Credentials",
-        credentials: {
-          email: {
-            label: "Email",
-            type: "text",
-          },
-        },
-        async authorize(credentials) {
-          if (!credentials) {
-            return null;
-          }
-          const user = await db.user.findFirst({
-            where: {
-              email: credentials.email,
+    ...(credentialsAuthAvailable()
+      ? [
+          CredentialsProvider({
+            name: "Credentials",
+            credentials: {
+              email: {
+                label: "Email",
+                type: "text",
+              },
             },
-          });
-          if (!user) {
-            return null;
-          }
-          return user;
-        },
-      })
-    ] : [],
+            async authorize(credentials) {
+              if (!credentials) {
+                return null;
+              }
+              const user = await db.user.findFirst({
+                where: {
+                  email: credentials.email,
+                },
+              });
+              if (!user) {
+                return null;
+              }
+              return user;
+            },
+          }),
+        ]
+      : []),
     /**
      * ...add more providers here.
      *

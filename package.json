@@ -1,6 +1,10 @@
 {
   "name": "aad-admin",
   "version": "0.1.0",
+  "engines": {
+    "node": "^20.0.0",
+    "pnpm": ">=8"
+  },
   "private": true,
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -12,6 +16,7 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "format:check": "prettier --check .",
+    "format:write": "prettier --write .",
     "start": "next start"
   },
   "dependencies": {
@@ -52,5 +57,5 @@
   "ct3aMetadata": {
     "initVersion": "7.20.2"
   },
-  "packageManager": "npm@9.6.7"
+  "packageManager": "pnpm@8.10.2"
 }
