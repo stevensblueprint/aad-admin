@@ -4,12 +4,11 @@ import { z } from "zod";
 import {
   createTRPCRouter,
   protectedProcedure,
-  publicProcedure,
 } from "~/server/api/trpc";
 
 import { db } from "~/server/db";
 
-export const dbQueryRouter = createTRPCRouter({
+export const userRouter = createTRPCRouter({
   getById: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input }) => {
