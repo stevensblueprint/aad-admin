@@ -4,29 +4,28 @@
 
 1. **Create and setup your .env file**: Refer to .env.example
 
-2. **Add Google OAuth 2.0 client to the Application**: in index.ts (src/pages/index.tsx) add the following to _AuthShowcase_
-
-   ```
-   <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com" />
-   ```
-
-3. **Install Dependencies** - this project uses pnpm over npm or yarn to optimize performance and minimize dependency conflicts.
+2. **Install Dependencies** - this project uses pnpm over npm or yarn to optimize performance and minimize dependency conflicts.
    [Installing pnpm](https://pnpm.io/installation).
 
-   Run `pnpm install` in your terminal in the root directory of the project
-
-4. **Start & Seed Prisma**
-
-   Run the following two commands in your terminal:
+   Run the following in the terminal in the root directory of the project. 
 
    ```
-   pnpm run postinstall
+   pnpm install
+   ```
+   
+   You may encounter warnings if you do not have the correct version of Node installed. This project uses V20.0.0. When working with Node, it is highly recommended to use nvm (Node Version Manager). [nvm Documentation](https://github.com/nvm-sh/nvm)
+
+3. **Start & Seed Prisma**
+
+   Run the following command in your terminal:
+
+   ```
    pnpm run db:push
    ```
 
    [Seeding Your Database on Prisma](https://www.prisma.io/docs/guides/migrate/seed-database)
 
-5. **Start the application**
+4. **Start the application**
 
    Run the following in your terminal:
 
