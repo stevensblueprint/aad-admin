@@ -85,3 +85,10 @@ model UserRole {
     roleName String @id
     profiles Profile[]
 }
+
+// For Intake Form
+// https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields
+model intakeResponse {
+  id               Int     @id @default(autoincrement())
+  extendedPetsData Json?
+}
