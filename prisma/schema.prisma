@@ -88,7 +88,7 @@ model UserRole {
 
 // For Intake Form
 // https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields
-model intakeResponse {
-  id               Int     @id @default(autoincrement())
-  extendedPetsData Json?
-}
+// model intakeResponse {
+//  id               Int     @id @default(autoincrement())
+//  intakeReponseData Json
+// }
