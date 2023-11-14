@@ -66,3 +66,5 @@ It is best practice to run the code linter and formatter before pushing changes 
 pnpm run lint
 pnpm run format:write
 ```
+
+[T3 Stack Folder Structure](https://create.t3.gg/en/folder-structure?packages=nextauth%2Cprisma%2Ctailwind%2Ctrpc)
