@@ -1,7 +1,7 @@
 import Form from "./forms/Form";
-import menteeIntakeSchema from "src/pages/forms/schemas/menteeIntakeSchema.json";
-import menteeIntakeUiSchema from "src/pages/forms/schemas/menteeIntakeUiSchema.json";
-import menteeIntakeData from "src/pages/forms/schemas/menteeIntakeData.json";
+import menteeIntakeSchema from "src/pages/forms/MenteeIntake/schema.json";
+import menteeIntakeUiSchema from "src/pages/forms/MenteeIntake/uischema.json";
+import menteeIntakeData from "src/pages/forms/MenteeIntake/data.json";
 
 export default function Intake() {
   return (
