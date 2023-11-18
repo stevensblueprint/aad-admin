@@ -5,7 +5,7 @@ import { type UISchemaElement } from "@jsonforms/core";
 
 interface FormProps {
   schema: object;
-  uischema: UISchemaElement; // FIXME: IDK about this
+  uischema: UISchemaElement;
   initialData: unknown;
 }
 

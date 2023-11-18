@@ -1,13 +1,15 @@
 import Form from "./forms/Form";
-import { person } from "@jsonforms/examples";
+import menteeIntakeSchema from "src/pages/forms/schemas/menteeIntakeSchema.json";
+import menteeIntakeUiSchema from "src/pages/forms/schemas/menteeIntakeUiSchema.json";
+import menteeIntakeData from "src/pages/forms/schemas/menteeIntakeData.json";
 
 export default function Intake() {
   return (
-    <div className="App">
+    <div>
       <Form
-        schema={person.schema}
-        uischema={person.uischema}
-        initialData={person.data}
+        schema={menteeIntakeSchema}
+        uischema={menteeIntakeUiSchema}
+        initialData={menteeIntakeData}
       />
     </div>
   );
