@@ -20,8 +20,8 @@
     },
     "email": {
       "type": "string",
-      "title":"Email"
-    }, 
+      "title": "Email"
+    },
     "phoneNumber": {
       "type": "string",
       "title": "Phone Number"

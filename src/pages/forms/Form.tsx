@@ -22,6 +22,7 @@ export default function Form({ schema, uischema, initialData }: FormProps) {
       data={formData}
       renderers={materialRenderers}
       onChange={onChange}
+      validationMode={"ValidateAndShow"}
     />
   );
 }
