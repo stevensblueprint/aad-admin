@@ -1,6 +1,6 @@
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import {PrimeReactProvider} from 'primereact/api';
+import { PrimeReactProvider } from "primereact/api";
 import { type AppType } from "next/app";
 
 import { api } from "~/utils/api";
