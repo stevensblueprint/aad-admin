@@ -1,5 +1,6 @@
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+import {PrimeReactProvider} from 'primereact/api';
 import { type AppType } from "next/app";
 
 import { api } from "~/utils/api";
@@ -12,7 +13,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <PrimeReactProvider value={{ unstyled: true, pt: {} }}>
+        <Component {...pageProps} />
+      </PrimeReactProvider>
     </SessionProvider>
   );
 };

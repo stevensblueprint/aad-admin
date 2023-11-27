@@ -1,12 +1,14 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
+import {InputSwitch} from 'primereact/inputswitch';
+import { useState } from "react";
 
 import { api } from "~/utils/api";
 
 export default function Home() {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
+  const [checked, setChecked] = useState(false);
   return (
     <>
       <Head>
@@ -16,6 +18,7 @@ export default function Home() {
         <h1 className="mt-12 text-5xl font-bold text-[#F9F8F5]">
           Asian American Dream Admin
         </h1>
+        <InputSwitch checked={checked} onChange={(e) => setChecked(e.value)} />
         <div className="mx-14 mt-20 flex flex-grow flex-col items-center justify-between">
           <p className="w-4/5 text-base text-[#F9F8F5]">
             &emsp; Founded in May 2021, our mission is to provide mentorship
