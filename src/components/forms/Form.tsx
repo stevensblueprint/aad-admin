@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { JsonForms } from "@jsonforms/react";
-import { materialRenderers } from "@jsonforms/material-renderers";
-import { type UISchemaElement } from "@jsonforms/core";
+import {
+  materialCells,
+  materialRenderers,
+} from "@jsonforms/material-renderers";
+import { UISchemaElement } from "@jsonforms/core";
 
 interface FormProps {
   schema: object;
@@ -13,7 +16,7 @@ interface FormProps {
 export default function Form({ schema, uischema, initialData }: FormProps) {
   const [formData, setFormData] = useState(initialData);
 
-  const onChange = ({ data }: { data: unknown }) => setFormData(data); // Specifying the type of data
+  const updateDataOnChange = ({ data }: { data: unknown }) => setFormData(data);
 
   return (
     <JsonForms
@@ -21,7 +24,8 @@ export default function Form({ schema, uischema, initialData }: FormProps) {
       uischema={uischema}
       data={formData}
       renderers={materialRenderers}
-      onChange={onChange}
+      cells={materialCells}
+      onChange={updateDataOnChange}
       validationMode={"ValidateAndShow"}
     />
   );
