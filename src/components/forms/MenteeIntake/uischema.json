@@ -31,7 +31,7 @@
     },
     {
       "type": "Control",
-      "scope": "#/properties/ethnicity"
+      "scope": "#/properties/ethnicityLevel1"
     },
     {
       "type": "Control",

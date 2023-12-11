@@ -30,18 +30,22 @@
       "type": "string",
       "title": "LinkedIn Profile"
     },
-    "ethnicity": {
-      "type": "string",
-      "title": "How Would You Best Describe Yourself?",
-      "enum": [
-        "Hispanic or Latinx",
-        "American Indian or Alaskan Native",
-        "Pan Asian American",
-        "Native Hawaiian or Other Pacific Islander",
-        "Black or African American",
-        "White",
-        "Other"
-      ]
+    "ethnicityLevel1": {
+      "type": "array",
+      "title": "How would you best describe yourself? (Pan Asian American preferred)",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "Hispanic or Latinx",
+          "American Indian or Alaskan Native",
+          "Pan Asian American",
+          "Native Hawaiian or Other Pacific Islander",
+          "Black or African American",
+          "White",
+          "Other"
+        ]
+      }
     },
     "ethnicityLevel2": {
       "type": "string",
