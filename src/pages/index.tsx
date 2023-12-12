@@ -1,12 +1,12 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
+import { Panel } from "primereact/panel";
 
 import { api } from "~/utils/api";
 
 export default function Home() {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
   return (
     <>
       <Head>
@@ -17,16 +17,18 @@ export default function Home() {
           Asian American Dream Admin
         </h1>
         <div className="mx-14 mt-20 flex flex-grow flex-col items-center justify-between">
-          <p className="w-4/5 text-base text-[#F9F8F5]">
-            &emsp; Founded in May 2021, our mission is to provide mentorship
-            networks, professional development training, and career advancement
-            opportunities for underserved Pan Asian American undergraduates,
-            with the goal of helping them achieve their unique vision of the
-            Asian American dream. Since our inception, we’ve had 752 unique
-            students register for our programming. However, with more than 1
-            million Pan Asian American undergraduates (and growing), there is
-            work to be done.
-          </p>
+          <Panel header="About">
+            <p className="text-base text-[#F9F8F5]">
+              &emsp; Founded in May 2021, our mission is to provide mentorship
+              networks, professional development training, and career
+              advancement opportunities for underserved Pan Asian American
+              undergraduates, with the goal of helping them achieve their unique
+              vision of the Asian American dream. Since our inception, we’ve had
+              752 unique students register for our programming. However, with
+              more than 1 million Pan Asian American undergraduates (and
+              growing), there is work to be done.
+            </p>
+          </Panel>
           <AuthShowcase />
         </div>
       </main>
