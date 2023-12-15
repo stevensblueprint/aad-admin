@@ -1,0 +1,77 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Control",
+      "scope": "#/properties/firstName"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/lastName"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/age"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/dateOfBirth"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/email"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/phoneNumber"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/linkedInProfile"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/ethnicityLevel1"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/ethnicityLevel2"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/gender"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/stateOfResidency"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/schoolYear"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/schoolState"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/school"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/major"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/minor"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/expectations"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/hadMentor"
+    }
+  ]
+}

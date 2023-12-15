@@ -1,0 +1,116 @@
+{
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "title": "First Name"
+    },
+    "lastName": {
+      "type": "string",
+      "title": "Last Name"
+    },
+    "age": {
+      "type": "integer",
+      "title": "Age"
+    },
+    "dateOfBirth": {
+      "type": "string",
+      "title": "Date of Birth",
+      "format": "date"
+    },
+    "email": {
+      "type": "string",
+      "title": "Email"
+    },
+    "phoneNumber": {
+      "type": "string",
+      "title": "Phone Number"
+    },
+    "linkedInProfile": {
+      "type": "string",
+      "title": "LinkedIn Profile"
+    },
+    "ethnicityLevel1": {
+      "type": "array",
+      "title": "How would you best describe yourself? (Pan Asian American preferred)",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "Hispanic or Latinx",
+          "American Indian or Alaskan Native",
+          "Pan Asian American",
+          "Native Hawaiian or Other Pacific Islander",
+          "Black or African American",
+          "White",
+          "Other"
+        ]
+      }
+    },
+    "ethnicityLevel2": {
+      "type": "string",
+      "title": "How would you best describe yourself?",
+      "enum": [
+        "Asian Indian",
+        "Bangladeshi",
+        "Bhutanese",
+        "Burmese",
+        "Cambodian",
+        "Chinese",
+        "Filipino",
+        "Hmong",
+        "Indonesian",
+        "Japanese",
+        "Korean",
+        "Laotian",
+        "Malaysian",
+        "Mongolian",
+        "Nepalese",
+        "Okinawan",
+        "Pakistani",
+        "Sri Lankan",
+        "Taiwanese",
+        "Thai",
+        "Vietnamese",
+        "Other"
+      ]
+    },
+    "gender": {
+      "type": "string",
+      "title": "Gender"
+    },
+    "stateOfResidency": {
+      "type": "string",
+      "title": "What is your state of Residency?"
+    },
+    "schoolYear": {
+      "type": "string",
+      "title": "What year of college are you in?"
+    },
+    "schoolState": {
+      "type": "string",
+      "title": "What state is your college/university located in?"
+    },
+    "school": {
+      "type": "string",
+      "title": "What college/university do you attend?"
+    },
+    "major": {
+      "type": "string",
+      "title": "Major"
+    },
+    "minor": {
+      "type": "string",
+      "title": "Minor"
+    },
+    "expectations": {
+      "type": "string",
+      "title": "What are you looking for in a Mentor and or specifically, what help/guidance are you looking for from them during this Q3 Kin Mentorship Program? Please explain. "
+    },
+    "hadMentor": {
+      "type": "boolean",
+      "title": "Have you ever had a mentor before?"
+    }
+  },
+  "required": ["firstName", "lastName", "age", "dateOfBirth", "email"]
+}
