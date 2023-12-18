@@ -51,7 +51,7 @@
     "@typescript-eslint/parser": "^6.14.0",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.55.0",
-    "eslint-config-next": "^14.0.3",
+    "eslint-config-next": "^14.0.4",
     "picsum-photos": "^3.0.10",
     "postcss": "^8.4.27",
     "prettier": "^3.1.0",
