@@ -1,0 +1,148 @@
+{
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "title": "First Name"
+    },
+    "lastName": {
+      "type": "string",
+      "title": "Last Name"
+    },
+    "age": {
+      "type": "integer",
+      "title": "Age"
+    },
+    "dateOfBirth": {
+      "type": "string",
+      "title": "Date of Birth",
+      "format": "date"
+    },
+    "email": {
+      "type": "string",
+      "title": "Email"
+    },
+    "phoneNumber": {
+      "type": "string",
+      "title": "Phone Number"
+    },
+    "linkedInProfile": {
+      "type": "string",
+      "title": "LinkedIn Profile"
+    },
+    "ethnicityLevel1": {
+      "type": "array",
+      "uniqueItems": true,
+      "title": "How would you best describe yourself? (Pan Asian American preferred)",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Hispanic or Latinx",
+          "American Indian or Alaskan Native",
+          "Pan Asian American",
+          "Native Hawaiian or Other Pacific Islander",
+          "Black or African American",
+          "White",
+          "Other"
+        ]
+      }
+    },
+    "otherEthnicityLevel1": {
+      "type": "string",
+      "title": "Please Specify"
+    },
+    "ethnicityLevel2": {
+      "type": "array",
+      "uniqueItems": true,
+      "title": "Which Asian Ethnicities do you identify with?",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Asian Indian",
+          "Bangladeshi",
+          "Bhutanese",
+          "Burmese",
+          "Cambodian",
+          "Chinese",
+          "Filipino",
+          "Hmong",
+          "Indonesian",
+          "Japanese",
+          "Korean",
+          "Laotian",
+          "Malaysian",
+          "Mongolian",
+          "Nepalese",
+          "Okinawan",
+          "Pakistani",
+          "Sri Lankan",
+          "Taiwanese",
+          "Thai",
+          "Vietnamese",
+          "Other"
+        ]
+      }
+    },
+    "gender": {
+      "type": "object",
+      "title": "Gender",
+      "properties": {
+        "radioGroup": {
+          "type": "string",
+          "enum": ["Male", "Female", "Non-Binary", "Other"]
+        }
+      }
+    },
+    "school": {
+      "type": "object",
+      "properties": {
+        "autocompleteEnum": {
+          "type": "string",
+          "enum": [
+            "Stevens Institute of Technology",
+            "New York University",
+            "New Jersey Institute of Technology"
+          ]
+        }
+      }
+    },
+    "schoolYear": {
+      "type": "object",
+      "title": "Year of College",
+      "properties": {
+        "radioGroup": {
+          "type": "string",
+          "enum": [
+            "Freshman",
+            "Sophomore",
+            "Junior",
+            "Senior",
+            "Masters Student",
+            "PhD Student"
+          ]
+        }
+      }
+    },
+    "major": {
+      "type": "object",
+      "title": "Major",
+      "properties": {
+        "autocompleteEnum": {
+          "type": "string",
+          "enum": ["Computer Science", "Quantitative Finance"]
+        }
+      }
+    },
+    "minor": {
+      "type": "object",
+      "title": "Minor",
+      "properties": {
+        "autocompleteEnum": {
+          "type": "string",
+          "enum": ["Computer Science", "Quantitative Finance"]
+        }
+      }
+    }
+  },
+  "required": ["firstName", "lastName", "age", "dateOfBirth", "email", "school"]
+}

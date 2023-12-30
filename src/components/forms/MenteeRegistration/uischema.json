@@ -1,0 +1,98 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Control",
+      "scope": "#/properties/firstName"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/lastName"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/age"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/dateOfBirth"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/email"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/phoneNumber"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/linkedInProfile"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/ethnicityLevel1"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/otherEthnicityLevel1",
+      "rule": {
+        "effect": "SHOW",
+        "condition": {
+          "scope": "#/properties/ethnicityLevel1",
+          "schema": {
+            "contains": { "const": "Other" }
+          }
+        }
+      }
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/ethnicityLevel2",
+      "rule": {
+        "effect": "SHOW",
+        "condition": {
+          "scope": "#/properties/ethnicityLevel1",
+          "schema": {
+            "contains": { "const": "Pan Asian American" }
+          }
+        }
+      }
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/gender",
+      "options": {
+        "format": "radio"
+      }
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/school",
+      "options": {
+        "autocomplete": true
+      }
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/schoolYear",
+      "options": {
+        "format": "radio"
+      }
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/major",
+      "options": {
+        "autocomplete": true
+      }
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/minor",
+      "options": {
+        "autocomplete": true
+      }
+    }
+  ]
+}
