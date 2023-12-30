@@ -49,7 +49,7 @@
     },
     "otherEthnicityLevel1": {
       "type": "string",
-      "title": "Please Specify"
+      "title": "Please Specify Ethnicity"
     },
     "ethnicityLevel2": {
       "type": "array",
@@ -89,7 +89,7 @@
       "properties": {
         "radioGroup": {
           "type": "string",
-          "enum": ["Male", "Female", "Non-Binary", "Other"]
+          "enum": ["Male", "Female", "Non-Binary"]
         }
       }
     },
