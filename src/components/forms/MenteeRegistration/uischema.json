@@ -68,6 +68,19 @@
     },
     {
       "type": "Control",
+      "scope": "#/properties/otherGender",
+      "rule": {
+        "effect": "SHOW",
+        "condition": {
+          "scope": "#/properties/gender",
+          "schema": {
+            "const": "Other"
+          }
+        }
+      }
+    },
+    {
+      "type": "Control",
       "scope": "#/properties/school",
       "options": {
         "autocomplete": true

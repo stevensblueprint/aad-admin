@@ -86,12 +86,11 @@
     "gender": {
       "type": "object",
       "title": "Gender",
-      "properties": {
-        "radioGroup": {
-          "type": "string",
-          "enum": ["Male", "Female", "Non-Binary"]
-        }
-      }
+      "enum": ["Male", "Female", "Non-Binary", "Other"]
+    },
+    "otherGender": {
+      "type": "string",
+      "title": "Please Specify Gender"
     },
     "school": {
       "type": "object",
@@ -109,19 +108,14 @@
     "schoolYear": {
       "type": "object",
       "title": "Year of College",
-      "properties": {
-        "radioGroup": {
-          "type": "string",
-          "enum": [
-            "Freshman",
-            "Sophomore",
-            "Junior",
-            "Senior",
-            "Masters Student",
-            "PhD Student"
-          ]
-        }
-      }
+      "enum": [
+        "Freshman",
+        "Sophomore",
+        "Junior",
+        "Senior",
+        "Masters Student",
+        "PhD Student"
+      ]
     },
     "major": {
       "type": "object",
