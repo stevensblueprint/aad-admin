@@ -52,10 +52,11 @@
          ```
          pnpm run postinstall
          ```
-      1. Generate new migration based on changes in `schema.prisma`
+      1. Generate new migration based on changes in `schema.prisma`. Note: If you'd like to discard any current schema run `npx prisma migrate reset` and then migrate
          ```
-         npx prisma migrate
+         npx prisma migrate dev
          ```
+
       1. Seed DB based off seed.ts file (seeds mentee, mentor, and admin user)
          ```
          pnpm run db:seed
