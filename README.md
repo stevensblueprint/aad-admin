@@ -35,7 +35,41 @@
 
    The application should now be running on http://localhost:3000.
 
-5. TODO: Ignore this step for now. **Setting up the Docker Container**
+5. Setup Local Database - PostgreSQL
+   
+   - Starting docker container. 
+      First make sure that you have Docker installed.
+      [Getting Started With Docker](https://www.docker.com/get-started/).
+   
+      Once Docker is installed and the Docker daemon is running (start Docker Desktop) run the following in your terminal
+
+      ```
+      docker-compose up
+      ```
+
+   - Seed dev database
+      1. Generate Prisma Client
+         ```
+         pnpm run postinstall
+         ```
+      1. Generate new migration based on changes in `schema.prisma`
+         ```
+         npx prisma migrate
+         ```
+      1. Seed DB based off seed.ts file (seeds mentee, mentor, and admin user)
+         ```
+         pnpm run db:seed
+         ```
+      1. (OPTIONAL) You can check contents of DB using Prisma GUI
+         ```
+         npx prisma studio
+         ```
+
+
+
+   
+
+6. TODO: Ignore this step for now. **Setting up the Docker Container**
 
    First make sure that you have Docker installed.
    [Getting Started With Docker](https://www.docker.com/get-started/).
