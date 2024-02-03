@@ -43,6 +43,8 @@
    
       Once Docker is installed and the Docker daemon is running (start Docker Desktop) run the following in your terminal
 
+      [Additional Documentation on Building/Running Docker containers](https://docs.docker.com/get-started/02_our_app/)
+
       ```
       docker-compose up
       ```
@@ -65,25 +67,6 @@
          ```
          npx prisma studio
          ```
-
-
-
-   
-
-6. TODO: Ignore this step for now. **Setting up the Docker Container**
-
-   First make sure that you have Docker installed.
-   [Getting Started With Docker](https://www.docker.com/get-started/).
-
-   Once Docker is installed and the Docker daemon is running (start Docker Desktop) run the following in your terminal
-
-   ```
-   docker build -t aad-admin .
-   docker run -dp 127.0.0.1:3000:3000 aad-admin
-   ```
-
-   The first command must be run in order for the Docker container to reflect any of your changes.
-   [Additional Documentation on Building/Running Docker containers](https://docs.docker.com/get-started/02_our_app/)
 
 ## Contributing Changes
 

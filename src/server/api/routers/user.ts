@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
 
 import { db } from "~/server/db";
 
@@ -25,5 +25,11 @@ export const userRouter = createTRPCRouter({
 
   getAll: protectedProcedure.query(async () => {
     return await db.user.findMany();
+  }),
+
+  // TODO: Remove this example later
+  test:publicProcedure.query(async () => {
+      const users = await db.user.findMany();
+      return users;
   }),
 });
