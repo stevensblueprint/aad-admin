@@ -36,37 +36,39 @@
    The application should now be running on http://localhost:3000.
 
 5. Setup Local Database - PostgreSQL
-   
-   - Starting docker container. 
-      First make sure that you have Docker installed.
-      [Getting Started With Docker](https://www.docker.com/get-started/).
-   
-      Once Docker is installed and the Docker daemon is running (start Docker Desktop) run the following in your terminal
 
-      [Additional Documentation on Building/Running Docker containers](https://docs.docker.com/get-started/02_our_app/)
+   - Starting docker container.
+     First make sure that you have Docker installed.
+     [Getting Started With Docker](https://www.docker.com/get-started/).
 
-      ```
-      docker-compose up
-      ```
+     Once Docker is installed and the Docker daemon is running (start Docker Desktop) run the following in your terminal
+
+     [Additional Documentation on Building/Running Docker containers](https://docs.docker.com/get-started/02_our_app/)
+
+     ```
+     docker-compose up
+     ```
 
    - Seed dev database
-      1. Generate Prisma Client
-         ```
-         pnpm run postinstall
-         ```
-      1. Generate new migration based on changes in `schema.prisma`. Note: If you'd like to discard any current schema run `npx prisma migrate reset` and then migrate
-         ```
-         npx prisma migrate dev
-         ```
 
-      1. Seed DB based off seed.ts file (seeds mentee, mentor, and admin user)
-         ```
-         pnpm run db:seed
-         ```
-      1. (OPTIONAL) You can check contents of DB using Prisma GUI
-         ```
-         npx prisma studio
-         ```
+     1. Generate Prisma Client
+        ```
+        pnpm run postinstall
+        ```
+     1. Generate new migration based on changes in `schema.prisma`. Note: If you'd like to discard any current schema run `npx prisma migrate reset` and then migrate
+
+        ```
+        npx prisma migrate dev
+        ```
+
+     1. Seed DB based off seed.ts file (seeds mentee, mentor, and admin user)
+        ```
+        pnpm run db:seed
+        ```
+     1. (OPTIONAL) You can check contents of DB using Prisma GUI
+        ```
+        npx prisma studio
+        ```
 
 ## Contributing Changes
 

@@ -11,10 +11,10 @@ export default function Home() {
 
   // TODO: Remove this later
   // Example of using a tRPC query for user data. Was used to confirm seeded database.
-  const { data : test } = api.user.test.useQuery();
+  const { data: test } = api.user.test.useQuery();
   useEffect(() => {
     console.log("USER DATA: ", test);
-  }, [test])
+  }, [test]);
 
   return (
     <>
