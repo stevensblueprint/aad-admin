@@ -19,7 +19,7 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "format:check": "prettier --check .",
-    "format:write": "prettier --write .",
+    "format": "prettier --write .",
     "start": "next start",
     "types:gen": "tsx src/schemas/generateTypes.ts"
   },

@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { JsonForms } from "@jsonforms/react";
 import {
-  materialCells, materialRenderers,
+  materialCells,
+  materialRenderers,
 } from "@jsonforms/material-renderers";
-import { type JsonFormsRendererRegistryEntry, type UISchemaElement } from "@jsonforms/core";
+import {
+  type JsonFormsRendererRegistryEntry,
+  type UISchemaElement,
+} from "@jsonforms/core";
 import StarRatingControl from "./StarRatingControl";
 import StarRatingControlTester from "./StarRatingControlTester";
 import { Button, Card } from "@mui/material";
@@ -17,7 +21,7 @@ interface FormProps {
 // Generic Form Component that can be customized off of JSON schemas
 export default function Form({ schema, uischema, initialData }: FormProps) {
   const [formData, setFormData] = useState(initialData);
-	const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   // ADD CUSTOM RENDERERS FOR EACH COMPONENT HERE
   const renderers: JsonFormsRendererRegistryEntry[] = [
@@ -29,16 +33,16 @@ export default function Form({ schema, uischema, initialData }: FormProps) {
 
   return (
     <Card>
-			<JsonForms
-				schema={schema}
-				uischema={uischema}
-				data={formData}
-				renderers={renderers}
-				cells={materialCells}
-				onChange={updateDataOnChange}
-				validationMode={submitted ? "ValidateAndShow" : "ValidateAndHide"}
-			/>
-			<Button onClick={() => setSubmitted(true)}>Submit</Button>
-		</Card>
+      <JsonForms
+        schema={schema}
+        uischema={uischema}
+        data={formData}
+        renderers={renderers}
+        cells={materialCells}
+        onChange={updateDataOnChange}
+        validationMode={submitted ? "ValidateAndShow" : "ValidateAndHide"}
+      />
+      <Button onClick={() => setSubmitted(true)}>Submit</Button>
+    </Card>
   );
 }

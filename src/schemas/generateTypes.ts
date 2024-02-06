@@ -1,13 +1,15 @@
 import { compileFromFile } from "json-schema-to-typescript";
 import { readdir, writeFile } from "fs/promises";
 
-const forms = await readdir("schemas", { withFileTypes: true });
+const forms = await readdir("src/schemas", { withFileTypes: true });
 await Promise.all(
   forms.map(async (fd) => {
     if (!fd.isDirectory()) return;
     const { name } = fd;
-    const schema = await compileFromFile(`schemas/${name}/form.schema.json`);
-    await writeFile(`schemas/${name}/form.types.ts`, schema);
+    const schema = await compileFromFile(
+      `src/schemas/${name}/form.schema.json`,
+    );
+    await writeFile(`src/schemas/${name}/form.types.ts`, schema);
   }),
 );
 
