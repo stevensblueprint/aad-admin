@@ -20,15 +20,19 @@
     },
     "email": {
       "type": "string",
-      "title": "Email"
+      "title": "Email",
+      "format": "email",
+      "description": "This is for further communication on the Kin Mentorship Program next steps and will be shared with your Mentor/fellow Mentee after the matching process is complete plus AAD programming for 2023 and beyond"
     },
     "phoneNumber": {
       "type": "string",
-      "title": "Phone Number"
+      "title": "Phone Number",
+      "description": "This information will be shared/used for when your Mentor reaches out to you and your fellow Mentee for scheduling the 4 additional meetings plus the AAD team may have to support in communication as needed"
     },
     "linkedInProfile": {
       "type": "string",
-      "title": "LinkedIn Profile"
+      "title": "LinkedIn Profile",
+      "description": "this will be shared to both Volunteer Mentors and Q3 Mentees for networking purposes"
     },
     "ethnicityLevel1": {
       "type": "array",
@@ -79,17 +83,76 @@
       "type": "string",
       "title": "Gender"
     },
+    "background": {
+      "type": "array",
+      "title": "Select which option(s) apply to you",
+      "description": "Preferred one of the following applies to you"
+    },
     "stateOfResidency": {
       "type": "string",
-      "title": "What is your state of Residency?"
+      "title": "What is your state of Residency?",
+      "enum": [
+        "Alabama",
+        "Alaska",
+        "Arizona",
+        "Arkansas",
+        "California",
+        "Colorado",
+        "Connecticut",
+        "Delaware",
+        "Florida",
+        "Georgia",
+        "Hawaii",
+        "Idaho",
+        "Illinois",
+        "Indiana",
+        "Iowa",
+        "Kansas",
+        "Kentucky",
+        "Louisiana",
+        "Maine",
+        "Maryland",
+        "Massachusetts",
+        "Michigan",
+        "Minnesota",
+        "Mississippi",
+        "Missouri",
+        "Montana",
+        "Nebraska",
+        "Nevada",
+        "New Hampshire",
+        "New Jersey",
+        "New Mexico",
+        "New York",
+        "North Carolina",
+        "North Dakota",
+        "Ohio",
+        "Oklahoma",
+        "Oregon",
+        "Pennsylvania",
+        "Rhode Island",
+        "South Carolina",
+        "South Dakota",
+        "Tennessee",
+        "Texas",
+        "Utah",
+        "Vermont",
+        "Virginia",
+        "Washington",
+        "West Virginia",
+        "Wisconsin",
+        "Wyoming"
+      ]
     },
     "schoolYear": {
       "type": "string",
-      "title": "What year of college are you in?"
+      "title": "What year of college are you in?",
+      "description": "Please answer in the format (years in college/total years expected in college). Ex. Junior is (3/4). This information will be shared with potential Mentors to support the matching process"
     },
     "schoolState": {
       "type": "string",
-      "title": "What state is your college/university located in?"
+      "title": "What state is your college/university located in?",
+      "description": "This information will be shared with potential Mentors to support the matching process"
     },
     "school": {
       "type": "string",
@@ -112,5 +175,23 @@
       "title": "Have you ever had a mentor before?"
     }
   },
-  "required": ["firstName", "lastName", "age", "dateOfBirth", "email"]
+  "required": [
+    "firstName",
+    "lastName",
+    "age",
+    "dateOfBirth",
+    "email",
+    "phoneNumber",
+    "ethnicityLevel1",
+    "ethnicityLevel2",
+    "gender",
+    "background",
+    "stateOfResidency",
+    "schoolYear",
+    "school",
+    "major",
+    "minor",
+    "expectations",
+    "hadMentor"
+  ]
 }

@@ -4,7 +4,7 @@ import {
   materialCells,
   materialRenderers,
 } from "@jsonforms/material-renderers";
-import { UISchemaElement } from "@jsonforms/core";
+import { type JsonFormsRendererRegistryEntry, type UISchemaElement } from "@jsonforms/core";
 import StarRatingControl from "./StarRatingControl";
 import StarRatingControlTester from "./StarRatingControlTester";
 
@@ -19,7 +19,7 @@ export default function Form({ schema, uischema, initialData }: FormProps) {
   const [formData, setFormData] = useState(initialData);
 
   // ADD CUSTOM RENDERERS FOR EACH COMPONENT HERE
-  const renderers = [
+  const renderers: JsonFormsRendererRegistryEntry[] = [
     ...materialRenderers,
     { tester: StarRatingControlTester, renderer: StarRatingControl },
   ];
