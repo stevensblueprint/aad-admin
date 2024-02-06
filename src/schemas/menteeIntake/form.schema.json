@@ -86,7 +86,18 @@
     "background": {
       "type": "array",
       "title": "Select which option(s) apply to you",
-      "description": "Preferred one of the following applies to you"
+      "description": "Preferred one of the following applies to you",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "First-generation college student",
+          "Low-income",
+          "FAFSA-eligible",
+          "Attending a non-target school",
+          "N/A"
+        ]
+      }
     },
     "stateOfResidency": {
       "type": "string",
