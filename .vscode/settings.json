@@ -1,4 +1,4 @@
 {
-	"prettier.configPath": "prettier.config.mjs",
-	"editor.tabSize": 2
+  "prettier.configPath": "prettier.config.mjs",
+  "editor.tabSize": 2
 }
