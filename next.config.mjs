@@ -3,6 +3,8 @@
  * for Docker builds.
  */
 await import("./src/env.mjs");
+import nextRoutes from "nextjs-routes/config";
+const withRoutes = nextRoutes();
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -20,4 +22,4 @@ const config = {
   },
 };
 
-export default config;
+export default withRoutes(config);
