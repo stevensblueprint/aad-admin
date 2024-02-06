@@ -2,19 +2,11 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { Panel } from "primereact/panel";
-import { useEffect } from "react";
 
 import { api } from "~/utils/api";
 
 export default function Home() {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
-  // TODO: Remove this later
-  // Example of using a tRPC query for user data. Was used to confirm seeded database.
-  const { data: test } = api.user.test.useQuery();
-  useEffect(() => {
-    console.log("USER DATA: ", test);
-  }, [test]);
 
   return (
     <>

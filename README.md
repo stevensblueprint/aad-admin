@@ -46,21 +46,23 @@
      [Additional Documentation on Building/Running Docker containers](https://docs.docker.com/get-started/02_our_app/)
 
      ```
-     docker-compose up
+     docker-compose up -d
      ```
+
+     **Note:** Adding the `-d` flag lets the container run in detached mode allowing for it not to use a whole terminal window.
+
+     When you're done, you can stop the docker container via `docker-compose down`
 
    - Seed dev database
 
-     1. Generate Prisma Client
+     1. Push updated schema changes to database
+        ```
+        pnpm run db:push
+        ```
+     1. Generate Prisma Client based on current schema
         ```
         pnpm run postinstall
         ```
-     1. Generate new migration based on changes in `schema.prisma`. Note: If you'd like to discard any current schema run `npx prisma migrate reset` and then migrate
-
-        ```
-        npx prisma migrate dev
-        ```
-
      1. Seed DB based off seed.ts file (seeds mentee, mentor, and admin user)
         ```
         pnpm run db:seed
