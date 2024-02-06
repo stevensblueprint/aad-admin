@@ -8,11 +8,12 @@
   "type": "module",
   "private": true,
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts"
   },
   "scripts": {
     "build": "next build",
     "db:push": "prisma db push",
+    "db:forms": "tsx src/schemas/populateForms.ts",
     "db:seed": "prisma db seed",
     "dev": "next dev",
     "postinstall": "prisma generate",
@@ -20,7 +21,7 @@
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
     "start": "next start",
-    "types:gen": "ts-node --esm schemas/generateTypes.ts"
+    "types:gen": "tsx src/schemas/generateTypes.ts"
   },
   "dependencies": {
     "@jsonforms/core": "^3.2.1",
@@ -63,7 +64,7 @@
     "prettier-plugin-tailwindcss": "^0.5.11",
     "prisma": "^5.9.1",
     "tailwindcss": "^3.4.1",
-    "ts-node": "^10.9.2"
+    "tsx": "^4.7.0"
   },
   "ct3aMetadata": {
     "initVersion": "7.20.2"
