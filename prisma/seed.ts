@@ -43,6 +43,7 @@ const main = async () => {
     "mentee0@email.com",
     "First Mentee",
   );
+  console.log({ admin, mentor, mentee });
 };
 
 main()

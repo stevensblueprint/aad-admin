@@ -35,20 +35,42 @@
 
    The application should now be running on http://localhost:3000.
 
-5. TODO: Ignore this step for now. **Setting up the Docker Container**
+5. Setup Local Database - PostgreSQL
 
-   First make sure that you have Docker installed.
-   [Getting Started With Docker](https://www.docker.com/get-started/).
+   - Starting docker container.
+     First make sure that you have Docker installed.
+     [Getting Started With Docker](https://www.docker.com/get-started/).
 
-   Once Docker is installed and the Docker daemon is running (start Docker Desktop) run the following in your terminal
+     Once Docker is installed and the Docker daemon is running (start Docker Desktop) run the following in your terminal
 
-   ```
-   docker build -t aad-admin .
-   docker run -dp 127.0.0.1:3000:3000 aad-admin
-   ```
+     [Additional Documentation on Building/Running Docker containers](https://docs.docker.com/get-started/02_our_app/)
 
-   The first command must be run in order for the Docker container to reflect any of your changes.
-   [Additional Documentation on Building/Running Docker containers](https://docs.docker.com/get-started/02_our_app/)
+     ```
+     docker-compose up -d
+     ```
+
+     **Note:** Adding the `-d` flag lets the container run in detached mode allowing for it not to use a whole terminal window.
+
+     When you're done, you can stop the docker container via `docker-compose down`
+
+   - Seed dev database
+
+     1. Push updated schema changes to database
+        ```
+        pnpm run db:push
+        ```
+     1. Generate Prisma Client based on current schema
+        ```
+        pnpm run postinstall
+        ```
+     1. Seed DB based off seed.ts file (seeds mentee, mentor, and admin user)
+        ```
+        pnpm run db:seed
+        ```
+     1. (OPTIONAL) You can check contents of DB using Prisma GUI
+        ```
+        npx prisma studio
+        ```
 
 ## Contributing Changes
 
