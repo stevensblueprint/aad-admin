@@ -5,6 +5,7 @@
     "node": "^20.0.0",
     "pnpm": ">=8"
   },
+  "type": "module",
   "private": true,
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -18,7 +19,8 @@
     "lint": "next lint",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
-    "start": "next start"
+    "start": "next start",
+    "types:gen": "ts-node --esm schemas/generateTypes.ts"
   },
   "dependencies": {
     "@jsonforms/core": "^3.1.0",
@@ -34,6 +36,7 @@
     "@trpc/react-query": "^10.37.1",
     "@trpc/server": "^10.37.1",
     "classnames": "^2.3.2",
+    "json-schema-to-typescript": "^13.1.2",
     "next": "^14.0.3",
     "next-auth": "^4.24.5",
     "primereact": "^10.2.1",

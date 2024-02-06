@@ -1,16 +1,21 @@
+import { type Form as FormData} from "../../schemas/menteeIntake/form.types";
 import Form from "../components/forms/Form";
-import menteeIntakeSchema from "~/components/forms/MenteeIntake/schema.json";
-import menteeIntakeUiSchema from "~/components/forms/MenteeIntake/uischema.json";
-import menteeIntakeData from "~/components/forms/MenteeIntake/data.json";
+import intakeSchema from "/schemas/menteeIntake/form.schema.json";
+import uiSchema from "/schemas/menteeIntake/uischema.json";
+
+
 
 export default function Intake() {
   return (
-    <div>
       <Form
-        schema={menteeIntakeSchema}
-        uischema={menteeIntakeUiSchema}
-        initialData={menteeIntakeData}
+			// TODO: imported json is type any
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        schema={intakeSchema}
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        uischema={uiSchema}
+				initialData={{
+					
+				} as FormData}
       />
-    </div>
   );
 }

@@ -43,6 +43,10 @@
     },
     {
       "type": "Control",
+      "scope": "#/properties/background"
+    },
+    {
+      "type": "Control",
       "scope": "#/properties/stateOfResidency"
     },
     {
