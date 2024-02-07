@@ -1,4 +1,4 @@
-import Form from "../components/forms/Form";
+import Form from "../components/forms/JsonForm";
 import ratingSchema from "~/components/forms/CustomRatingTest/schema.json";
 import ratingUiSchema from "~/components/forms/CustomRatingTest/uischema.json";
 import ratingData from "~/components/forms/CustomRatingTest/data.json";

@@ -15,27 +15,7 @@
 
    You may encounter warnings if you do not have the correct version of Node installed. This project uses V20.0.0. When working with Node, it is highly recommended to use nvm (Node Version Manager). [nvm Documentation](https://github.com/nvm-sh/nvm)
 
-3. **Start & Seed Prisma**
-
-   Run the following command in your terminal:
-
-   ```
-   pnpm run db:push
-   ```
-
-   [Seeding Your Database on Prisma](https://www.prisma.io/docs/guides/migrate/seed-database)
-
-4. **Start the application**
-
-   Run the following in your terminal:
-
-   ```
-   pnpm run dev
-   ```
-
-   The application should now be running on http://localhost:3000.
-
-5. Setup Local Database - PostgreSQL
+3. Setup Local Database - PostgreSQL
 
    - Starting docker container.
      First make sure that you have Docker installed.
@@ -71,6 +51,16 @@
         ```
         npx prisma studio
         ```
+
+4. **Start the application**
+
+   Run the following in your terminal:
+
+   ```
+   pnpm run dev
+   ```
+
+   The application should now be running on http://localhost:3000.
 
 ## Contributing Changes
 

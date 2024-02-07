@@ -57,7 +57,13 @@ export type Gender = string;
 /**
  * Preferred one of the following applies to you
  */
-export type SelectWhichOptionSApplyToYou = unknown[];
+export type SelectWhichOptionSApplyToYou = (
+  | "First-generation college student"
+  | "Low-income"
+  | "FAFSA-eligible"
+  | "Attending a non-target school"
+  | "N/A"
+)[];
 export type WhatIsYourStateOfResidency =
   | "Alabama"
   | "Alaska"
