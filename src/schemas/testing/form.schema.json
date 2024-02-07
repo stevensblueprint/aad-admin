@@ -1,0 +1,79 @@
+{
+  "type": "object",
+  "properties": {
+    "string": {
+      "type": "string",
+      "title": "First Name"
+    },
+    "number": {
+      "type": "integer",
+      "title": "Age"
+    },
+    "date": {
+      "type": "string",
+      "title": "Date of Birth",
+      "format": "date"
+    },
+    "email": {
+      "type": "string",
+      "title": "Email",
+      "format": "email",
+      "description": "This is for further communication on the Kin Mentorship Program next steps and will be shared with your Mentor/fellow Mentee after the matching process is complete plus AAD programming for 2023 and beyond"
+    },
+    "phoneNumber": {
+      "type": "string",
+      "title": "Phone Number",
+      "description": "This information will be shared/used for when your Mentor reaches out to you and your fellow Mentee for scheduling the 4 additional meetings plus the AAD team may have to support in communication as needed"
+    },
+    "arrayMultiple": {
+      "type": "array",
+      "title": "How would you best describe yourself? (Pan Asian American preferred)",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "Hispanic or Latinx",
+          "American Indian or Alaskan Native",
+          "Pan Asian American",
+          "Native Hawaiian or Other Pacific Islander",
+          "Black or African American",
+          "White",
+          "Other"
+        ]
+      }
+    },
+    "arraySingle": {
+      "type": "string",
+      "title": "How would you best describe yourself?",
+      "enum": [
+        "Asian Indian",
+        "Bangladeshi",
+        "Bhutanese",
+        "Burmese",
+        "Cambodian",
+        "Chinese",
+        "Filipino",
+        "Hmong",
+        "Indonesian",
+        "Japanese",
+        "Korean",
+        "Laotian",
+        "Malaysian",
+        "Mongolian",
+        "Nepalese",
+        "Okinawan",
+        "Pakistani",
+        "Sri Lankan",
+        "Taiwanese",
+        "Thai",
+        "Vietnamese",
+        "Other"
+      ]
+    },
+    "boolean": {
+      "type": "boolean",
+      "title": "Have you ever had a mentor before?"
+    }
+  },
+  "required": []
+}

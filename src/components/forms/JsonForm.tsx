@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { JsonForms } from "@jsonforms/react";
+import { JsonForms, type JsonFormsReactProps } from "@jsonforms/react";
 import {
   materialCells,
   materialRenderers,
@@ -11,16 +11,27 @@ import {
 import StarRatingControl from "./StarRatingControl";
 import StarRatingControlTester from "./StarRatingControlTester";
 import { Button, Card } from "@mui/material";
+import { type ErrorObject } from "ajv";
+import { type JSONObject } from "superjson/dist/types";
 
 interface FormProps {
   schema: object;
   uischema: UISchemaElement;
   initialData: unknown;
+  onSubmit: (data: JSONObject) => void;
 }
 
 // Generic Form Component that can be customized off of JSON schemas
-export default function JsonForm({ schema, uischema, initialData }: FormProps) {
+export default function JsonForm({
+  schema,
+  uischema,
+  initialData,
+  onSubmit,
+}: FormProps) {
   const [formData, setFormData] = useState(initialData);
+  const [formErrors, setFormErrors] = useState<
+    ErrorObject<string, Record<string, unknown>, unknown>[] | undefined
+  >();
   const [submitted, setSubmitted] = useState(false);
 
   // ADD CUSTOM RENDERERS FOR EACH COMPONENT HERE
@@ -29,7 +40,20 @@ export default function JsonForm({ schema, uischema, initialData }: FormProps) {
     { tester: StarRatingControlTester, renderer: StarRatingControl },
   ];
 
-  const updateDataOnChange = ({ data }: { data: unknown }) => setFormData(data);
+  const updateDataOnChange: JsonFormsReactProps["onChange"] = ({
+    data,
+    errors,
+  }) => {
+    setFormData(data);
+    setFormErrors(errors);
+  };
+
+  const handleSubmit = () => {
+    setSubmitted(true);
+    if (formErrors?.length === 0) {
+      onSubmit(formData as JSONObject);
+    }
+  };
 
   return (
     <Card>
@@ -42,7 +66,7 @@ export default function JsonForm({ schema, uischema, initialData }: FormProps) {
         onChange={updateDataOnChange}
         validationMode={submitted ? "ValidateAndShow" : "ValidateAndHide"}
       />
-      <Button onClick={() => setSubmitted(true)}>Submit</Button>
+      <Button onClick={handleSubmit}>Submit</Button>
     </Card>
   );
 }

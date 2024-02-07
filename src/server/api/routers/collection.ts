@@ -9,6 +9,7 @@ export const collectionRouter = createTRPCRouter({
       z.object({
         formName: z.string(),
         // TODO: this should change to visibility, and be an enum
+        // perhaps not visibility, but audience as all forms will require auth
         isPublic: z.boolean(),
         isOpen: z.boolean(),
         name: z.string(),
@@ -51,5 +52,17 @@ export const collectionRouter = createTRPCRouter({
       }
       // TODO: visibility level
       return collection;
+    }),
+  getCollections: publicProcedure.query(async () => {
+    return db.collection.findMany();
+  }),
+  getSubmissions: publicProcedure
+    .input(z.object({ collectionId: z.string() }))
+    .query(async ({ input: { collectionId } }) => {
+      return db.submission.findMany({
+        where: {
+          collectionId,
+        },
+      });
     }),
 });

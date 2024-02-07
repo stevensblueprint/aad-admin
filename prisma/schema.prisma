@@ -50,14 +50,15 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String       @id @default(cuid())
   name          String?
-  email         String    @unique
+  email         String       @unique
   emailVerified DateTime?
   image         String
   accounts      Account[]
   sessions      Session[]
   Profile       Profile?
+  Submission    Submission[]
 }
 
 model VerificationToken {
@@ -86,14 +87,15 @@ model UserRole {
 }
 
 model Collection {
-  id        String   @id @default(cuid())
-  name      String
-  isPublic  Boolean
-  form      Form     @relation(fields: [formName], references: [name])
-  formName  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  isOpen    Boolean
+  id         String       @id @default(cuid())
+  name       String
+  isPublic   Boolean
+  form       Form         @relation(fields: [formName], references: [name])
+  formName   String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  isOpen     Boolean
+  Submission Submission[]
 }
 
 model Form {
@@ -101,4 +103,15 @@ model Form {
   formSchema String
   uiSchema   String
   Collection Collection[]
+}
+
+model Submission {
+  id            String     @id @default(cuid())
+  collection    Collection @relation(fields: [collectionId], references: [id])
+  collectionId  String
+  data          Json
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  submittedBy   User?      @relation(fields: [submittedById], references: [id])
+  submittedById String? // temporary
 }

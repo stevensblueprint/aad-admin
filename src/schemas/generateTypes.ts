@@ -14,5 +14,9 @@ await Promise.all(
 );
 
 // you can generate the uiSchema by running the following code
-// import intakeSchema from "./menteeIntake/form.schema.json" assert {type: "json"}
-// await writeFile("./uischema.json", JSON.stringify(Generate.uiSchema(intakeSchema), null, 2))
+// import { Generate } from "@jsonforms/core";
+// import formSchema from "./testing/form.schema.json" assert { type: "json" };
+// await writeFile(
+//   "./uiSchema.json",
+//   JSON.stringify(Generate.uiSchema(formSchema), null, 2),
+// );
