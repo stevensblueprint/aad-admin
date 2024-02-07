@@ -1,6 +1,6 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import { Panel } from "primereact/panel";
+import { Container } from "@mui/material";
 
 export default function Home() {
   return (
@@ -13,9 +13,9 @@ export default function Home() {
           Asian American Dream Admin
         </h1>
         <div className="mx-14 mt-20 flex flex-grow flex-col items-center justify-between">
-          <Panel header="About">
+          <Container>
             <p className="text-base text-[#F9F8F5]">
-              &emsp; Founded in May 2021, our mission is to provide mentorship
+              Founded in May 2021, our mission is to provide mentorship
               networks, professional development training, and career
               advancement opportunities for underserved Pan Asian American
               undergraduates, with the goal of helping them achieve their unique
@@ -24,7 +24,7 @@ export default function Home() {
               more than 1 million Pan Asian American undergraduates (and
               growing), there is work to be done.
             </p>
-          </Panel>
+          </Container>
           <AuthShowcase />
         </div>
       </main>
