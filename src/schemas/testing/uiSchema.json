@@ -1,0 +1,37 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Control",
+      "scope": "#/properties/string"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/number"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/date"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/email"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/phoneNumber"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/arrayMultiple"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/arraySingle"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/boolean"
+    }
+  ]
+}
