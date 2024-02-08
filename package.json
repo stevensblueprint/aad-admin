@@ -14,7 +14,7 @@
     "build": "next build",
     "db:push": "prisma db push",
     "db:forms": "tsx src/schemas/populateForms.ts",
-    "db:seed": "prisma db seed",
+    "db:seed": "prisma db seed && pnpm run types:gen && pnpm run db:forms",
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
