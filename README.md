@@ -13,7 +13,7 @@
    pnpm install
    ```
 
-   You may encounter warnings if you do not have the correct version of Node installed. This project uses V20.0.0. When working with Node, it is highly recommended to use nvm (Node Version Manager). [nvm Documentation](https://github.com/nvm-sh/nvm)
+   You may encounter warnings if you do not have the correct version of Node installed. This project uses the version in .nvmrc file (currently 20.11.0). When working with Node, it is highly recommended to use nvm (Node Version Manager). [nvm Documentation](https://github.com/nvm-sh/nvm). Once you have nvm, you can type `nvm use` to use the correct version.
 
 3. Setup Local Database - PostgreSQL
 
@@ -39,17 +39,13 @@
         ```
         pnpm run db:push
         ```
-     1. Generate Prisma Client based on current schema
-        ```
-        pnpm run postinstall
-        ```
-     1. Seed DB based off seed.ts file (seeds mentee, mentor, and admin user)
+     1. Seed DB based off seed.ts file (seeds mentee, mentor, and admin user and form schemas)
         ```
         pnpm run db:seed
         ```
      1. (OPTIONAL) You can check contents of DB using Prisma GUI
         ```
-        npx prisma studio
+        pnpm exec prisma studio
         ```
 
 4. **Start the application**
