@@ -39,11 +39,11 @@
         ```
         pnpm run db:push
         ```
-     1. Seed DB based off seed.ts file (seeds mentee, mentor, and admin user and form schemas)
+     2. Seed DB based off seed.ts file (seeds mentee, mentor, and admin user and form schemas)
         ```
         pnpm run db:seed
         ```
-     1. (OPTIONAL) You can check contents of DB using Prisma GUI
+     3. (OPTIONAL) You can check contents of DB using Prisma GUI
         ```
         pnpm exec prisma studio
         ```

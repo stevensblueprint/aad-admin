@@ -1,6 +1,6 @@
 # tRPC
 
-tRPC is a framework for building APIs with Typescript. It is all just functions and types. RPC in rTPC stands for Remote Procedure Call - a way to call functions on a server from a client. tRPC lets us define the functions on the server in routers (see /src/server/api/routers) and call them from the client (see /src/pages/form/[id].tsx). The server is the Next.js backend server, and the client is client-side Javascript or other functions that run on the server.
+tRPC is a framework for building APIs with Typescript. It is all just functions and types. RPC in tRPC stands for Remote Procedure Call - a way to call functions on a server from a client. tRPC lets us define the functions on the server in routers (see /src/server/api/routers) and call them from the client (see /src/pages/form/[id].tsx). The server is the Next.js backend server, and the client is client-side Javascript or other functions that run on the server.
 
 ## Utilities File
 
