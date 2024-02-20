@@ -4,6 +4,10 @@ import { TRPCError } from "@trpc/server";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { type JsonObject } from "@prisma/client/runtime/library";
+import { db } from "~/server/db";
+
+// TODO: Fix typying lint issues
+
 const ajv = new Ajv();
 addFormats(ajv);
 
@@ -19,7 +23,7 @@ export const formRouter = createTRPCRouter({
         },
       });
     }),
-  submitForm: publicProcedure
+  submitForm: publicProcedure // FIXME: Not executing in tRPC panel
     .input(
       z.object({
         data: z.record(z.unknown()),
@@ -61,4 +65,24 @@ export const formRouter = createTRPCRouter({
         });
       },
     ),
+  addForm: publicProcedure.mutation(
+    async ({
+      input: { _formId, _formSchema, _uiSchema },
+      ctx: { db, session },
+    }) => {
+      await db.form.create({
+        formId: _formId,
+        formSchema: _formSchema,
+        uiSchema: _uiSchema,
+      });
+      // model Form {
+      //   name       String       @id @unique
+      //   formSchema String
+      //   uiSchema   String
+      //   Collection Collection[]
+      // } //FIXME: Does this need a submittedById?
+      return { message: "Form Successfully Added" };
+    },
+  ),
+  // deleteForm: publicProcedure.input // Want a Mutation to delete: https://trpc.io/docs/server/procedures
 });
