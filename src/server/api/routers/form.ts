@@ -8,6 +8,10 @@ import {
   protectedProcedureWithRoles,
   publicProcedure,
 } from "../trpc";
+import { db } from "~/server/db";
+
+// TODO: Fix typying lint issues
+
 const ajv = new Ajv();
 addFormats(ajv);
 
@@ -96,114 +100,24 @@ export const formRouter = createTRPCRouter({
         }
       },
     ),
-  createForm: protectedProcedure // Admin Protected Function
-    .input(
-      z.object({
-        id: z.string(),
-        formSchema: z.string(),
-        uiSchema: z.string(),
-      }),
-    )
-    .mutation(async ({ input: { id, formSchema, uiSchema }, ctx: { db } }) => {
-      const formExists = await db.form.findUnique({ where: { name: id } });
-
-      if (formExists) {
-        throw new TRPCError({
-          code: "CONFLICT",
-          message: `A form with the id '${id}' already exists.`,
-        });
-      }
-
-      try {
-        await db.form.create({
-          data: {
-            name: id,
-            formSchema: formSchema,
-            uiSchema: uiSchema,
-          },
-        });
-
-        return { message: `Succesfully created form with ID: '${id}'` };
-      } catch (error) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: `Failed to create form with ID '${id}': ${String(error)}`,
-        });
-      }
-    }),
-  deleteForm: protectedProcedure // Admin Protected Function
-    .input(z.object({ id: z.string() }))
-    .mutation(async ({ input: { id }, ctx: { db } }) => {
-      const formExists = await db.form.findUnique({ where: { name: id } });
-
-      if (!formExists) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: `A form with the id '${id}' does not exist.`,
-        });
-      }
-
-      try {
-        await db.form.delete({
-          where: {
-            name: id,
-          },
-        });
-
-        return { message: `Form with the id '${id}' successfully deleted.` };
-      } catch (error) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: `Failed to delete form with ID '${id}': ${String(error)}`,
-        });
-      }
-    }),
-  /**
-   * This method should be called/coupled with an interactive JSON Editor that
-   * lets Admins change the schema and UI schema of the chosen form
-   */
-  updateForm: publicProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        newFormSchema: z.string(),
-        newUiSchema: z.string(),
-      }),
-    )
-    .mutation(
-      async ({ input: { id, newFormSchema, newUiSchema }, ctx: { db } }) => {
-        const formExists = await db.form.findUnique({ where: { name: id } });
-
-        if (!formExists) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: `A form with the id '${id}' does not exist.`,
-          });
-        }
-
-        try {
-          // FIXME: Rewriting the whole json every time seems like an expensive operation, how can we optimize?
-          // TODO: When updating the form how does that effect the collections? Should I just leave the original and create a whole
-          // separate form with the updated fields?
-          const updatedForm = await db.form.update({
-            where: {
-              name: id,
-            },
-            data: {
-              formSchema: newFormSchema,
-              uiSchema: newUiSchema,
-            },
-          });
-
-          return {
-            message: `Form with the id '${id}' successfully updated: ${String(updatedForm)}`,
-          };
-        } catch (error) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: `Failed to delete form with ID '${id}': ${String(error)}`,
-          });
-        }
-      },
-    ),
+  addForm: publicProcedure.mutation(
+    async ({
+      input: { _formId, _formSchema, _uiSchema },
+      ctx: { db, session },
+    }) => {
+      await db.form.create({
+        formId: _formId,
+        formSchema: _formSchema,
+        uiSchema: _uiSchema,
+      });
+      // model Form {
+      //   name       String       @id @unique
+      //   formSchema String
+      //   uiSchema   String
+      //   Collection Collection[]
+      // } //FIXME: Does this need a submittedById?
+      return { message: "Form Successfully Added" };
+    },
+  ),
+  // deleteForm: publicProcedure.input // Want a Mutation to delete: https://trpc.io/docs/server/procedures
 });
