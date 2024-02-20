@@ -8,6 +8,7 @@ const createUser = async (
   id: string,
   email: string,
   name: string,
+  role: string
 ) => {
   const user = await prisma.user.upsert({
     where: {
@@ -21,6 +22,29 @@ const createUser = async (
       image: Picsum.url({ height: 128, cache: false }),
     },
   });
+  try {
+      await prisma.userRole.upsert({
+      where: {
+        roleName: role
+      },
+      update: {
+        profiles: {
+          create: {
+            userId: id,
+          }
+        }},
+      create: {
+        roleName: role,
+        profiles: {
+          create: {
+            userId: id,
+          }
+        }
+      }
+    })
+  } catch (e) {
+    console.error(e);
+  }
   return user;
 };
 
@@ -30,18 +54,21 @@ const main = async () => {
     "admin0",
     "admin0@email.com",
     "First Admin",
+    "admin"
   );
   const mentor = await createUser(
     prisma,
     "mentor0",
     "mentor0@email.com",
     "First Mentor",
+    "mentor"
   );
   const mentee = await createUser(
     prisma,
     "mentee0",
     "mentee0@email.com",
     "First Mentee",
+    "mentee"
   );
   console.log({ admin, mentor, mentee });
 };
