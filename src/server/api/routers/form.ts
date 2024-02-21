@@ -80,7 +80,23 @@ export const formRouter = createTRPCRouter({
           uiSchema: uiSchema,
         },
       });
-      return { message: "Form Successfully Added" };
+      return { message: "Form Successfully Added" }; // FIXME: Check if key exists : try-catch??
     }),
-  // deleteForm: publicProcedure.input // Want a Mutation to delete: https://trpc.io/docs/server/procedures
+  deleteForm: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input: { id }, ctx: { db } }) => {
+      await db.form.delete({
+        // FIXME: Should check if id exists or does prisma method do this?
+        where: {
+          name: id,
+        },
+      });
+
+      return { message: "Form Successfully Deleted" };
+    }),
+  // editForm: publicProcedure
+  //   .input(z.object({id : z.string(), newFormSchema: z.string(), newUiSchema: z.string()}))
+  //   .mutation(async ({ input: {id, newFormSchema, newUiSchema }, ctx: {db}}) => {
+  // TODO: Incoporate the JSON editors included on the issues tag
+  //   }),
 });
