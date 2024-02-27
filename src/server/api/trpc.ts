@@ -90,7 +90,6 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
  * These are the pieces you use to build your tRPC API. You should import these a lot in the
  * "/src/server/api/routers" directory.
  */
-
 /**
  * This is how you create new routers and sub-routers in your tRPC API.
  *
@@ -120,6 +119,35 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
   });
 });
 
+/**Middleware/procedure that can be used in routers to allow certain roles access to the route by passing in a string array  */
+const enforceUserHasRole = (roles: string[]) =>
+  t.middleware(async ({ ctx, next }) => {
+    if (roles.length === 0 || !ctx.session) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    const user = await ctx.db.user.findUnique({
+      where: {
+        email: ctx.session?.user?.email ?? undefined,
+      },
+      include: {
+        Profile: true,
+      },
+    });
+
+    if (!user || !user.Profile) {
+      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+    }
+    if (!roles.includes(user.Profile.roleId)) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    return next({
+      ctx: {
+        // infers the `session` as non-nullable
+        session: { ...ctx.session, user: ctx.session.user },
+      },
+    });
+  });
 /**
  * Protected (authenticated) procedure
  *
@@ -129,3 +157,5 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+export const protectedProcedureWithRoles = (roles: string[]) =>
+  t.procedure.use(enforceUserHasRole(roles));
