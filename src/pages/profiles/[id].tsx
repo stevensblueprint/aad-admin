@@ -4,12 +4,12 @@ import Head from "next/head";
 import { Button, ButtonGroup, Box } from "@mui/material";
 import { Profile } from "@prisma/client";
 
-type ProfileProp = {
+type ButtonListProps = {
   profile: Profile;
 };
 
-const ButtonsList = (prop: ProfileProp) => {
-  if (prop.profile.roleId == "MENTEE") {
+const ButtonsList = ({ profile }: ButtonListProps) => {
+  if (profile.roleId == "MENTEE") {
     return (
       <ButtonGroup size="large" aria-label="Large button group">
         <Button>About</Button>
@@ -18,7 +18,7 @@ const ButtonsList = (prop: ProfileProp) => {
         <Button>Mentors</Button>
       </ButtonGroup>
     );
-  } else if (prop.profile.roleId == "MENTOR") {
+  } else if (profile.roleId == "MENTOR") {
     return (
       <ButtonGroup size="large" aria-label="Large button group">
         <Button>About Us</Button>
@@ -44,31 +44,15 @@ export default function ProfilePage() {
   return (
     <>
       <Head>
-        <title>Asian American Dream Admin</title>
+        <title>{data.profile.preferredName} -- AAD</title>
       </Head>
       <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-midnight-sky to-aero">
-        <h1 className="mt-12 text-5xl font-bold text-[#F9F8F5]">
-          Asian American Dream Admin
-        </h1>
-        <div className="mx-14 mt-20 flex flex-grow flex-col items-center justify-between">
-          <Box
-            sx={{
-              width: 1356,
-              height: 437,
-              borderRadius: 100,
-              bgcolor: "primary.main",
-              "&:hover": {
-                bgcolor: "primary.dark",
-              },
-            }}
-          >
-            <div>
-              <img src={data.image}></img>
-              <p>{data.profile.preferredName}</p>
-            </div>
-          </Box>
-          <ButtonsList profile={data.profile} />
+        <div className="mt-10 rounded-2xl w-[90%] h-[300px] bg-white">
+          <img src={data.image} alt="profile" className=""></img>
+          <p>{data.profile.preferredName}</p>
+          <p>Email: {data.email}</p>
         </div>
+        <ButtonsList profile={data.profile} />
       </main>
     </>
   );
