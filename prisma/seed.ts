@@ -66,8 +66,8 @@ const main = async () => {
   const menteeRole = await createRole(prisma, "mentee");
   const admin = await createUser(
     prisma,
-    "admin1",
-    "admin1@email.com",
+    "admin0",
+    "admin0@email.com",
     "First Admin",
     "admin",
   );
