@@ -1,5 +1,11 @@
 import NextAuth from "next-auth";
+import { type NextApiRequest, type NextApiResponse } from "next";
+import { requestWrapper } from "../../../server/auth";
 
-import { authOptions } from "~/server/auth";
+export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const data = requestWrapper(req, res);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return await NextAuth(...data);
+};
 
-export default NextAuth(authOptions);
+export default handler;
