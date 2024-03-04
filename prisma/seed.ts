@@ -64,7 +64,6 @@ const createUser = async (
   return user;
 };
 
-
 const main = async () => {
   const adminRole = await createRole(prisma, "admin");
   const mentorRole = await createRole(prisma, "mentor");

@@ -33,15 +33,15 @@ export const userRouter = createTRPCRouter({
   }),
 
   getByRole: protectedProcedure
-  .input(z.object({ role: z.string() }))
-  .query(async ({ input }) => {
-    return db.profile.findMany({
-      where: {
-        roleId: input.role,
-      },
-      include: {
-        user: true,
-      },
-    });
-  }),
+    .input(z.object({ role: z.string() }))
+    .query(async ({ input }) => {
+      return db.profile.findMany({
+        where: {
+          roleId: input.role,
+        },
+        include: {
+          user: true,
+        },
+      });
+    }),
 });

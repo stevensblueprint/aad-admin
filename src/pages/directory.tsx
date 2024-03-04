@@ -12,7 +12,9 @@ enum UserRole {
 const Directory = () => {
   const [currentRole, setCurrentRole] = useState<UserRole>(UserRole.MENTEE);
 
-  const { data, isLoading } = api.user.getByRole.useQuery({ role: currentRole.toUpperCase() });
+  const { data, isLoading } = api.user.getByRole.useQuery({
+    role: currentRole.toUpperCase(),
+  });
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center bg-clear">
@@ -24,7 +26,8 @@ const Directory = () => {
         exclusive
         value={currentRole}
         onChange={(event, newRole: string | null) => {
-          if (newRole !== null) setCurrentRole(newRole as SetStateAction<UserRole>);
+          if (newRole !== null)
+            setCurrentRole(newRole as SetStateAction<UserRole>);
         }}
       >
         {Object.values(UserRole).map((role) => (
