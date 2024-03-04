@@ -1,15 +1,20 @@
-import { api } from "~/utils/api";
+import { api } from "../utils/api";
 import { ToggleButton, ToggleButtonGroup, Stack } from "@mui/material";
 import { type SetStateAction, useState } from "react";
 import Profile from "../components/directory/Profile";
 
+enum UserRole {
+  MENTEE = "Mentee",
+  MENTOR = "Mentor",
+  ADMIN = "Admin"
+}
+
 const Directory = () => {
-  const [current, setCurrent] = useState<string>("mentee");
+  const [currentRole, setCurrentRole] = useState<UserRole>(UserRole.MENTEE);
 
-  const { data, isLoading } = api.user.getByRole.useQuery(`${current}`);
+  const { data, isLoading } = api.user.getByRole.useQuery(currentRole.toUpperCase());
 
-  const roles = ["Mentee", "Mentor", "Admin"];
-  const toggleButtons = roles.map((role) => (
+  const toggleButtons = Object.values(UserRole).map((role) => (
     <ToggleButton
       key={role}
       value={role.toLowerCase()}
@@ -27,9 +32,9 @@ const Directory = () => {
         size="large"
         color="primary"
         exclusive
-        value={current}
+        value={currentRole}
         onChange={(event, newRole: string | null) => {
-          if (newRole !== null) setCurrent(newRole as SetStateAction<string>);
+          if (newRole !== null) setCurrentRole(newRole as SetStateAction<UserRole>);
         }
         }
       >
