@@ -1,6 +1,6 @@
 import React from "react";
 import { Avatar } from "@mui/material";
-import { type Profile, Prisma } from "@prisma/client";
+import { type Profile, type Prisma } from "@prisma/client";
 
 export type profileProps = Prisma.ProfileGetPayload<{
   include: {
