@@ -6,7 +6,7 @@ import Profile from "../components/directory/Profile";
 const Directory = () => {
   const [current, setCurrent] = useState<string>("mentee");
 
-  const { data, error, isLoading } = api.user.getByRole.useQuery(`${current}`);
+  const { data, isLoading } = api.user.getByRole.useQuery(`${current}`);
 
   const roles = ["Mentee", "Mentor", "Admin"];
   const buttons = roles.map((role) => (
