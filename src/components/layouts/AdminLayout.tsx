@@ -18,25 +18,25 @@ type MenuItem = {
   path: "/" | Route;
 };
 
+const menuItems: MenuItem[] = [
+  {
+    text: "Collections",
+    icon: <InboxIcon />,
+    path: "/",
+  },
+  {
+    text: "Forms",
+    icon: <MailIcon />,
+    path: "/",
+  },
+];
+
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const router = useRouter();
-
-  const menuItems: MenuItem[] = [
-    {
-      text: "Collections",
-      icon: <InboxIcon />,
-      path: "/",
-    },
-    {
-      text: "Forms",
-      icon: <MailIcon />,
-      path: "/",
-    },
-  ];
 
   const handleNavigation = async (item: MenuItem) => {
     const path = item.path;
