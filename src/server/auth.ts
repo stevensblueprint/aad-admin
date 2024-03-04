@@ -1,16 +1,18 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { type GetServerSidePropsContext } from "next";
+import { type NextApiRequest, type NextApiResponse } from "next";
 import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
+  User,
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { Picsum } from "picsum-photos";
-
 import { env } from "~/env.mjs";
 import { db } from "~/server/db";
+import Cookies from "cookies";
+import { randomUUID } from "crypto";
+import { encode, decode } from "next-auth/jwt";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -18,104 +20,164 @@ import { db } from "~/server/db";
  *
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
+
+export type RoleName = "MENTOR" | "MENTEE" | "ADMIN";
+
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: DefaultSession["user"] & {
       id: string;
-      // ...other properties
-      // role: UserRole;
+      roleName: RoleName;
     };
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    roleName: RoleName;
+  }
 }
-
-const prismaAdapter = PrismaAdapter(db);
 
 const credentialsAuthAvailable = () => process.env.NODE_ENV !== "production";
 
 /**
- * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
- *
- * @see https://next-auth.js.org/configuration/options
+ * In order to get credential authentication to work with NextAuth sessions,
+ * we need to wrap the NextAuth handler with this so we can manually
+ * create the session and store in db for credentials logins.
  */
-export const authOptions: NextAuthOptions = {
-  session: {
-    strategy: "jwt",
-  },
-  callbacks: {},
-  adapter: {
-    ...prismaAdapter,
-    async createUser(user) {
-      if (!user.name || !user.email) {
-        throw new Error("Missing name");
-      }
-      return db.user.create({
-        data: {
-          ...user,
-          name: user.name,
-          email: user.email,
-          emailVerified: new Date(Date.now()),
-          image: Picsum.url({ height: 128, cache: false }),
-        },
-      });
-    },
-  },
-  providers: [
-    GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-    }),
-    ...(credentialsAuthAvailable()
-      ? [
-          CredentialsProvider({
-            name: "Credentials",
-            credentials: {
-              email: {
-                label: "Email",
-                type: "text",
-              },
-            },
-            async authorize(credentials) {
-              if (!credentials) {
-                return null;
-              }
-              const user = await db.user.findFirst({
-                where: {
-                  email: credentials.email,
-                },
-              });
-              if (!user) {
-                return null;
-              }
-              return user;
-            },
-          }),
-        ]
-      : []),
-    /**
-     * ...add more providers here.
-     *
-     * Most other providers require a bit more work than the Discord provider. For example, the
-     * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
-     * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
-     *
-     * @see https://next-auth.js.org/providers/github
-     */
-  ],
-};
+export function requestWrapper(
+  req: NextApiRequest,
+  res: NextApiResponse,
+): [req: NextApiRequest, res: NextApiResponse, opts: NextAuthOptions] {
+  const generateSessionToken = () => randomUUID();
 
-/**
- * Wrapper for `getServerSession` so that you don't need to import the `authOptions` in every file.
- *
- * @see https://next-auth.js.org/configuration/nextjs
- */
-export const getServerAuthSession = (ctx: {
-  req: GetServerSidePropsContext["req"];
-  res: GetServerSidePropsContext["res"];
+  const fromDate = (time: number, date = Date.now()) =>
+    new Date(date + time * 1000);
+
+  const adapter = PrismaAdapter(db);
+
+  const opts: NextAuthOptions = {
+    cookies: {
+      sessionToken: {
+        name: "next-auth.session-token",
+        options: {
+          httpOnly: true,
+          secure: env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
+        },
+      },
+    },
+    adapter,
+    callbacks: {
+      session({ session, user }) {
+        if (session.user) {
+          session.user.id = user.id;
+          session.user.roleName = user.roleName;
+        }
+        return session;
+      },
+      async signIn({ user }) {
+        // Check if this sign in callback is being called in the credentials authentication flow. If so, use the next-auth adapter to create a session entry in the database (SignIn is called after authorize so we can safely assume the user is valid and already authenticated).
+        if (
+          req.query.nextauth?.includes("callback") &&
+          req.query.nextauth?.includes("credentials") &&
+          req.method === "POST"
+        ) {
+          if (user) {
+            const sessionToken = generateSessionToken();
+            const sessionMaxAge = 60 * 60 * 24 * 30; //30Daysconst sessionMaxAge = 60 * 60 * 24 * 30; //30Days
+            const sessionExpiry = fromDate(sessionMaxAge);
+
+            await adapter.createSession!({
+              sessionToken: sessionToken,
+              userId: user.id,
+              expires: sessionExpiry,
+            });
+
+            const cookies = new Cookies(req, res);
+
+            cookies.set("next-auth.session-token", sessionToken, {
+              expires: sessionExpiry,
+            });
+          }
+        }
+
+        return true;
+      },
+    },
+    jwt: {
+      encode: async ({ token, secret, maxAge }) => {
+        if (
+          req.query.nextauth?.includes("callback") &&
+          req.query.nextauth.includes("credentials") &&
+          req.method === "POST"
+        ) {
+          const cookies = new Cookies(req, res);
+          const cookie = cookies.get("next-auth.session-token");
+          if (cookie) return cookie;
+          else return "";
+        }
+        // Revert to default behaviour when not in the credentials provider callback flow
+        return encode({ token, secret, maxAge });
+      },
+      decode: async ({ token, secret }) => {
+        if (
+          req.query.nextauth?.includes("callback") &&
+          req.query.nextauth.includes("credentials") &&
+          req.method === "POST"
+        ) {
+          return null;
+        }
+
+        // Revert to default behaviour when not in the credentials provider callback flow
+        return decode({ token, secret });
+      },
+    },
+    // Configure one or more authentication providers
+    debug: true,
+    providers: [
+      GoogleProvider({
+        clientId: env.GOOGLE_CLIENT_ID,
+        clientSecret: env.GOOGLE_CLIENT_SECRET,
+      }),
+      ...(credentialsAuthAvailable()
+        ? [
+            CredentialsProvider({
+              name: "Credentials",
+              credentials: {
+                email: {
+                  label: "Email",
+                  type: "text",
+                },
+              },
+              async authorize(credentials) {
+                if (!credentials) {
+                  return null;
+                }
+                const user = await db.user.findFirst({
+                  where: {
+                    email: credentials.email,
+                  },
+                });
+                if (!user) {
+                  return null;
+                }
+                return user as User;
+              },
+            }),
+          ]
+        : []),
+    ],
+  };
+
+  return [req, res, opts];
+}
+
+// Next API route example - /pages/api/restricted.ts
+export const getServerAuthSession = async (ctx: {
+  // req: GetServerSidePropsContext["req"];
+  // res: GetServerSidePropsContext["res"];
+  req: NextApiRequest;
+  res: NextApiResponse;
 }) => {
-  return getServerSession(ctx.req, ctx.res, authOptions);
+  return await getServerSession(...requestWrapper(ctx.req, ctx.res));
 };

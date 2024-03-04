@@ -11,6 +11,7 @@ declare module "nextjs-routes" {
   } from "next";
 
   export type Route =
+    | StaticRoute<"/admin">
     | DynamicRoute<"/api/auth/[...nextauth]", { "nextauth": string[] }>
     | StaticRoute<"/api/panel">
     | DynamicRoute<"/api/trpc/[trpc]", { "trpc": string }>
