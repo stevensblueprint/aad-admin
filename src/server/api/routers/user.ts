@@ -14,6 +14,11 @@ export const userRouter = createTRPCRouter({
           where: {
             id: input.id,
           },
+          include: {
+            accounts: true,
+            sessions: true,
+            profile: true,
+          },
         });
       } catch (error) {
         throw new TRPCError({

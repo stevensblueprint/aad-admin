@@ -131,14 +131,14 @@ const enforceUserHasRole = (roles: string[]) =>
         email: ctx.session?.user?.email ?? undefined,
       },
       include: {
-        Profile: true,
+        profile: true,
       },
     });
 
-    if (!user || !user.Profile) {
+    if (!user || !user.profile) {
       throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
     }
-    if (!roles.includes(user.Profile.roleId)) {
+    if (!roles.includes(user.profile.roleId)) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
     return next({
