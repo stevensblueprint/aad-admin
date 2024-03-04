@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
-import { Button, ButtonGroup, Stack } from "@mui/material";
-import { useState } from "react";
+import { ToggleButton, ToggleButtonGroup, Stack } from "@mui/material";
+import { type SetStateAction, useState } from "react";
 import Profile from "../components/directory/Profile";
 
 const Directory = () => {
@@ -9,22 +9,32 @@ const Directory = () => {
   const { data, isLoading } = api.user.getByRole.useQuery(`${current}`);
 
   const roles = ["Mentee", "Mentor", "Admin"];
-  const buttons = roles.map((role) => (
-    <Button
+  const toggleButtons = roles.map((role) => (
+    <ToggleButton
       key={role}
+      value={role.toLowerCase()}
       disabled={isLoading}
-      onClick={() => setCurrent(role.toLowerCase())}
     >
       {role}
-    </Button>
+    </ToggleButton>
   ));
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center bg-clear">
       <h1 className="mt-6 text-6xl font-bold text-aero">Directory</h1>
-      <ButtonGroup className="mb-4 mt-10" size="large" color="primary">
-        {buttons}
-      </ButtonGroup>
+      <ToggleButtonGroup
+        className="mb-4 mt-10"
+        size="large"
+        color="primary"
+        exclusive
+        value={current}
+        onChange={(event, newRole: string | null) => {
+          if (newRole !== null) setCurrent(newRole as SetStateAction<string>);
+        }
+        }
+      >
+        {toggleButtons}
+      </ToggleButtonGroup>
       {data && (
         <Stack spacing={2}>
           {data.map((user) => (
