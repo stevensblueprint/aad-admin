@@ -21,7 +21,10 @@ const createUser = async (
   id: string,
   email: string,
   name: string,
-  roleName: string,
+  preferredName: string,
+  phoneNumber: string,
+  bio: string,
+  roleId: string,
 ) => {
   const user = await prisma.user.upsert({
     where: {
@@ -35,26 +38,27 @@ const createUser = async (
       image: Picsum.url({ height: 128, cache: false }),
     },
   });
-  const profile = await prisma.profile.upsert({
+  const userRole = await prisma.userRole.upsert({
     where: {
-      userId: user.id,
+      roleName: roleId,
     },
     update: {},
     create: {
-      userId: user.id,
-      roleId: roleName,
+      roleName: roleId,
     },
   });
-  const roleUpdate = await prisma.userRole.update({
+  const profile = await prisma.profile.upsert({
     where: {
-      roleName: roleName,
+      userId: id,
+      roleId: roleId,
     },
-    data: {
-      profiles: {
-        connect: {
-          id: profile.id,
-        },
-      },
+    update: {},
+    create: {
+      userId: id,
+      preferredName,
+      phoneNumber,
+      bio,
+      roleId,
     },
   });
   return user;
@@ -69,21 +73,30 @@ const main = async () => {
     "admin0",
     "admin0@email.com",
     "First Admin",
-    "admin",
+    "Your Overlord",
+    "+1 (000)-000-0000",
+    "I am your overlord. Bow down to me!",
+    "ADMIN",
   );
   const mentor = await createUser(
     prisma,
     "mentor0",
     "mentor0@email.com",
     "First Mentor",
-    "mentor",
+    "Saving Grace",
+    "+1 (111)-111-1111",
+    "I am your saving grace. I will help you!",
+    "MENTOR",
   );
   const mentee = await createUser(
     prisma,
     "mentee0",
     "mentee0@email.com",
     "First Mentee",
-    "mentee",
+    "Near Helpless",
+    "+1 (222)-222-2222",
+    "I really need help!",
+    "MENTEE",
   );
   console.log({ admin, mentor, mentee });
 };
