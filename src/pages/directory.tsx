@@ -12,7 +12,7 @@ enum UserRole {
 const Directory = () => {
   const [currentRole, setCurrentRole] = useState<UserRole>(UserRole.MENTEE);
 
-  const { data, isLoading } = api.user.getByRole.useQuery(currentRole.toUpperCase());
+  const { data, isLoading } = api.user.getByRole.useQuery({ role: currentRole.toUpperCase() });
 
   const toggleButtons = Object.values(UserRole).map((role) => (
     <ToggleButton
