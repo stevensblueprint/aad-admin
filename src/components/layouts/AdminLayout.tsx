@@ -1,4 +1,5 @@
 import {
+  CircularProgress,
   Drawer,
   List,
   ListItemButton,
@@ -9,6 +10,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { useRouter } from "next/router";
 import { type Route } from "nextjs-routes";
+import React, { useTransition } from "react";
 
 const DRAWER_WIDTH = 240;
 
@@ -37,10 +39,12 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
-  const handleNavigation = async (item: MenuItem) => {
-    const path = item.path;
-    await router.push(path);
+  const handleNavigation = (item: MenuItem) => {
+    startTransition(() => {
+      router.push(item.path).catch((error) => console.error(error));
+    });
   };
 
   return (
@@ -62,17 +66,19 @@ export default function AdminLayout({
             <ListItemButton
               key={item.text}
               onClick={() => {
-                void (async () => {
+                void (() => {
                   try {
-                    await handleNavigation(item);
+                    handleNavigation(item);
                   } catch (error) {
                     console.error(error);
                   }
                 })();
               }}
+              disabled={isPending}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
+              {isPending && <CircularProgress />}
             </ListItemButton>
           ))}
         </List>
