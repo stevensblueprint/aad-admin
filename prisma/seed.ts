@@ -1,7 +1,20 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, UserRole } from "@prisma/client";
 import { Picsum } from "picsum-photos";
 
 const prisma = new PrismaClient();
+
+const createRole = async (prisma: PrismaClient, roleName: string) => {
+  const role = await prisma.userRole.upsert({
+    where: {
+      roleName,
+    },
+    update: {},
+    create: {
+      roleName,
+    },
+  });
+  return role;
+};
 
 const createUser = async (
   prisma: PrismaClient,
@@ -52,6 +65,9 @@ const createUser = async (
 };
 
 const main = async () => {
+  const adminRole = await createRole(prisma, "admin");
+  const mentorRole = await createRole(prisma, "mentor");
+  const menteeRole = await createRole(prisma, "mentee");
   const admin = await createUser(
     prisma,
     "admin0",

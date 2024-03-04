@@ -9,7 +9,7 @@ type ButtonListProps = {
 };
 
 const ButtonsList = ({ profile }: ButtonListProps) => {
-  if (profile.roleId == "MENTEE") {
+  if (profile.roleId == "mentee") {
     return (
       <ButtonGroup size="large" aria-label="Large button group">
         <Button>About</Button>
@@ -18,7 +18,7 @@ const ButtonsList = ({ profile }: ButtonListProps) => {
         <Button>Mentors</Button>
       </ButtonGroup>
     );
-  } else if (profile.roleId == "MENTOR") {
+  } else if (profile.roleId == "mentor") {
     return (
       <ButtonGroup size="large" aria-label="Large button group">
         <Button>About Us</Button>
