@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar } from "@mui/material";
+import { Avatar, Card, CardContent, Typography } from "@mui/material";
 import { type Profile, type Prisma } from "@prisma/client";
 
 interface ProfileCardProps {
@@ -12,14 +12,29 @@ interface ProfileCardProps {
 
 const Profile = ({ profile }: ProfileCardProps) => {
   return (
-    <div className="flex w-[600px] gap-4 rounded-lg bg-aero p-4">
-      <Avatar src={profile.user.image} sx={{ width: 80, height: 80 }} />
-      <div className="flex-1 text-white">
-        <p>{profile.user.name}</p>
-        <p>{profile.user.email}</p>
-        {profile.bio && <p>{profile.bio}</p>}
-      </div>
-    </div>
+    <Card
+    className="w-[600px]"
+    sx={{
+      display: "flex",
+      borderRadius: "16px",
+      background: "aero",
+      p:2
+    }}
+    >
+      <Avatar src={profile.user.image} sx={{ width: 80, height: 80, m: 2 }} />
+      <CardContent
+      sx={{ 
+        flex: '1', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        justifyContent: 'center' 
+      }}
+      >
+        <Typography variant="h6" color="text.primary">{profile.user.name}</Typography>
+        <Typography variant="body1" color="text.secondary">{profile.user.email}</Typography>
+        {profile.bio && <Typography variant="body2" color="text.primary">{profile.bio}</Typography>}
+      </CardContent> 
+    </Card>
   );
 };
 
