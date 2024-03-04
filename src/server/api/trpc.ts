@@ -122,25 +122,10 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
 /**Middleware/procedure that can be used in routers to allow certain roles access to the route by passing in a string array  */
 const enforceUserHasRole = (roles: string[]) =>
   t.middleware(async ({ ctx, next }) => {
-    if (roles.length === 0 || !ctx.session) {
+    if (!ctx.session || !roles.includes(ctx.session.user.roleName)) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
 
-    const user = await ctx.db.user.findUnique({
-      where: {
-        email: ctx.session?.user?.email ?? undefined,
-      },
-      include: {
-        profile: true,
-      },
-    });
-
-    if (!user || !user.profile) {
-      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
-    }
-    if (!roles.includes(user.profile.roleId)) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
-    }
     return next({
       ctx: {
         // infers the `session` as non-nullable
@@ -157,5 +142,6 @@ const enforceUserHasRole = (roles: string[]) =>
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+
 export const protectedProcedureWithRoles = (roles: string[]) =>
   t.procedure.use(enforceUserHasRole(roles));

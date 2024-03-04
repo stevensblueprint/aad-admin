@@ -24,7 +24,7 @@ const createUser = async (
   preferredName: string,
   phoneNumber: string,
   bio: string,
-  roleId: string,
+  roleName: string,
 ) => {
   const user = await prisma.user.upsert({
     where: {
@@ -36,29 +36,23 @@ const createUser = async (
       name,
       email,
       image: Picsum.url({ height: 128, cache: false }),
-    },
-  });
-  const userRole = await prisma.userRole.upsert({
-    where: {
-      roleName: roleId,
-    },
-    update: {},
-    create: {
-      roleName: roleId,
-    },
-  });
-  const profile = await prisma.profile.upsert({
-    where: {
-      userId: id,
-      roleId: roleId,
-    },
-    update: {},
-    create: {
-      userId: id,
-      preferredName,
-      phoneNumber,
-      bio,
-      roleId,
+      role: {
+        connectOrCreate: {
+          create: {
+            roleName: roleName,
+          },
+          where: {
+            roleName: roleName,
+          },
+        },
+      },
+      profile: {
+        create: {
+          bio,
+          phoneNumber,
+          preferredName,
+        },
+      },
     },
   });
   return user;
