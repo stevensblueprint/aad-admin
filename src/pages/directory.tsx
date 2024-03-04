@@ -6,23 +6,13 @@ import Profile from "../components/directory/Profile";
 enum UserRole {
   MENTEE = "Mentee",
   MENTOR = "Mentor",
-  ADMIN = "Admin"
+  ADMIN = "Admin",
 }
 
 const Directory = () => {
   const [currentRole, setCurrentRole] = useState<UserRole>(UserRole.MENTEE);
 
   const { data, isLoading } = api.user.getByRole.useQuery({ role: currentRole.toUpperCase() });
-
-  const toggleButtons = Object.values(UserRole).map((role) => (
-    <ToggleButton
-      key={role}
-      value={role.toLowerCase()}
-      disabled={isLoading}
-    >
-      {role}
-    </ToggleButton>
-  ));
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center bg-clear">
@@ -35,15 +25,22 @@ const Directory = () => {
         value={currentRole}
         onChange={(event, newRole: string | null) => {
           if (newRole !== null) setCurrentRole(newRole as SetStateAction<UserRole>);
-        }
-        }
+        }}
       >
-        {toggleButtons}
+        {Object.values(UserRole).map((role) => (
+          <ToggleButton
+            key={role}
+            value={role.toLowerCase()}
+            disabled={isLoading}
+          >
+            {role}
+          </ToggleButton>
+        ))}
       </ToggleButtonGroup>
       {data && (
         <Stack spacing={2}>
-          {data.map((user) => (
-            <Profile data={user} key={user.id} />
+          {data.map((profile) => (
+            <Profile profile={profile} key={profile.id} />
           ))}
         </Stack>
       )}
