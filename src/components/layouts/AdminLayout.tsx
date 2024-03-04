@@ -12,8 +12,6 @@ import { useRouter } from "next/router";
 import { type Route } from "nextjs-routes";
 import React, { useTransition } from "react";
 
-const DRAWER_WIDTH = 240;
-
 type MenuItem = {
   text: string;
   icon: JSX.Element;
@@ -48,15 +46,14 @@ export default function AdminLayout({
   };
 
   return (
-    <div style={{ display: "flex" }}>
+    <div className="flex">
       <Drawer
         variant="permanent"
-        style={{ width: DRAWER_WIDTH }}
+        className="w-80"
         sx={{
-          width: DRAWER_WIDTH,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: DRAWER_WIDTH,
+            width: 250,
             boxSizing: "border-box",
           },
         }}
@@ -83,7 +80,7 @@ export default function AdminLayout({
           ))}
         </List>
       </Drawer>
-      <main style={{ flexGrow: 1, padding: "24px" }}>{children}</main>
+      <main className="flex-grow p-6">{children}</main>
     </div>
   );
 }
