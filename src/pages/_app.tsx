@@ -1,26 +1,35 @@
 import { type Session } from "next-auth";
 import { SessionProvider, getSession } from "next-auth/react";
-import { type AppContext, type AppType } from "next/app";
+import { type AppContext, type AppProps } from "next/app";
 
 import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 import { StyledEngineProvider } from "@mui/material";
+import { type ReactElement, type ReactNode } from "react";
+import { type NextPage } from "next";
 
-// withTRPC grabs the pageProps from getInitialProps and passes it to the component
-// the generic here is the type of pageProps, which it expects to match with the return
-// type of getInitialProps. tRPC looks for pageProps in the return of getInitialProps
-// so the types don't match.
-type PageProps = {
-  session: Session | null;
+export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
+  P,
+  IP
+> & {
+  getLayout?: (page: ReactElement) => ReactNode;
 };
-const MyApp: AppType<{ pageProps: PageProps }> = (props) => {
-  const { Component, pageProps } = props;
-  const session = (pageProps as unknown as PageProps).session;
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+const MyApp = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppPropsWithLayout & { session: Session | null }) => {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
     <SessionProvider session={session}>
       <StyledEngineProvider injectFirst>
-        <Component />
+        {getLayout(<Component {...pageProps} />)}
       </StyledEngineProvider>
     </SessionProvider>
   );
