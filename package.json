@@ -24,9 +24,12 @@
     "types:gen": "tsx src/schemas/generateTypes.ts"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
     "@jsonforms/core": "^3.2.1",
     "@jsonforms/material-renderers": "^3.2.1",
     "@jsonforms/react": "^3.2.1",
+    "@mui/icons-material": "^5.15.11",
     "@mui/material": "^5.15.7",
     "@mui/styled-engine-sc": "6.0.0-alpha.15",
     "@next-auth/prisma-adapter": "^1.0.7",
