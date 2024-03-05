@@ -79,6 +79,9 @@ model Profile {
   preferredName String?
   phoneNumber   String?
   bio           String?
+  school        String?
+  blurb           String?
+  industries    String[]
 }
 
 model UserRole {
