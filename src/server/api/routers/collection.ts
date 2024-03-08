@@ -2,21 +2,24 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { db } from "../../db";
 import { TRPCError } from "@trpc/server";
+import { createCollectionSchema } from "../../../components/admin/CollectionForm";
 
 export const collectionRouter = createTRPCRouter({
   createCollection: publicProcedure
-    .input(
-      z.object({
-        formName: z.string(),
-        // TODO: this should change to visibility, and be an enum
-        // perhaps not visibility, but audience as all forms will require auth
-        isPublic: z.boolean(),
-        isOpen: z.boolean(),
-        name: z.string(),
-      }),
-    )
+    .input(createCollectionSchema)
     .mutation(async ({ input: { name, formName, isPublic, isOpen } }) => {
       try {
+        const form = await db.form.findFirst({
+          where: {
+            name: formName,
+          },
+        });
+        if (!form) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Form not found",
+          });
+        }
         const collection = await db.collection.create({
           data: {
             name,

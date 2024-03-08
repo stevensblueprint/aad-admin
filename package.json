@@ -26,6 +26,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
+    "@hookform/resolvers": "^3.3.4",
     "@jsonforms/core": "^3.2.1",
     "@jsonforms/material-renderers": "^3.2.1",
     "@jsonforms/react": "^3.2.1",
@@ -50,6 +51,7 @@
     "nextjs-routes": "^2.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.50.1",
     "styled-components": "^6.1.8",
     "superjson": "^2.2.1",
     "typescript": "^5.3.3",
