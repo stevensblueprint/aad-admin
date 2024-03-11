@@ -2,14 +2,13 @@ import { api } from "../../utils/api";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { Button, ButtonGroup } from "@mui/material";
-import type { Profile } from "@prisma/client";
 
 type ButtonListProps = {
-  profile: Profile;
+  roleName: string;
 };
 
-const ButtonsList = ({ profile }: ButtonListProps) => {
-  if (profile.roleId == "mentee") {
+const ButtonsList = ({ roleName }: ButtonListProps) => {
+  if (roleName == "MENTEE") {
     return (
       <ButtonGroup size="large" aria-label="Large button group">
         <Button>About</Button>
@@ -18,7 +17,7 @@ const ButtonsList = ({ profile }: ButtonListProps) => {
         <Button>Mentors</Button>
       </ButtonGroup>
     );
-  } else if (profile.roleId == "mentor") {
+  } else if (roleName == "MENTOR") {
     return (
       <ButtonGroup size="large" aria-label="Large button group">
         <Button>About Us</Button>
@@ -31,24 +30,11 @@ const ButtonsList = ({ profile }: ButtonListProps) => {
   }
 };
 
-interface Data {
-  profile: {
-    id: number;
-    userId: string;
-    preferredName: string | null;
-    phoneNumber: string | null;
-    bio: string | null;
-    roleId: string;
-  };
-  image: string;
-  email: string;
-}
-
 export default function ProfilePage() {
   const router = useRouter();
   const { data, error, isLoading } = api.user.getById.useQuery({
     id: router.query.id as string,
-  }) as { data: Data; error: unknown; isLoading: boolean };
+  });
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {JSON.stringify(error)}</div>;
   if (data.profile === null) {
@@ -66,7 +52,7 @@ export default function ProfilePage() {
           <p>{data.profile.preferredName}</p>
           <p>Email: {data.email}</p>
         </div>
-        <ButtonsList profile={data.profile} />
+        <ButtonsList roleName={data.roleName} />
       </main>
     </>
   );

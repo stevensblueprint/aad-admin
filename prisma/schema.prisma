@@ -55,6 +55,8 @@ model User {
   email         String       @unique
   emailVerified DateTime?
   image         String
+  roleName      String
+  role          UserRole     @relation(fields: [roleName], references: [roleName])
   accounts      Account[]
   sessions      Session[]
   profile       Profile?
@@ -71,19 +73,17 @@ model VerificationToken {
 
 // Profile schema
 model Profile {
-  id            Int      @id @default(autoincrement())
-  user          User     @relation(fields: [userId], references: [id])
-  userId        String   @unique
+  id            Int     @id @default(autoincrement())
+  user          User    @relation(fields: [userId], references: [id])
+  userId        String  @unique
   preferredName String?
   phoneNumber   String?
   bio           String?
-  role          UserRole @relation(fields: [roleId], references: [roleName])
-  roleId        String
 }
 
 model UserRole {
-  roleName String    @id
-  profiles Profile[]
+  roleName String @id
+  users    User[]
 }
 
 model Collection {
