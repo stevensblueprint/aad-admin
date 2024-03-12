@@ -43,7 +43,7 @@ const Directory = () => {
       {data && (
         <Stack spacing={2}>
           {data.map((profile) => (
-            <Profile profile={profile} key={profile.id} />
+            <Profile key={profile.id} profile={profile} />
           ))}
         </Stack>
       )}
