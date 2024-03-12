@@ -37,7 +37,9 @@ export const userRouter = createTRPCRouter({
     .query(async ({ input }) => {
       return db.profile.findMany({
         where: {
-          roleId: input.role,
+          user: {
+            roleName: input.role,
+          }
         },
         include: {
           user: true,
