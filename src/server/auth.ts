@@ -4,7 +4,7 @@ import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
-  User,
+  type User,
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
