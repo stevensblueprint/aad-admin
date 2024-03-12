@@ -39,7 +39,7 @@ export const userRouter = createTRPCRouter({
         where: {
           user: {
             roleName: input.role,
-          }
+          },
         },
         include: {
           user: true,
