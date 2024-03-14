@@ -50,7 +50,10 @@ function AuthShowcase() {
       </Button>
       {sessionData && (
         <>
-          <Button variant="outlined" href={`/profiles/${sessionData?.user?.id}`}>
+          <Button
+            variant="outlined"
+            href={`/profiles/${sessionData?.user?.id}`}
+          >
             {"View Profile"}
           </Button>
         </>
