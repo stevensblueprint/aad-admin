@@ -148,7 +148,8 @@ const Mentee = ({ data }: { data: Data }) => {
           borderRadius: 2,
         }}
       >
-        Information about matched Mentees for <i>{data.profile.preferredName}</i> can be here
+        Information about matched Mentees for{" "}
+        <i>{data.profile.preferredName}</i> can be here
       </Box>
     </div>
   );
@@ -169,7 +170,8 @@ const Mentor = ({ data }: { data: Data }) => {
           borderRadius: 2,
         }}
       >
-        Information about matched Mentor for <i>{data.profile.preferredName}</i> can be here
+        Information about matched Mentor for <i>{data.profile.preferredName}</i>{" "}
+        can be here
       </Box>
     </div>
   );
@@ -189,9 +191,9 @@ export default function ProfilePage() {
   }
 
   const tabs: Record<string, ReactElement> = {
-    about: <About data={data} />,
-    mentor: <Mentor data={data} />,
-    mentee: <Mentee data={data} />,
+    about: <About data={data as Data} />,
+    mentor: <Mentor data={data as Data} />,
+    mentee: <Mentee data={data as Data} />,
   };
 
   return (
