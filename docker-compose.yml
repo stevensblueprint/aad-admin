@@ -7,8 +7,9 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - "5432:5432"
+    networks:
+      aad:
+        ipv4_address: 10.10.2.2
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     healthcheck:
@@ -17,11 +18,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  aad-admin:
+  panel:
     image: ghcr.io/stevensblueprint/aad-admin:latest
     restart: on-failure
     labels:
       - "com.centurylinklabs.watchtower.scope=aad"
+    networks:
+      aad:
+        ipv4_address: 10.10.2.3
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -31,8 +35,8 @@ services:
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-    ports:
-      - "3000:3000"
+    depends_on:
+      - postgres
   wt:
     image: containrrr/watchtower
     labels:
@@ -43,3 +47,10 @@ services:
 
 volumes:
   postgres_data:
+networks:
+  aad:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.10.2.0/24
+         gateway: 10.10.2.1
