@@ -1,7 +1,7 @@
 import { api } from "../../utils/api";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { useState } from "react";
+import { type ReactElement, useState } from "react";
 import {
   Stack,
   Drawer,
@@ -19,27 +19,27 @@ import EditNotifications from "../../components/settings/EditNotifications";
 import { type Data } from "../../components/settings/EditProfile";
 
 type SideBarProps = {
-  selectedIndex: number;
-  handleListItemClick: (index: number) => void;
+  selectedSection: string;
+  handleListItemClick: (section: string) => void;
 };
 
-const Sidebar = ({ selectedIndex, handleListItemClick }: SideBarProps) => {
+const Sidebar = ({ selectedSection, handleListItemClick }: SideBarProps) => {
   type MenuItem = {
+    key: string;
     text: string;
     icon: JSX.Element;
-    index: number;
   };
 
   const menuItems: MenuItem[] = [
     {
+      key: "profile",
       text: "Profile",
       icon: <AccountCircleIcon color="info" />,
-      index: 0,
     },
     {
+      key: "notifications",
       text: "Notifications",
       icon: <NotificationsIcon color="info" />,
-      index: 1,
     },
   ];
 
@@ -57,14 +57,15 @@ const Sidebar = ({ selectedIndex, handleListItemClick }: SideBarProps) => {
           },
         }}
       >
+        <p className="mb-3 mt-6 text-center text-3xl text-white">Settings</p>
         <List>
           {menuItems.map((item, _) => (
             <ListItemButton
               key={item.text}
               onClick={() => {
-                handleListItemClick(item.index);
+                handleListItemClick(item.key);
               }}
-              selected={selectedIndex === item.index}
+              selected={selectedSection === item.key}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
@@ -77,7 +78,7 @@ const Sidebar = ({ selectedIndex, handleListItemClick }: SideBarProps) => {
 };
 
 export default function SettingsPage() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedSection, setSelectedSection] = useState("profile");
   const [editMode, setEditMode] = useState(false);
 
   const router = useRouter();
@@ -90,15 +91,16 @@ export default function SettingsPage() {
     return <div>Error: User does not have a profile!</div>;
   }
 
-  const settingsSections = [
-    <EditProfile
-      key="Profile"
-      userData={data as Data}
-      editMode={editMode}
-      toggleEditMode={setEditMode}
-    />,
-    <EditNotifications key="Notifications" />,
-  ];
+  const settingsSections: Record<string, ReactElement> = {
+    profile: (
+      <EditProfile
+        userData={data as Data}
+        editMode={editMode}
+        toggleEditMode={setEditMode}
+      />
+    ),
+    notifications: <EditNotifications />,
+  };
 
   return (
     <>
@@ -108,8 +110,8 @@ export default function SettingsPage() {
       <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-midnight-sky to-aero">
         <div className="flex w-full flex-row">
           <Sidebar
-            selectedIndex={selectedIndex}
-            handleListItemClick={setSelectedIndex}
+            selectedSection={selectedSection}
+            handleListItemClick={setSelectedSection}
           />
           <div className="min-h-screen flex-grow bg-white px-6">
             <Stack direction="row" spacing={2} className="pt-6">
@@ -119,7 +121,7 @@ export default function SettingsPage() {
                 src={data.image}
               />
             </Stack>
-            {settingsSections[selectedIndex]}
+            {settingsSections[selectedSection]}
           </div>
         </div>
       </main>
