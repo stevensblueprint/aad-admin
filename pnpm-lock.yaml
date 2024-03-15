@@ -68,6 +68,9 @@ dependencies:
   cookies:
     specifier: ^0.9.1
     version: 0.9.1
+  husky:
+    specifier: ^9.0.11
+    version: 9.0.11
   json-schema-to-typescript:
     specifier: ^13.1.2
     version: 13.1.2
@@ -2945,6 +2948,12 @@ packages:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
     dependencies:
       react-is: 16.13.1
+    dev: false
+
+  /husky@9.0.11:
+    resolution: {integrity: sha512-AB6lFlbwwyIqMdHYhwPe+kjOC3Oc5P3nThEoW/AaO2BX3vJDjWPFxYLxokUZOo6RNX20He3AaT8sESs9NJcmEw==}
+    engines: {node: '>=18'}
+    hasBin: true
     dev: false
 
   /ignore@5.3.1:

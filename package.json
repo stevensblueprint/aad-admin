@@ -23,6 +23,12 @@
     "start": "next start",
     "types:gen": "tsx src/schemas/generateTypes.ts"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pnpm run lint && pnpm run format:check && pnpm run format",
+      "pre-push": "pnpm run lint && pnpm run format:check && pnpm run format"
+    }
+  },
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
@@ -45,6 +51,7 @@
     "ajv-formats": "^2.1.1",
     "classnames": "^2.5.1",
     "cookies": "^0.9.1",
+    "husky": "^9.0.11",
     "json-schema-to-typescript": "^13.1.2",
     "next": "^14.1.0",
     "next-auth": "^4.24.5",
