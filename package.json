@@ -24,6 +24,7 @@
     "types:gen": "tsx src/schemas/generateTypes.ts"
   },
   "dependencies": {
+    "@ginkgo-bioworks/react-json-schema-form-builder": "^3.0.0",
     "@jsonforms/core": "^3.2.1",
     "@jsonforms/material-renderers": "^3.2.1",
     "@jsonforms/react": "^3.2.1",

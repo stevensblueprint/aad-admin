@@ -15,6 +15,8 @@ declare module "nextjs-routes" {
     | StaticRoute<"/api/panel">
     | DynamicRoute<"/api/trpc/[trpc]", { "trpc": string }>
     | DynamicRoute<"/form/[id]", { "id": string }>
+    | StaticRoute<"/formView/test">
+    | StaticRoute<"/formView/view">
     | StaticRoute<"/">;
 
   interface StaticRoute<Pathname> {
