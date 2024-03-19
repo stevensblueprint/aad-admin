@@ -16,6 +16,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/api/auth/[...nextauth]", { "nextauth": string[] }>
     | StaticRoute<"/api/panel">
     | DynamicRoute<"/api/trpc/[trpc]", { "trpc": string }>
+    | StaticRoute<"/directory">
     | DynamicRoute<"/form/[id]", { "id": string }>
     | StaticRoute<"/">
     | DynamicRoute<"/profiles/[id]", { "id": string }>;
