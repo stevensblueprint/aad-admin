@@ -4,7 +4,6 @@ import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
-  type User,
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -66,7 +65,18 @@ export function requestWrapper(
         },
       },
     },
-    adapter,
+    adapter: {
+      ...adapter,
+      createUser: async (data) => {
+        const user = await db.user.create({
+          data: {
+            ...data,
+            roleName: "MENTEE",
+          },
+        });
+        return user as { roleName: RoleName } & typeof user;
+      },
+    },
     callbacks: {
       session({ session, user }) {
         if (session.user) {
@@ -161,7 +171,7 @@ export function requestWrapper(
                 if (!user) {
                   return null;
                 }
-                return user as User;
+                return user as { roleName: RoleName } & typeof user;
               },
             }),
           ]
