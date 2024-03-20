@@ -11,6 +11,7 @@ import { Controller, useForm } from "react-hook-form";
 import { api } from "../../utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import DefaultLoadingPage from "../../components/loading/defaultLoadingPage";
 
 export const createCollectionSchema = z.object({
   formName: z.string(),
@@ -39,7 +40,7 @@ const CollectionForm = ({ onSubmit }: CollectionFormProps) => {
     },
   });
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <DefaultLoadingPage />;
   }
   return (
     <Box

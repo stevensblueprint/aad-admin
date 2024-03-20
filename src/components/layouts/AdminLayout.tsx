@@ -80,7 +80,7 @@ export default function AdminLayout({
           ))}
         </List>
       </Drawer>
-      <main className="flex-grow p-6">{children}</main>
+      <main className="flex-grow px-6">{children}</main>
     </div>
   );
 }

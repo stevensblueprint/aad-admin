@@ -16,7 +16,4 @@ export default {
   },
   important: "#__next",
   plugins: [],
-  corePlugins: {
-    preflight: false,
-  },
 } satisfies Config;
