@@ -8,7 +8,7 @@ type AvatarWrapperProps = {
 } & AvatarProps;
 
 const AvatarWrapper = ({ src, alt, ...props }: AvatarWrapperProps) => {
-  if (!src || src === "" || src === "https://picsum.photos/200/128") {
+  if (!src || src === "https://picsum.photos/200/128") {
     return (
       <Avatar alt={alt} {...props}>
         <PersonIcon sx={props.sx ? props.sx : null} />

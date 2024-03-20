@@ -13,35 +13,18 @@ import MultipleSelectChip from "./MulitpleSelectChip";
 import universities from "./us_universities.json";
 import industries from "./industries.json";
 
-interface Profile {
-  id: number;
-  userId: string;
+type EditProfileProps = {
   preferredName: string;
-  phoneNumber: string;
-  bio: string;
-}
-
-interface Account {
-  id: string;
-  userId: string;
-  type: string;
-  provider: string;
-}
-
-export interface Data {
   email: string;
-  id: string;
-  image: string;
-  roleName: string;
-  name: string;
-  profile: Profile;
-  accounts: Account[];
-}
+  bio: string;
+  editMode: boolean;
+  toggleEditMode: Dispatch<SetStateAction<boolean>>;
+};
 
 // Define the Zod schema for form validation
 const formSchema = z.object({
   name: z.string().min(1, "Full name is required"),
-  email: z.string().email("Invalid email address"),
+  emailAddress: z.string().email("Invalid email address"),
   dateOfBirth: z.string().min(1, "Date of Birth is required"),
   biography: z.string().min(1, "Bio is required"),
   selectedUniversity: z.string().min(1, "College/University is required"),
@@ -51,18 +34,19 @@ const formSchema = z.object({
 });
 
 const EditProfile = ({
-  userData,
+  preferredName,
+  email,
+  bio,
+  // dateOfBirth,
+  // selectedUniversity,
+  // topIndustries,
   editMode,
   toggleEditMode,
-}: {
-  userData: Data;
-  editMode: boolean;
-  toggleEditMode: Dispatch<SetStateAction<boolean>>;
-}) => {
-  const [name, setName] = useState(userData.profile.preferredName);
-  const [email, setEmail] = useState(userData.email);
+}: EditProfileProps) => {
+  const [name, setName] = useState(preferredName);
+  const [emailAddress, setEmailAddress] = useState(email);
   const [dateOfBirth, setDateOfBirth] = useState("");
-  const [biography, setBiography] = useState(userData.profile.bio);
+  const [biography, setBiography] = useState(bio);
   const [selectedUniversity, setSelectedUniversity] = useState("");
   const [topIndustries, setTopIndustries] = useState<string[]>([]);
 
@@ -79,7 +63,7 @@ const EditProfile = ({
   const handleSubmit = () => {
     const result = formSchema.safeParse({
       name,
-      email,
+      emailAddress,
       dateOfBirth,
       biography,
       selectedUniversity,
@@ -158,18 +142,18 @@ const EditProfile = ({
               variant="outlined"
               color="primary"
               label="Email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
+              onChange={(e) => setEmailAddress(e.target.value)}
+              value={emailAddress}
               fullWidth
               InputProps={{
                 readOnly: !editMode,
               }}
               required
               sx={{ mb: 4 }}
-              error={formErrors?.fieldErrors.email !== undefined}
+              error={formErrors?.fieldErrors.emailAddress !== undefined}
               helperText={
-                formErrors?.fieldErrors.email?.[0]
-                  ? formErrors?.fieldErrors.email?.[0]
+                formErrors?.fieldErrors.emailAddress?.[0]
+                  ? formErrors?.fieldErrors.emailAddress?.[0]
                   : ""
               }
             />

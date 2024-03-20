@@ -1,7 +1,7 @@
 import { api } from "../../utils/api";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { type ReactElement, useState } from "react";
+import { useState } from "react";
 import {
   Stack,
   Drawer,
@@ -16,7 +16,6 @@ import DefaultLoadingPage from "../../components/loading/defaultLoadingPage";
 import AvatarWrapper from "../../components/settings/AvatarWrapper";
 import EditProfile from "../../components/settings/EditProfile";
 import EditNotifications from "../../components/settings/EditNotifications";
-import { type Data } from "../../components/settings/EditProfile";
 
 type SideBarProps = {
   selectedSection: string;
@@ -91,17 +90,6 @@ export default function SettingsPage() {
     return <div>Error: User does not have a profile!</div>;
   }
 
-  const settingsSections: Record<string, ReactElement> = {
-    profile: (
-      <EditProfile
-        userData={data as Data}
-        editMode={editMode}
-        toggleEditMode={setEditMode}
-      />
-    ),
-    notifications: <EditNotifications />,
-  };
-
   return (
     <>
       <Head>
@@ -121,7 +109,21 @@ export default function SettingsPage() {
                 src={data.image}
               />
             </Stack>
-            {settingsSections[selectedSection]}
+            {selectedSection === "profile" ? (
+              <EditProfile
+                preferredName={
+                  data.profile?.preferredName
+                    ? data.profile.preferredName
+                    : "Missing Name"
+                }
+                email={data.email ? data.email : "Missing Email"}
+                bio={data.profile?.bio ? data.profile.bio : "Missing Bio"}
+                editMode={editMode}
+                toggleEditMode={setEditMode}
+              />
+            ) : selectedSection === "notifications" ? (
+              <EditNotifications />
+            ) : null}
           </div>
         </div>
       </main>
