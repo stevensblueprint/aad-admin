@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { RoleName } from "../server/auth";
+import { type RoleName } from "../server/auth";
 
 export default function useProtectedPage(roles: RoleName[]) {
   const router = useRouter();
@@ -12,5 +12,5 @@ export default function useProtectedPage(roles: RoleName[]) {
         pathname: "/",
       });
     }
-  }, [session, router]);
+  }, [session, router, roles]);
 }

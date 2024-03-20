@@ -29,7 +29,7 @@ interface CollectionFormProps {
 }
 
 const CollectionForm = ({ onSubmit }: CollectionFormProps) => {
-  const { data: forms, error, isLoading } = api.form.getForms.useQuery({});
+  const { data: forms, isLoading } = api.form.getForms.useQuery({});
   const { handleSubmit, control } = useForm<CreateCollectionData>({
     resolver: zodResolver(createCollectionSchema),
     defaultValues: {
@@ -61,7 +61,7 @@ const CollectionForm = ({ onSubmit }: CollectionFormProps) => {
       />
       <Controller
         control={control}
-        render={({ field, fieldState: { error } }) => (
+        render={({ field, fieldState: {} }) => (
           <Select {...field} fullWidth>
             {forms?.map(({ name }) => (
               <MenuItem key={name} value={name}>

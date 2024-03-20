@@ -10,18 +10,14 @@ import {
 import { api } from "../../utils/api";
 import { type SubmitHandler } from "react-hook-form";
 import CollectionForm, {
-  CreateCollectionData,
+  type CreateCollectionData,
 } from "../../components/admin/CollectionForm";
 import DefaultLoadingPage from "../../components/loading/defaultLoadingPage";
 
 const Collections = () => {
   const { data, error, isLoading } = api.collection.getCollections.useQuery();
   // TODO: error handling decision
-  const {
-    mutateAsync,
-    error: createError,
-    isLoading: createLoading,
-  } = api.collection.createCollection.useMutation();
+  const { mutateAsync } = api.collection.createCollection.useMutation();
   const onSubmit: SubmitHandler<CreateCollectionData> = async (data) => {
     debugger;
     await mutateAsync(data);
