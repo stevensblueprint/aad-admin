@@ -101,7 +101,7 @@ export const formRouter = createTRPCRouter({
     ),
   // TODO: Validate that formSchema is proper schema
   // TODO: Validate that uiSchema is a proper schema, can UISchemaElement be added to Zod?
-  addForm: protectedProcedure
+  addForm: protectedProcedure // Admin Protected Function
     .input(
       z.object({
         id: z.string(),
@@ -136,7 +136,7 @@ export const formRouter = createTRPCRouter({
         });
       }
     }),
-  deleteForm: protectedProcedure
+  deleteForm: protectedProcedure // Admin Protected Function
     .input(z.object({ id: z.string() }))
     .mutation(async ({ input: { id }, ctx: { db } }) => {
       const formExists = await db.form.findUnique({ where: { name: id } });
@@ -163,9 +163,12 @@ export const formRouter = createTRPCRouter({
         });
       }
     }),
-  // editForm: publicProcedure
-  //   .input(z.object({id : z.string(), newFormSchema: z.string(), newUiSchema: z.string()}))
-  //   .mutation(async ({ input: {id, newFormSchema, newUiSchema }, ctx: {db}}) => {
-  // TODO: Incoporate the JSON editors included on the issues tag
-  //   }),
+  /**
+   * TODO: This method should be called/coupled with an interactive JSON Editor that 
+   * lets Admins change the schema and UI schema of the chosen form
+   * editForm: publicProcedure
+    .input(z.object({id : z.string(), newFormSchema: z.string(), newUiSchema: z.string()}))
+    .mutation(async ({ input: {id, newFormSchema, newUiSchema }, ctx: {db}}) => {
+    }),
+   */
 });
