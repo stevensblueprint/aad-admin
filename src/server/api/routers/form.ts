@@ -22,7 +22,35 @@ export const formRouter = createTRPCRouter({
         },
       });
     }),
-  // When a user fills out a form, call this method
+  getForm: publicProcedure
+    .input(
+      z.object({
+        formName: z.string(),
+      }),
+    )
+    .query(async ({ input: { formName }, ctx: { db } }) => {
+      try {
+        const form = await db.form.findUnique({
+          where: {
+            name: formName,
+          },
+        });
+
+        if (!form) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Form not found",
+          });
+        }
+
+        return form;
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Error retrieving form with the name '${formName}': ${error}`,
+        });
+      }
+    }),
   submitForm: publicProcedure // FIXME: Not executing in tRPC panel
     .input(
       z.object({
@@ -67,7 +95,7 @@ export const formRouter = createTRPCRouter({
     ),
   // TODO: Validate that formSchema is proper schema
   // TODO: Validate that uiSchema is a proper schema, can UISchemaElement be added to Zod?
-  addForm: protectedProcedure
+  addForm: protectedProcedure // Admin Protected Function
     .input(
       z.object({
         id: z.string(),
@@ -102,7 +130,7 @@ export const formRouter = createTRPCRouter({
         });
       }
     }),
-  deleteForm: protectedProcedure
+  deleteForm: protectedProcedure // Admin Protected Function
     .input(z.object({ id: z.string() }))
     .mutation(async ({ input: { id }, ctx: { db } }) => {
       const formExists = await db.form.findUnique({ where: { name: id } });
@@ -129,9 +157,12 @@ export const formRouter = createTRPCRouter({
         });
       }
     }),
-  // editForm: publicProcedure
-  //   .input(z.object({id : z.string(), newFormSchema: z.string(), newUiSchema: z.string()}))
-  //   .mutation(async ({ input: {id, newFormSchema, newUiSchema }, ctx: {db}}) => {
-  // TODO: Incoporate the JSON editors included on the issues tag
-  //   }),
+  /**
+   * TODO: This method should be called/coupled with an interactive JSON Editor that 
+   * lets Admins change the schema and UI schema of the chosen form
+   * editForm: publicProcedure
+    .input(z.object({id : z.string(), newFormSchema: z.string(), newUiSchema: z.string()}))
+    .mutation(async ({ input: {id, newFormSchema, newUiSchema }, ctx: {db}}) => {
+    }),
+   */
 });
