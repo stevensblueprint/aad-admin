@@ -1,62 +1,6 @@
-import { PrismaClient, UserRole } from "@prisma/client";
-import { Picsum } from "picsum-photos";
-
+import { PrismaClient } from "@prisma/client";
+import { createRole, createUser } from "./createData";
 const prisma = new PrismaClient();
-
-const createRole = async (prisma: PrismaClient, roleName: string) => {
-  const role = await prisma.userRole.upsert({
-    where: {
-      roleName,
-    },
-    update: {},
-    create: {
-      roleName,
-    },
-  });
-  return role;
-};
-
-const createUser = async (
-  prisma: PrismaClient,
-  id: string,
-  email: string,
-  name: string,
-  preferredName: string,
-  phoneNumber: string,
-  bio: string,
-  roleName: string,
-) => {
-  const user = await prisma.user.upsert({
-    where: {
-      email,
-    },
-    update: {},
-    create: {
-      id,
-      name,
-      email,
-      image: Picsum.url({ height: 128, cache: false }),
-      role: {
-        connectOrCreate: {
-          create: {
-            roleName: roleName,
-          },
-          where: {
-            roleName: roleName,
-          },
-        },
-      },
-      profile: {
-        create: {
-          bio,
-          phoneNumber,
-          preferredName,
-        },
-      },
-    },
-  });
-  return user;
-};
 
 const main = async () => {
   const adminRole = await createRole(prisma, "admin");
@@ -71,6 +15,9 @@ const main = async () => {
     "+1 (000)-000-0000",
     "I am your overlord. Bow down to me!",
     "ADMIN",
+    "Stevens Institute of Technology",
+    "I am an admin. I am your overlord!",
+    ["Software Engineering", "Product Management", "Data Science"],
   );
   const mentor = await createUser(
     prisma,
@@ -81,6 +28,9 @@ const main = async () => {
     "+1 (111)-111-1111",
     "I am your saving grace. I will help you!",
     "MENTOR",
+    "Monsters University",
+    "I am a mentor. I will help you!",
+    ["Software Engineering", "Biomedicine", "Data Science"],
   );
   const mentee = await createUser(
     prisma,
@@ -91,6 +41,9 @@ const main = async () => {
     "+1 (222)-222-2222",
     "I really need help!",
     "MENTEE",
+    "Stevens Institute of Technology",
+    "I am a mentee. I need help!",
+    ["Software Engineering", "Computer Science", "Data Science"],
   );
   console.log({ admin, mentor, mentee });
 };
