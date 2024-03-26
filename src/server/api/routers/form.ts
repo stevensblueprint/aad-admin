@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
@@ -22,6 +22,7 @@ export const formRouter = createTRPCRouter({
         },
       });
     }),
+  // When a user fills out a form, call this method
   submitForm: publicProcedure // FIXME: Not executing in tRPC panel
     .input(
       z.object({
@@ -64,7 +65,9 @@ export const formRouter = createTRPCRouter({
         });
       },
     ),
-  addForm: publicProcedure
+  // TODO: Validate that formSchema is proper schema
+  // TODO: Validate that uiSchema is a proper schema, can UISchemaElement be added to Zod?
+  addForm: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -73,26 +76,58 @@ export const formRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input: { id, formSchema, uiSchema }, ctx: { db } }) => {
-      await db.form.create({
-        data: {
-          name: id,
-          formSchema: formSchema,
-          uiSchema: uiSchema,
-        },
-      });
-      return { message: "Form Successfully Added" }; // FIXME: Check if key exists : try-catch??
+      const formExists = await db.form.findUnique({ where: { name: id } });
+
+      if (formExists) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: `A form with the id '${id}' already exists.`,
+        });
+      }
+
+      try {
+        await db.form.create({
+          data: {
+            name: id,
+            formSchema: formSchema,
+            uiSchema: uiSchema,
+          },
+        });
+
+        return { message: `Succesfully created form with ID: '${id}'` };
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Failed to create form with ID '${id}': ${error}`,
+        });
+      }
     }),
-  deleteForm: publicProcedure
+  deleteForm: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ input: { id }, ctx: { db } }) => {
-      await db.form.delete({
-        // FIXME: Should check if id exists or does prisma method do this?
-        where: {
-          name: id,
-        },
-      });
+      const formExists = await db.form.findUnique({ where: { name: id } });
 
-      return { message: "Form Successfully Deleted" };
+      if (!formExists) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `A form with the id '${id}' does not exist.`,
+        });
+      }
+
+      try {
+        await db.form.delete({
+          where: {
+            name: id,
+          },
+        });
+
+        return { message: `Form with the id '${id}' successfully deleted.` };
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Failed to delete form with ID '${id}': ${error}`,
+        });
+      }
     }),
   // editForm: publicProcedure
   //   .input(z.object({id : z.string(), newFormSchema: z.string(), newUiSchema: z.string()}))
