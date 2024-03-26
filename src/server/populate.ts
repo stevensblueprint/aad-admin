@@ -65,15 +65,15 @@ const populate = async (role: string, count: number) => {
       }),
       name,
       name,
-      faker.helpers.fromRegExp('+1 ([0-9]{3})-[0-9]{3}-[0-9]{4}'),
+      faker.helpers.fromRegExp("+1 ([0-9]{3})-[0-9]{3}-[0-9]{4}"),
       faker.lorem.paragraph(),
       role,
-      schools[Math.floor(Math.random() * schools.length)] as string,
+      schools[Math.floor(Math.random() * schools.length)]!,
       faker.lorem.sentence(),
       industries.slice(industryLowerBound, industryUpperBound),
     );
   }
-}
+};
 
 //populate mentees
 await populate("MENTEE", 250);
