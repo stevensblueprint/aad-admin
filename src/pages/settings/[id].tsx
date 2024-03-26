@@ -119,7 +119,11 @@ export default function SettingsPage() {
                 email={data.email ? data.email : "Missing Email"}
                 bio={data.profile?.bio ? data.profile.bio : "Missing Bio"}
                 dob={data.profile?.dateOfBirth ? data.profile.dateOfBirth : ""}
-                university={data.profile?.selectedUniversity ? data.profile.selectedUniversity : ""}
+                university={
+                  data.profile?.selectedUniversity
+                    ? data.profile.selectedUniversity
+                    : ""
+                }
                 // industries={data.profile?.topIndustries ? data.profile.topIndustries : []}
                 editMode={editMode}
                 toggleEditMode={setEditMode}

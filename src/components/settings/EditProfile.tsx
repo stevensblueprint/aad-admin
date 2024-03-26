@@ -26,16 +26,18 @@ type EditProfileProps = {
 };
 
 // Define the Zod schema for form validation
-const formSchema = z.object({
-  name: z.string().min(1, "Full name is required"),
-  emailAddress: z.string().email("Invalid email address"),
-  dateOfBirth: z.string().min(1, "Date of Birth is required"),
-  biography: z.string().min(1, "Bio is required"),
-  selectedUniversity: z.string().min(1, "College/University is required"),
-  topIndustries: z
-    .array(z.string())
-    .min(1, "At least one industry must be selected"),
-}).partial();
+const formSchema = z
+  .object({
+    name: z.string().min(1, "Full name is required"),
+    emailAddress: z.string().email("Invalid email address"),
+    dateOfBirth: z.string().min(1, "Date of Birth is required"),
+    biography: z.string().min(1, "Bio is required"),
+    selectedUniversity: z.string().min(1, "College/University is required"),
+    topIndustries: z
+      .array(z.string())
+      .min(1, "At least one industry must be selected"),
+  })
+  .partial();
 
 const EditProfile = ({
   preferredName,

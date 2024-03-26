@@ -48,19 +48,21 @@ export const userRouter = createTRPCRouter({
     }),
 
   updateProfile: protectedProcedure
-    .input(z.object({
-      name: z.string().min(1),
-      emailAddress: z.string().email(),
-      dateOfBirth: z.string().min(1),
-      biography: z.string().min(1),
-      selectedUniversity: z.string().min(1),
-      topIndustries: z
-        .array(z.string())
-        .min(1),
-    }).partial())
+    .input(
+      z
+        .object({
+          name: z.string().min(1),
+          emailAddress: z.string().email(),
+          dateOfBirth: z.string().min(1),
+          biography: z.string().min(1),
+          selectedUniversity: z.string().min(1),
+          topIndustries: z.array(z.string()).min(1),
+        })
+        .partial(),
+    )
     .mutation(async ({ input, ctx }) => {
       //Check if the user exits before trying to modify their information
-      let profileExits = db.user.findUnique({
+      const profileExits = await db.user.findUnique({
         where: {
           id: ctx.session.user.id,
         },
@@ -90,14 +92,14 @@ export const userRouter = createTRPCRouter({
                   bio: input.biography,
                   selectedUniversity: input.selectedUniversity,
                   topIndustries: input.topIndustries,
-                }
+                },
               },
             },
           },
           include: {
             profile: true,
-          }
-        })
+          },
+        });
       } catch (error) {
         throw new TRPCError({
           code: "BAD_REQUEST",
