@@ -58,6 +58,12 @@
 
    The application should now be running on http://localhost:3000.
 
+**For M1 Mac**
+If you are using an M1 Mac you will not be able to run the application using ```docker-compose up -d ```. Instead, inside the docker-compose you have to comment out all the services except for
+the postgres (Postgres is the first service listed in the docker-compose). Remember to also get rid of network at the end of the file. After making the changes to the docker-compose try running
+```docker-compose up -d```
+```pnpm run dev```
+
 ## Contributing Changes
 
 Please make a branch from main when contributing to the project. Refer to the issues board for a list of ongoing tasks.
