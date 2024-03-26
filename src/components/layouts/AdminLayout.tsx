@@ -49,7 +49,6 @@ export default function AdminLayout({
     <div className="flex">
       <Drawer
         variant="permanent"
-        className="w-80"
         sx={{
           flexShrink: 0,
           "& .MuiDrawer-paper": {
