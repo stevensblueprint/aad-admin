@@ -9,8 +9,6 @@ import {
   publicProcedure,
 } from "../trpc";
 
-// TODO: Fix typying lint issues
-
 const ajv = new Ajv();
 addFormats(ajv);
 
@@ -99,8 +97,6 @@ export const formRouter = createTRPCRouter({
         }
       },
     ),
-  // TODO: Validate that formSchema is proper schema
-  // TODO: Validate that uiSchema is a proper schema, can UISchemaElement be added to Zod?
   addForm: protectedProcedure // Admin Protected Function
     .input(
       z.object({
@@ -110,6 +106,7 @@ export const formRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input: { id, formSchema, uiSchema }, ctx: { db } }) => {
+      // TODO: Change this to create a collection and cascade to the form object
       const formExists = await db.form.findUnique({ where: { name: id } });
 
       if (formExists) {
