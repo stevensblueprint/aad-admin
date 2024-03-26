@@ -99,7 +99,9 @@ export const formRouter = createTRPCRouter({
         }
       },
     ),
-  addForm: publicProcedure
+  // TODO: Validate that formSchema is proper schema
+  // TODO: Validate that uiSchema is a proper schema, can UISchemaElement be added to Zod?
+  addForm: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -108,14 +110,62 @@ export const formRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input: { id, formSchema, uiSchema }, ctx: { db } }) => {
-      await db.form.create({
-        data: {
-          name: id,
-          formSchema: formSchema,
-          uiSchema: uiSchema,
-        },
-      });
-      return { message: "Form Successfully Added" };
+      const formExists = await db.form.findUnique({ where: { name: id } });
+
+      if (formExists) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: `A form with the id '${id}' already exists.`,
+        });
+      }
+
+      try {
+        await db.form.create({
+          data: {
+            name: id,
+            formSchema: formSchema,
+            uiSchema: uiSchema,
+          },
+        });
+
+        return { message: `Succesfully created form with ID: '${id}'` };
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Failed to create form with ID '${id}': ${error}`,
+        });
+      }
     }),
-  // deleteForm: publicProcedure.input // Want a Mutation to delete: https://trpc.io/docs/server/procedures
+  deleteForm: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input: { id }, ctx: { db } }) => {
+      const formExists = await db.form.findUnique({ where: { name: id } });
+
+      if (!formExists) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `A form with the id '${id}' does not exist.`,
+        });
+      }
+
+      try {
+        await db.form.delete({
+          where: {
+            name: id,
+          },
+        });
+
+        return { message: `Form with the id '${id}' successfully deleted.` };
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Failed to delete form with ID '${id}': ${error}`,
+        });
+      }
+    }),
+  // editForm: publicProcedure
+  //   .input(z.object({id : z.string(), newFormSchema: z.string(), newUiSchema: z.string()}))
+  //   .mutation(async ({ input: {id, newFormSchema, newUiSchema }, ctx: {db}}) => {
+  // TODO: Incoporate the JSON editors included on the issues tag
+  //   }),
 });
