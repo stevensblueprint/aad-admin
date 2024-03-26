@@ -1,7 +1,8 @@
 import { api } from "../utils/api";
 import { ToggleButton, ToggleButtonGroup, Stack } from "@mui/material";
-import { type SetStateAction, useState } from "react";
+import { type SetStateAction, useState, type ReactElement } from "react";
 import Profile from "../components/directory/Profile";
+import AdminLayout from "../components/layouts/AdminLayout";
 
 enum UserRole {
   MENTEE = "Mentee",
@@ -49,6 +50,10 @@ const Directory = () => {
       )}
     </main>
   );
+};
+
+Directory.getLayout = function getLayout(page: ReactElement) {
+  return <AdminLayout>{page}</AdminLayout>;
 };
 
 export default Directory;
