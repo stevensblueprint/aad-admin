@@ -1,5 +1,6 @@
 import { type Dispatch, type SetStateAction, useState } from "react";
 import { z } from "zod";
+import { api } from "../../utils/api";
 import {
   Button,
   TextField,
@@ -17,38 +18,43 @@ type EditProfileProps = {
   preferredName: string;
   email: string;
   bio: string;
+  dob: string;
+  university: string;
+  // industries: string[];
   editMode: boolean;
   toggleEditMode: Dispatch<SetStateAction<boolean>>;
 };
 
 // Define the Zod schema for form validation
-const formSchema = z.object({
-  name: z.string().min(1, "Full name is required"),
-  emailAddress: z.string().email("Invalid email address"),
-  dateOfBirth: z.string().min(1, "Date of Birth is required"),
-  biography: z.string().min(1, "Bio is required"),
-  selectedUniversity: z.string().min(1, "College/University is required"),
-  topIndustries: z
-    .array(z.string())
-    .min(1, "At least one industry must be selected"),
-});
+const formSchema = z
+  .object({
+    name: z.string().min(1, "Full name is required"),
+    emailAddress: z.string().email("Invalid email address"),
+    dateOfBirth: z.string().min(1, "Date of Birth is required"),
+    biography: z.string().min(1, "Bio is required"),
+    selectedUniversity: z.string().min(1, "College/University is required"),
+    topIndustries: z
+      .array(z.string())
+      .min(1, "At least one industry must be selected"),
+  })
+  .partial();
 
 const EditProfile = ({
   preferredName,
   email,
   bio,
-  // dateOfBirth,
-  // selectedUniversity,
-  // topIndustries,
+  dob,
+  university,
+  // industries,
   editMode,
   toggleEditMode,
 }: EditProfileProps) => {
   const [name, setName] = useState(preferredName);
   const [emailAddress, setEmailAddress] = useState(email);
-  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState(dob);
   const [biography, setBiography] = useState(bio);
-  const [selectedUniversity, setSelectedUniversity] = useState("");
-  const [topIndustries, setTopIndustries] = useState<string[]>([]);
+  const [selectedUniversity, setSelectedUniversity] = useState(university);
+  const [topIndustries, setTopIndustries] = useState<string[]>([]); //Set to empty array always but will need to figure out how to set initial value
 
   const [formErrors, setFormErrors] = useState<z.inferFlattenedErrors<
     typeof formSchema
@@ -59,6 +65,8 @@ const EditProfile = ({
     matchFrom: "any",
     limit: 500,
   });
+
+  const mutation = api.user.updateProfile.useMutation();
 
   const handleSubmit = () => {
     const result = formSchema.safeParse({
@@ -82,6 +90,7 @@ const EditProfile = ({
     toggleEditMode(false);
     setFormErrors(null);
     // Add your form submission logic here (e.g., API call)
+    mutation.mutate(result.data);
   };
 
   return (
@@ -187,7 +196,6 @@ const EditProfile = ({
               onChange={(e) => setDateOfBirth(e.target.value)}
               value={dateOfBirth}
               fullWidth
-              required
               InputProps={{
                 readOnly: !editMode,
               }}
