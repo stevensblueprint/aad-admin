@@ -61,18 +61,6 @@ export const userRouter = createTRPCRouter({
         .partial(),
     )
     .mutation(async ({ input, ctx }) => {
-      //Check if the user exits before trying to modify their information
-      const profileExits = await db.user.findUnique({
-        where: {
-          id: ctx.session.user.id,
-        },
-      });
-      if (!profileExits) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: '"{input.name}" not found in database',
-        });
-      }
       //Update the user's information
       try {
         return await db.user.update({
@@ -90,8 +78,8 @@ export const userRouter = createTRPCRouter({
                 data: {
                   dateOfBirth: input.dateOfBirth,
                   bio: input.biography,
-                  selectedUniversity: input.selectedUniversity,
-                  topIndustries: input.topIndustries,
+                  university: input.selectedUniversity,
+                  industries: input.topIndustries,
                 },
               },
             },
@@ -103,7 +91,7 @@ export const userRouter = createTRPCRouter({
       } catch (error) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: '"{input.id}" not found in database',
+          message: '"{ctx.session.user.id}" not found in database',
         });
       }
     }),

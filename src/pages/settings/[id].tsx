@@ -120,9 +120,7 @@ export default function SettingsPage() {
                 bio={data.profile?.bio ? data.profile.bio : "Missing Bio"}
                 dob={data.profile?.dateOfBirth ? data.profile.dateOfBirth : ""}
                 university={
-                  data.profile?.selectedUniversity
-                    ? data.profile.selectedUniversity
-                    : ""
+                  data.profile?.university ? data.profile.university : ""
                 }
                 // industries={data.profile?.topIndustries ? data.profile.topIndustries : []}
                 editMode={editMode}
