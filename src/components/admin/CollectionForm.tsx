@@ -11,6 +11,7 @@ import { Controller, useForm } from "react-hook-form";
 import { api } from "../../utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import DefaultLoadingPage from "../../components/loading/defaultLoadingPage";
 
 export const createCollectionSchema = z.object({
   formName: z.string(),
@@ -28,7 +29,7 @@ interface CollectionFormProps {
 }
 
 const CollectionForm = ({ onSubmit }: CollectionFormProps) => {
-  const { data: forms, error, isLoading } = api.form.getForms.useQuery({});
+  const { data: forms, isLoading } = api.form.getForms.useQuery({});
   const { handleSubmit, control } = useForm<CreateCollectionData>({
     resolver: zodResolver(createCollectionSchema),
     defaultValues: {
@@ -39,7 +40,7 @@ const CollectionForm = ({ onSubmit }: CollectionFormProps) => {
     },
   });
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <DefaultLoadingPage />;
   }
   return (
     <Box
@@ -60,7 +61,7 @@ const CollectionForm = ({ onSubmit }: CollectionFormProps) => {
       />
       <Controller
         control={control}
-        render={({ field, fieldState: { error } }) => (
+        render={({ field, fieldState: {} }) => (
           <Select {...field} fullWidth>
             {forms?.map(({ name }) => (
               <MenuItem key={name} value={name}>
