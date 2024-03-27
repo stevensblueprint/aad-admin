@@ -1,7 +1,7 @@
-import { api } from "../utils/api";
+import { api } from "../../utils/api";
 import { ToggleButton, ToggleButtonGroup, Stack } from "@mui/material";
 import { type SetStateAction, useState } from "react";
-import Profile from "../components/directory/Profile";
+import Profile from "../../components/directory/Profile";
 
 enum UserRole {
   MENTEE = "Mentee",
