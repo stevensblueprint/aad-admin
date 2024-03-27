@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -73,12 +74,15 @@ model VerificationToken {
 
 // Profile schema
 model Profile {
-  id            Int     @id @default(autoincrement())
-  user          User    @relation(fields: [userId], references: [id])
-  userId        String  @unique
+  id            Int      @id @default(autoincrement())
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String   @unique
   preferredName String?
   phoneNumber   String?
   bio           String?
+  school        String?
+  blurb         String?
+  industries    String[]
 }
 
 model UserRole {
