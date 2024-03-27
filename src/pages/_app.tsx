@@ -9,6 +9,8 @@ import { StyledEngineProvider } from "@mui/material";
 import { type ReactElement, type ReactNode } from "react";
 import { type NextPage } from "next";
 
+import RootLayout from "~/components/layouts/RootLayout";
+
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
   IP
@@ -29,7 +31,11 @@ const MyApp = ({
   return (
     <SessionProvider session={session}>
       <StyledEngineProvider injectFirst>
-        {getLayout(<Component {...pageProps} />)}
+        {getLayout(
+          <RootLayout>
+            <Component {...pageProps} />
+          </RootLayout>,
+        )}
       </StyledEngineProvider>
     </SessionProvider>
   );

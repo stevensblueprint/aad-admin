@@ -48,16 +48,6 @@ function AuthShowcase() {
       >
         {sessionData ? "Sign out" : "Sign in"}
       </Button>
-      {sessionData && (
-        <>
-          <Button
-            variant="outlined"
-            href={`/profiles/${sessionData?.user?.id}`}
-          >
-            {"View Profile"}
-          </Button>
-        </>
-      )}
     </div>
   );
 }
