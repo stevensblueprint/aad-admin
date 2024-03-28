@@ -3,7 +3,8 @@ import JsonForm from "../../components/forms/JsonForm";
 import { useMemo } from "react";
 import { useRouter } from "next/router";
 import { type JSONObject } from "superjson/dist/types";
-import DefaultLoadingPage from "../../components/loading/defaultLoadingPage";
+import DefaultLoadingPage from "../../components/loading/loading";
+import ErrorPage from "../../components/error/error";
 
 /**
  * Form page that gets the collection by id and renders the form based
@@ -23,7 +24,7 @@ const Form = () => {
     };
   }, [data]);
   if (isLoading) return <DefaultLoadingPage />;
-  if (error) return <div>Error: {JSON.stringify(error)}</div>;
+  if (error) return <ErrorPage errorMessage={error.message} />
   const onSubmit = (data: JSONObject) => {
     submit({ collectionId: router.query.id as string, data });
   };

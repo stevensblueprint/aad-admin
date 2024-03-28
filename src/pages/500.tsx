@@ -1,0 +1,12 @@
+import { Button } from '@mui/material';
+
+export default function Custom500() {
+  return (
+		<div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-midnight-sky to-aero">
+			<h1 className="py-8 font-sans text-4xl text-white">500 - Server-side error occurence</h1>
+			<Button href='/' variant='contained'>
+				Return to Home
+			</Button>
+    </div>
+  )
+}

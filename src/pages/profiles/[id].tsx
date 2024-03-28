@@ -3,7 +3,8 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { Button } from "@mui/material";
 import { useState } from "react";
-import DefaultLoadingPage from "../../components/loading/defaultLoadingPage";
+import DefaultLoadingPage from "../../components/loading/loading";
+import ErrorPage from "../../components/error/error";
 import ProfileHeader from "../../components/profiles/ProfileHeader";
 import TabList from "../../components/profiles/TabList";
 import About from "../../components/profiles/About";
@@ -18,7 +19,7 @@ export default function ProfilePage() {
     id: router.query.id as string,
   });
   if (isLoading) return <DefaultLoadingPage />;
-  if (error) return <div>Error: {JSON.stringify(error)}</div>;
+  if (error) return <ErrorPage errorMessage={error.message} />;
   if (data.profile === null) {
     return <div>Error: User does not have a profile!</div>;
   }
