@@ -85,7 +85,7 @@ declare module "nextjs-routes" {
 
 // prettier-ignore
 declare module "next/link" {
-  import type { DynamicRoute, Route } from "nextjs-routes";
+  import type { Route } from "nextjs-routes";
   import type { LinkProps as NextLinkProps } from "next/dist/client/link";
   import type {
     AnchorHTMLAttributes,
@@ -100,7 +100,7 @@ declare module "next/link" {
   export interface LinkProps
     extends Omit<NextLinkProps, "href" | "locale">,
       AnchorHTMLAttributes<HTMLAnchorElement> {
-    href: Route | StaticRoute | Omit<Route, "pathname"> | DynamicRoute;
+    href: Route | StaticRoute | Omit<Route, "pathname">
     locale?: Locale | false;
   }
 

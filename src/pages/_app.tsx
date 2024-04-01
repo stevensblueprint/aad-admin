@@ -31,11 +31,7 @@ const MyApp = ({
   return (
     <SessionProvider session={session}>
       <StyledEngineProvider injectFirst>
-        {getLayout(
-          <RootLayout>
-            <Component {...pageProps} />
-          </RootLayout>,
-        )}
+        <RootLayout>{getLayout(<Component {...pageProps} />)}</RootLayout>,
       </StyledEngineProvider>
     </SessionProvider>
   );

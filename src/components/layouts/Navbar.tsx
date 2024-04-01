@@ -13,23 +13,21 @@ import MenuItem from "@mui/material/MenuItem";
 import AvatarWrapper from "../settings/AvatarWrapper";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { type Route } from "nextjs-routes";
 
-const pagesMenteeAndMentor = [
-  {
-    name: "Forms",
-    path: "/forms",
-  },
+interface NavbarLink {
+  name: string;
+  path: Route["pathname"];
+}
+
+const pagesMenteeAndMentor: NavbarLink[] = [
   {
     name: "Directory",
     path: "/directory",
   },
 ];
 
-const pagesAdmin = [
-  {
-    name: "Forms",
-    path: "/forms",
-  },
+const pagesAdmin: NavbarLink[] = [
   {
     name: "Directory",
     path: "/directory",
@@ -178,7 +176,7 @@ function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 0 }}>
               {sessionData ? (
                 <>
-                  <Tooltip title="Open settings">
+                  <Tooltip title="Account">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                       <AvatarWrapper
                         alt={
@@ -212,10 +210,24 @@ function ResponsiveAppBar() {
                   >
                     <MenuItem
                       component={Link}
-                      href={`/profiles/${sessionData?.user?.id}`}
+                      href={{
+                        pathname: "/profiles/[id]",
+                        query: { id: sessionData?.user?.id },
+                      }}
                       onClick={handleCloseUserMenu}
                     >
                       Profile
+                    </MenuItem>
+
+                    <MenuItem
+                      onClick={handleCloseUserMenu}
+                      component={Link}
+                      href={{
+                        pathname: "/settings/[id]",
+                        query: { id: sessionData?.user?.id },
+                      }}
+                    >
+                      Settings
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
@@ -224,13 +236,6 @@ function ResponsiveAppBar() {
                       }}
                     >
                       Sign out
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseUserMenu}
-                      component={Link}
-                      href={`/settings/${sessionData?.user?.id}`}
-                    >
-                      Settings
                     </MenuItem>
                   </Menu>
                 </>

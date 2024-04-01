@@ -1,8 +1,6 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import { Container, Button } from "@mui/material";
-import AdminLayout from "~/components/layouts/AdminLayout";
-import { type ReactElement } from "react";
 
 export default function Home() {
   return (
@@ -51,7 +49,3 @@ function AuthShowcase() {
     </div>
   );
 }
-
-Home.getLayout = function getLayout(page: ReactElement) {
-  return <AdminLayout>{page}</AdminLayout>;
-};

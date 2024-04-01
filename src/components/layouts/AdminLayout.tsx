@@ -59,6 +59,7 @@ export default function AdminLayout({
         sx={{
           flexShrink: 0,
           "& .MuiDrawer-paper": {
+            position: "relative",
             width: 250,
             boxSizing: "border-box",
           },
