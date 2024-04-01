@@ -51,11 +51,14 @@ const Sidebar = ({ selectedSection, handleListItemClick }: SideBarProps) => {
         sx={{
           flexShrink: 0,
           "& .MuiDrawer-paper": {
+            position: "relative",
             width: 250,
-            backgroundColor: "transparent",
             color: "white",
+            backgroundColor: "transparent",
+            boxSizing: "border-box",
           },
         }}
+        anchor="left"
       >
         <p className="mb-3 mt-6 text-center text-3xl text-white">Settings</p>
         <List>

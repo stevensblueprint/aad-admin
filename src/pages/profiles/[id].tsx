@@ -1,7 +1,6 @@
 import { api } from "../../utils/api";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Button } from "@mui/material";
 import { useState } from "react";
 import DefaultLoadingPage from "../../components/loading/loading";
 import ErrorPage from "../../components/error/error";
@@ -72,10 +71,6 @@ export default function ProfilePage() {
             }
           />
         ) : null}
-        {/* To be moved to navbar */}
-        <Button variant="contained" href={`/settings/${data?.id}`}>
-          {"Settings"}
-        </Button>
       </main>
     </>
   );
