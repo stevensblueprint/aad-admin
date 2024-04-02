@@ -19,7 +19,7 @@ interface MenuItem {
   text: string;
   icon: JSX.Element;
   path: Route["pathname"];
-};
+}
 
 const menuItems: MenuItem[] = [
   {
@@ -55,7 +55,7 @@ export default function AdminLayout({
 
   const handleNavigation = (item: MenuItem) => {
     startTransition(() => {
-      void router.push({ pathname: item.path} as Route);
+      void router.push({ pathname: item.path } as Route);
     });
   };
 
