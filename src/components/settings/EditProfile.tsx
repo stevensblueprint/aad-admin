@@ -1,7 +1,6 @@
 import { type Dispatch, type SetStateAction, useState } from "react";
 import { z } from "zod";
 import { api } from "../../utils/api";
-import { api } from "../../utils/api";
 import {
   Button,
   TextField,
@@ -64,8 +63,6 @@ const EditProfile = ({
     matchFrom: "any",
     limit: 500,
   });
-
-  const mutation = api.user.updateProfile.useMutation();
 
   const mutation = api.user.updateProfile.useMutation();
 
