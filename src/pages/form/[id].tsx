@@ -24,7 +24,7 @@ const Form = () => {
     };
   }, [data]);
   if (isLoading) return <DefaultLoadingPage />;
-  if (error) return <ErrorPage errorMessage={error.message} />
+  if (error) return <ErrorPage errorMessage={error.message} />;
   const onSubmit = (data: JSONObject) => {
     submit({ collectionId: router.query.id as string, data });
   };
