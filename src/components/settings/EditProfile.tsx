@@ -90,6 +90,7 @@ const EditProfile = ({
     setFormErrors(null);
     // Add your form submission logic here (e.g., API call)
     mutation.mutate(result.data);
+    mutation.mutate(result.data);
   };
 
   return (
