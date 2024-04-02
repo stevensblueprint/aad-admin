@@ -15,10 +15,10 @@ import React, { useTransition } from "react";
 import { useSession } from "next-auth/react";
 import { type Route } from "nextjs-routes";
 
-type MenuItem = {
+interface MenuItem {
   text: string;
   icon: JSX.Element;
-  path: string;
+  path: Route["pathname"];
 };
 
 const menuItems: MenuItem[] = [
@@ -55,18 +55,7 @@ export default function AdminLayout({
 
   const handleNavigation = (item: MenuItem) => {
     startTransition(() => {
-      void router.push(
-        item.path as
-          | "/admin/collections"
-          | "/admin/forms"
-          | "/admin/directory"
-          | "/admin/submissions"
-          | "/admin"
-          | "/api/panel"
-          | "/"
-          | Route
-          | Omit<Route, "pathname">,
-      );
+      void router.push({ pathname: item.path} as Route);
     });
   };
 
