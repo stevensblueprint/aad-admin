@@ -231,7 +231,9 @@ function ResponsiveAppBar() {
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
-                        sessionData ? void signOut() : void signIn();
+                        sessionData
+                          ? void signOut({ callbackUrl: "/" })
+                          : void signIn();
                         handleCloseUserMenu();
                       }}
                     >

@@ -12,7 +12,8 @@ import {
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import DefaultLoadingPage from "../../components/loading/defaultLoadingPage";
+import DefaultLoadingPage from "../../components/loading/loading";
+import ErrorPage from "../../components/error/error";
 import AvatarWrapper from "../../components/settings/AvatarWrapper";
 import EditProfile from "../../components/settings/EditProfile";
 import EditNotifications from "../../components/settings/EditNotifications";
@@ -88,7 +89,7 @@ export default function SettingsPage() {
     id: router.query.id as string,
   });
   if (isLoading) return <DefaultLoadingPage />;
-  if (error) return <div>Error: {JSON.stringify(error)}</div>;
+  if (error) return <ErrorPage errorMessage={error.message} />;
   if (data.profile === null) {
     return <div>Error: User does not have a profile!</div>;
   }
