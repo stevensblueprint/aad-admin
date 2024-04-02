@@ -16,17 +16,32 @@ export const createRole = async (prisma: PrismaClient, roleName: string) => {
 
 export const createUser = async (
   prisma: PrismaClient,
-  id: string,
-  email: string,
-  name: string,
-  preferredName: string,
-  phoneNumber: string,
-  bio: string,
-  roleName: string,
-  school: string,
-  blurb: string,
-  industries: string[],
+  userInput: {
+    id: string;
+    email: string;
+    name: string;
+    dateOfBirth: string;
+    preferredName: string;
+    phoneNumber: string;
+    bio: string;
+    roleName: string;
+    university: string;
+    industries: string[];
+  },
 ) => {
+  const {
+    id,
+    email,
+    name,
+    dateOfBirth,
+    preferredName,
+    phoneNumber,
+    bio,
+    roleName,
+    university,
+    industries,
+  } = userInput;
+
   const user = await prisma.user.upsert({
     where: {
       email,
@@ -51,13 +66,14 @@ export const createUser = async (
         create: {
           bio,
           phoneNumber,
+          dateOfBirth,
           preferredName,
-          school,
-          blurb,
+          university,
           industries,
         },
       },
     },
   });
+
   return user;
 };

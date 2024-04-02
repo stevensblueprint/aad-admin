@@ -56,22 +56,24 @@ const populate = async (role: string, count: number) => {
       ];
     }
 
-    await createUser(
-      prisma,
-      faker.string.uuid(),
-      faker.internet.email({
+    await createUser(prisma, {
+      id: faker.string.uuid(),
+      email: faker.internet.email({
         firstName: name.split(" ")[0],
         lastName: name.split(" ")[1],
       }),
-      name,
-      name,
-      faker.helpers.fromRegExp("+1 ([0-9]{3})-[0-9]{3}-[0-9]{4}"),
-      faker.lorem.paragraph(),
-      role,
-      schools[Math.floor(Math.random() * schools.length)]!,
-      faker.lorem.sentence(),
-      industries.slice(industryLowerBound, industryUpperBound),
-    );
+      name: name,
+      dateOfBirth: faker.date
+        .birthdate({ min: 16, max: 40, mode: "age" })
+        .toISOString()
+        .slice(0, 10),
+      preferredName: name,
+      phoneNumber: faker.helpers.fromRegExp("+1 ([0-9]{3})-[0-9]{3}-[0-9]{4}"),
+      bio: faker.lorem.paragraph(),
+      roleName: role,
+      university: schools[Math.floor(Math.random() * schools.length)]!,
+      industries: industries.slice(industryLowerBound, industryUpperBound),
+    });
   }
 };
 
