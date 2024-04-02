@@ -49,16 +49,14 @@ export const userRouter = createTRPCRouter({
 
   updateProfile: protectedProcedure
     .input(
-      z
-        .object({
-          name: z.string().min(1),
-          emailAddress: z.string().email(),
-          dateOfBirth: z.string().min(1),
-          biography: z.string().min(1),
-          selectedUniversity: z.string().min(1),
-          topIndustries: z.array(z.string()).min(1),
-        })
-        .partial(),
+      z.object({
+        name: z.string().min(1),
+        emailAddress: z.string().email(),
+        dob: z.string().min(1),
+        biography: z.string().min(1),
+        selectedUniversity: z.string().min(1),
+        topIndustries: z.array(z.string()).min(1),
+      }),
     )
     .mutation(async ({ input, ctx }) => {
       //Update the user's information
@@ -68,7 +66,6 @@ export const userRouter = createTRPCRouter({
             id: ctx.session.user.id,
           },
           data: {
-            name: input.name,
             email: input.emailAddress,
             profile: {
               update: {
@@ -76,7 +73,8 @@ export const userRouter = createTRPCRouter({
                   userId: ctx.session.user.id,
                 },
                 data: {
-                  dateOfBirth: input.dateOfBirth,
+                  preferredName: input.name,
+                  dateOfBirth: input.dob,
                   bio: input.biography,
                   university: input.selectedUniversity,
                   industries: input.topIndustries,

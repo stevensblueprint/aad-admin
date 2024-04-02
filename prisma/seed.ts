@@ -27,7 +27,6 @@ const createUser = async (
   bio: string,
   roleName: string,
   university: string,
-  blurb: string,
   industries: string[],
 ) => {
   const user = await prisma.user.upsert({
@@ -57,7 +56,6 @@ const createUser = async (
           dateOfBirth,
           preferredName,
           university,
-          blurb,
           industries,
         },
       },
@@ -81,8 +79,7 @@ const main = async () => {
     "I am your overlord. Bow down to me!",
     "ADMIN",
     "Stevens Institute of Technology",
-    "I am an admin. I am your overlord!",
-    ["Software Engineering", "Product Management", "Data Science"],
+    ["Education", "Human Resources", "Retail"],
   );
   const mentor = await createUser(
     prisma,
@@ -95,8 +92,7 @@ const main = async () => {
     "I am your saving grace. I will help you!",
     "MENTOR",
     "Stevens Institute of Technology",
-    "I am a mentor. I will help you!",
-    ["Software Engineering", "Biomedicine", "Data Science"],
+    ["Computer Science", "Chemical Engineering", "Information Technology"],
   );
   const mentee = await createUser(
     prisma,
@@ -109,8 +105,7 @@ const main = async () => {
     "I really need help!",
     "MENTEE",
     "Stevens Institute of Technology",
-    "I am a mentee. I need help!",
-    ["Software Engineering", "Computer Science", "Data Science"],
+    ["Information Technology", "Economics", "Accounting"],
   );
   console.log({ admin, mentor, mentee });
 };
