@@ -68,4 +68,29 @@ export const collectionRouter = createTRPCRouter({
         },
       });
     }),
+
+  getCollectionWithSubmissionsById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input: { id } }) => {
+      const collection = await db.collection.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          Submission: {
+            include: {
+              submittedBy: true,
+              collection: true,
+            },
+          },
+        }, // Include submissions associated with this collection
+      });
+      if (!collection) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Collection not found",
+        });
+      }
+      return collection;
+    }),
 });
