@@ -1,6 +1,7 @@
 import { type Dispatch, type SetStateAction, useState } from "react";
 import { z } from "zod";
 import { api } from "../../utils/api";
+import { api } from "../../utils/api";
 import {
   Button,
   TextField,
@@ -66,6 +67,8 @@ const EditProfile = ({
 
   const mutation = api.user.updateProfile.useMutation();
 
+  const mutation = api.user.updateProfile.useMutation();
+
   const handleSubmit = () => {
     console.log(dob);
     const result = formSchema.safeParse({
@@ -89,7 +92,6 @@ const EditProfile = ({
     toggleEditMode(false);
     setFormErrors(null);
     // Add your form submission logic here (e.g., API call)
-    mutation.mutate(result.data);
     mutation.mutate(result.data);
   };
 
