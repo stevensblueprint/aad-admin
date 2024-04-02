@@ -122,6 +122,15 @@ export default function SettingsPage() {
                 }
                 email={data.email ? data.email : "Missing Email"}
                 bio={data.profile?.bio ? data.profile.bio : "Missing Bio"}
+                dateOfBirth={
+                  data.profile?.dateOfBirth ? data.profile.dateOfBirth : ""
+                }
+                university={
+                  data.profile?.university ? data.profile.university : ""
+                }
+                industries={
+                  data.profile?.industries ? data.profile.industries : []
+                }
                 editMode={editMode}
                 toggleEditMode={setEditMode}
               />
