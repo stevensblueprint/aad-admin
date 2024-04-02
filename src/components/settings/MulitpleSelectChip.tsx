@@ -33,6 +33,7 @@ const MultipleSelectChip = ({
   label,
   options,
   editMode,
+  defaultValue,
   helperText,
   updateValue,
   error,
@@ -40,12 +41,13 @@ const MultipleSelectChip = ({
   label: string;
   options: string[];
   editMode: boolean;
+  defaultValue: string[];
   helperText: string;
   updateValue: Dispatch<SetStateAction<string[]>>;
   error: boolean;
 }) => {
   const theme = useTheme();
-  const [optionValue, setOptionValue] = useState<string[]>([]);
+  const [optionValue, setOptionValue] = useState<string[]>(defaultValue);
 
   const handleChange = (event: SelectChangeEvent<typeof optionValue>) => {
     const {

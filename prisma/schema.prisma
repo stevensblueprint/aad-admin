@@ -82,7 +82,6 @@ model Profile {
   phoneNumber   String?
   bio           String?
   university    String?
-  blurb         String?
   industries    String[]
 }
 
