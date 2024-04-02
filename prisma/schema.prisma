@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
@@ -77,10 +77,11 @@ model Profile {
   id            Int      @id @default(autoincrement())
   user          User     @relation(fields: [userId], references: [id])
   userId        String   @unique
+  dateOfBirth   String?
   preferredName String?
   phoneNumber   String?
   bio           String?
-  school        String?
+  university    String?
   blurb         String?
   industries    String[]
 }
