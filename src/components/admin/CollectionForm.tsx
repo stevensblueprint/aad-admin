@@ -6,21 +6,25 @@ import {
   Button,
   Select,
   MenuItem,
+  FormControl,
+  InputLabel,
+  FormHelperText,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { api } from "../../utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import DefaultLoadingPage from "../loading/loading";
+import MultipleSelectChip from "../settings/MulitpleSelectChip";
 
 export const createCollectionSchema = z.object({
-  formName: z.string(),
-  // TODO: this should change to visibility, and be an enum
-  // perhaps not visibility, but audience as all forms will require auth
-  isPublic: z.boolean(),
+  formName: z.string().min(1, { message: "Must select a form schema" }),
+  roles: z.array(z.string()).min(1),
   isOpen: z.boolean(),
-  name: z.string(),
+  name: z.string().min(3),
 });
+
+const roles = ["Mentor", "Mentee"];
 
 export type CreateCollectionData = z.infer<typeof createCollectionSchema>;
 
@@ -29,23 +33,30 @@ interface CollectionFormProps {
 }
 
 const CollectionForm = ({ onSubmit }: CollectionFormProps) => {
-  const { data: forms, isLoading } = api.form.getForms.useQuery({});
-  const { handleSubmit, control } = useForm<CreateCollectionData>({
+  const { data: forms, isLoading: formsLoading } = api.form.getForms.useQuery(
+    {},
+  );
+  const { handleSubmit, control, reset } = useForm<CreateCollectionData>({
     resolver: zodResolver(createCollectionSchema),
     defaultValues: {
       formName: "",
-      isPublic: false,
+      roles: [],
       isOpen: false,
       name: "",
     },
   });
-  if (isLoading) {
+  const handleOnSubmit = (data: CreateCollectionData) => {
+    onSubmit(data);
+    reset();
+  };
+  if (formsLoading) {
     return <DefaultLoadingPage />;
   }
   return (
     <Box
       component="form"
-      onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
+      onSubmit={(...args) => void handleSubmit(handleOnSubmit)(...args)}
+      className="flex flex-col gap-2 "
     >
       <Controller
         control={control}
@@ -61,32 +72,50 @@ const CollectionForm = ({ onSubmit }: CollectionFormProps) => {
       />
       <Controller
         control={control}
-        render={({ field, fieldState: {} }) => (
-          <Select {...field} fullWidth>
-            {forms?.map(({ name }) => (
-              <MenuItem key={name} value={name}>
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
+        render={({ field, fieldState: { error } }) => (
+          <FormControl error={!!error}>
+            <InputLabel>Form Schema</InputLabel>
+            <Select {...field} fullWidth label="Form Schema">
+              {forms?.map(({ name }) => (
+                <MenuItem key={name} value={name}>
+                  {name}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>{error?.message}</FormHelperText>
+          </FormControl>
         )}
         name="formName"
       />
       <Controller
         control={control}
-        render={({ field }) => (
-          <FormControlLabel control={<Checkbox />} label="Public" {...field} />
+        render={({ field, fieldState: { error } }) => (
+          <MultipleSelectChip
+            defaultValue={[]}
+            options={roles}
+            editMode
+            error={!!error}
+            helperText={error?.message ?? ""}
+            label="Who should see this form?"
+            updateValue={field.onChange}
+          />
         )}
-        name="isPublic"
+        name="roles"
       />
       <Controller
         control={control}
         render={({ field }) => (
-          <FormControlLabel control={<Checkbox />} label="Open" {...field} />
+          <FormControlLabel
+            control={<Checkbox />}
+            label="Enable collection on creation"
+            {...field}
+          />
         )}
         name="isOpen"
       />
-      <Button type="submit">Create</Button>
+      <Button type="submit" variant="outlined">
+        Create
+      </Button>
     </Box>
   );
 };

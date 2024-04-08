@@ -7,7 +7,7 @@ import { createCollectionSchema } from "../../../components/admin/CollectionForm
 export const collectionRouter = createTRPCRouter({
   createCollection: publicProcedure
     .input(createCollectionSchema)
-    .mutation(async ({ input: { name, formName, isPublic, isOpen } }) => {
+    .mutation(async ({ input: { name, formName, roles, isOpen } }) => {
       try {
         const form = await db.form.findFirst({
           where: {
@@ -23,9 +23,11 @@ export const collectionRouter = createTRPCRouter({
         const collection = await db.collection.create({
           data: {
             name,
-            isPublic,
-            isOpen,
             formName,
+            isOpen,
+            roles: {
+              connect: roles.map((roleName) => ({ roleName })),
+            },
           },
         });
         return collection;
@@ -57,7 +59,7 @@ export const collectionRouter = createTRPCRouter({
       return collection;
     }),
   getCollections: publicProcedure.query(async () => {
-    return db.collection.findMany();
+    return db.collection.findMany({ include: { roles: true } });
   }),
   getSubmissions: publicProcedure
     .input(z.object({ collectionId: z.string() }))
