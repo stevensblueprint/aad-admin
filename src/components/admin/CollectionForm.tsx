@@ -19,9 +19,14 @@ import MultipleSelectChip from "../settings/MulitpleSelectChip";
 
 export const createCollectionSchema = z.object({
   formName: z.string().min(1, { message: "Must select a form schema" }),
-  roles: z.array(z.string()).min(1),
+  roles: z
+    .array(z.string())
+    .min(1, { message: "Must select at least one role" }),
   isOpen: z.boolean(),
-  name: z.string().min(3),
+  name: z.string().min(3, { message: "Name must be at least 3 characters" }),
+  instructions: z
+    .string()
+    .min(1, { message: "Instructions must be at least 1 character" }),
 });
 
 const roles = ["Mentor", "Mentee"];
@@ -43,6 +48,7 @@ const CollectionForm = ({ onSubmit }: CollectionFormProps) => {
       roles: [],
       isOpen: false,
       name: "",
+      instructions: "",
     },
   });
   const handleOnSubmit = (data: CreateCollectionData) => {
@@ -69,6 +75,20 @@ const CollectionForm = ({ onSubmit }: CollectionFormProps) => {
           />
         )}
         name="name"
+      />
+      <Controller
+        control={control}
+        render={({ field, fieldState: { error } }) => (
+          <TextField
+            multiline
+            minRows={4}
+            label="Form Instructions"
+            {...field}
+            error={!!error}
+            helperText={error?.message}
+          />
+        )}
+        name="instructions"
       />
       <Controller
         control={control}
