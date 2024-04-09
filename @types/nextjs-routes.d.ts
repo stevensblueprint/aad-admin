@@ -21,7 +21,8 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/form/[id]", { "id": string }>
     | StaticRoute<"/">
     | DynamicRoute<"/profiles/[id]", { "id": string }>
-    | DynamicRoute<"/settings/[id]", { "id": string }>;
+    | DynamicRoute<"/settings/[id]", { "id": string }>
+    | StaticRoute<"/submission/test">;
 
   interface StaticRoute<Pathname> {
     pathname: Pathname;
