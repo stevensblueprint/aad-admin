@@ -69,28 +69,39 @@ export const collectionRouter = createTRPCRouter({
       });
     }),
 
+  getAllCollectionId: publicProcedure.query(async () => {
+    return db.collection.findMany({
+      select: {
+        id: true,
+      },
+    });
+  }),
+
   getCollectionWithSubmissionsById: publicProcedure
-    .input(z.object({ id: z.string() }))
-    .query(async ({ input: { id } }) => {
-      const collection = await db.collection.findUnique({
-        where: {
-          id,
-        },
-        include: {
-          Submission: {
+    .input(z.object({ ids: z.array(z.string()) }))
+    .query(async ({ input: { ids } }) => {
+      const collectionsWithSubmissions = await Promise.all(
+        ids.map(async (id) => {
+          const collection = await db.collection.findUnique({
+            where: { id },
             include: {
-              submittedBy: true,
-              collection: true,
+              Submission: {
+                include: {
+                  submittedBy: true,
+                  collection: true,
+                },
+              },
             },
-          },
-        }, // Include submissions associated with this collection
-      });
-      if (!collection) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Collection not found",
-        });
-      }
-      return collection;
+          });
+          if (!collection) {
+            throw new TRPCError({
+              code: "NOT_FOUND",
+              message: `Collection with ID ${id} not found`,
+            });
+          }
+          return collection;
+        }),
+      );
+      return collectionsWithSubmissions;
     }),
 });

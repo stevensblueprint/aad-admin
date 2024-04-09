@@ -1,6 +1,5 @@
 import * as React from "react";
 import { api } from "../../utils/api";
-import { useRouter } from "next/router";
 import DefaultLoadingPage from "~/components/loading/loading";
 import {
   TableRow,
@@ -12,30 +11,32 @@ import {
   Paper,
 } from "@mui/material";
 
-const Submissions = () => {
-  const router = useRouter();
+const SubmissionPage = () => {
+  const {
+    data: collectionIds,
+    error: collectionError,
+    isLoading: collectionLoading,
+  } = api.collection.getAllCollectionId.useQuery();
 
-  // Fetch collection with submissions based on ID
   const {
     data: submissionsData,
-    error,
-    isLoading,
+    error: submissionError,
+    isLoading: submissionLoading,
   } = api.collection.getCollectionWithSubmissionsById.useQuery({
-    id: router.query.id as string,
+    ids: collectionIds ? collectionIds.map((collection) => collection.id) : [],
   });
 
-  if (isLoading) return <DefaultLoadingPage />;
+  if (collectionLoading || submissionLoading) return <DefaultLoadingPage />;
+  if (collectionError ?? submissionError)
+    return <div>Error: {submissionError?.message}</div>;
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+  console.log(collectionIds);
+  console.log(submissionsData);
 
-  if (!submissionsData) {
-    return <div>No data found</div>;
-  }
-
-  // Extract submissions data
-  const submissions = submissionsData.Submission;
+  // Flatten the submissionsData array
+  const submissions = submissionsData.flatMap(
+    (collection) => collection.Submission,
+  );
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -53,13 +54,9 @@ const Submissions = () => {
             {submissions.map((submission) => (
               <TableRow key={submission.id}>
                 <TableCell>{submission.submittedBy?.name}</TableCell>
-                <TableCell>
-                  {new Date(submission.createdAt).toLocaleString()}
-                </TableCell>
-                <TableCell>
-                  {new Date(submission.updatedAt).toLocaleString()}
-                </TableCell>
-                <TableCell>{submission.collection.name}</TableCell>
+                <TableCell>{(submission.createdAt).toLocaleString()}</TableCell>
+                <TableCell>{(submission.updatedAt).toLocaleString()}</TableCell>
+                <TableCell>{submission.collection?.name}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -69,4 +66,4 @@ const Submissions = () => {
   );
 };
 
-export default Submissions;
+export default SubmissionPage;

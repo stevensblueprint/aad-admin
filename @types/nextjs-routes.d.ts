@@ -15,7 +15,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/500">
     | StaticRoute<"/admin/collections">
     | StaticRoute<"/admin">
-    | DynamicRoute<"/admin/[id]", { "id": string }>
+    | StaticRoute<"/admin/submissions">
     | DynamicRoute<"/api/auth/[...nextauth]", { "nextauth": string[] }>
     | StaticRoute<"/api/panel">
     | DynamicRoute<"/api/trpc/[trpc]", { "trpc": string }>
@@ -23,8 +23,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/form/[id]", { "id": string }>
     | StaticRoute<"/">
     | DynamicRoute<"/profiles/[id]", { "id": string }>
-    | DynamicRoute<"/settings/[id]", { "id": string }>
-    | StaticRoute<"/submission/test">;
+    | DynamicRoute<"/settings/[id]", { "id": string }>;
 
   interface StaticRoute<Pathname> {
     pathname: Pathname;
