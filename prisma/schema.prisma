@@ -86,20 +86,22 @@ model Profile {
 }
 
 model UserRole {
-  roleName String @id
-  users    User[]
+  roleName    String       @id
+  users       User[]
+  collections Collection[]
 }
 
 model Collection {
-  id         String       @id @default(cuid())
-  name       String
-  isPublic   Boolean
-  form       Form         @relation(fields: [formName], references: [name])
-  formName   String
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  isOpen     Boolean
-  Submission Submission[]
+  id           String       @id @default(cuid())
+  name         String
+  roles        UserRole[]
+  form         Form         @relation(fields: [formName], references: [name])
+  formName     String
+  instructions String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  isOpen       Boolean
+  Submission   Submission[]
 }
 
 model Form {
