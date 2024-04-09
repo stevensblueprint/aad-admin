@@ -7,35 +7,40 @@ import { createCollectionSchema } from "../../../components/admin/CollectionForm
 export const collectionRouter = createTRPCRouter({
   createCollection: publicProcedure
     .input(createCollectionSchema)
-    .mutation(async ({ input: { name, formName, isPublic, isOpen } }) => {
-      try {
-        const form = await db.form.findFirst({
-          where: {
-            name: formName,
-          },
-        });
-        if (!form) {
+    .mutation(
+      async ({ input: { name, instructions, formName, roles, isOpen } }) => {
+        try {
+          const form = await db.form.findFirst({
+            where: {
+              name: formName,
+            },
+          });
+          if (!form) {
+            throw new TRPCError({
+              code: "NOT_FOUND",
+              message: "Form not found",
+            });
+          }
+          const collection = await db.collection.create({
+            data: {
+              name,
+              formName,
+              instructions,
+              isOpen,
+              roles: {
+                connect: roles.map((roleName) => ({ roleName })),
+              },
+            },
+          });
+          return collection;
+        } catch (error) {
           throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Form not found",
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Error creating collection",
           });
         }
-        const collection = await db.collection.create({
-          data: {
-            name,
-            isPublic,
-            isOpen,
-            formName,
-          },
-        });
-        return collection;
-      } catch (error) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Error creating collection",
-        });
-      }
-    }),
+      },
+    ),
   getCollectionById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input: { id } }) => {
@@ -57,7 +62,7 @@ export const collectionRouter = createTRPCRouter({
       return collection;
     }),
   getCollections: publicProcedure.query(async () => {
-    return db.collection.findMany();
+    return db.collection.findMany({ include: { roles: true } });
   }),
   getSubmissions: publicProcedure
     .input(z.object({ collectionId: z.string() }))
