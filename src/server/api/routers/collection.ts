@@ -69,7 +69,7 @@ export const collectionRouter = createTRPCRouter({
       });
     }),
 
-  getAllCollectionId: publicProcedure.query(async () => {
+  getAllCollectionIds: publicProcedure.query(async () => {
     return db.collection.findMany({
       select: {
         id: true,

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import * as React from "react";
 import { api } from "../../utils/api";
 import DefaultLoadingPage from "~/components/loading/loading";
@@ -16,7 +17,7 @@ const SubmissionPage = () => {
     data: collectionIds,
     error: collectionError,
     isLoading: collectionLoading,
-  } = api.collection.getAllCollectionId.useQuery();
+  } = api.collection.getAllCollectionIds.useQuery();
 
   const {
     data: submissionsData,
@@ -26,17 +27,17 @@ const SubmissionPage = () => {
     ids: collectionIds ? collectionIds.map((collection) => collection.id) : [],
   });
 
+  const submissions = useMemo(() => {
+    if (!submissionsData) return []; // Return an empty array if submissionsData is not available
+    return submissionsData.flatMap((collection) => collection.Submission);
+  }, [submissionsData]); // Dependency array containing submissionsData
+
   if (collectionLoading || submissionLoading) return <DefaultLoadingPage />;
   if (collectionError ?? submissionError)
     return <div>Error: {submissionError?.message}</div>;
 
   console.log(collectionIds);
   console.log(submissionsData);
-
-  // Flatten the submissionsData array
-  const submissions = submissionsData.flatMap(
-    (collection) => collection.Submission,
-  );
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
