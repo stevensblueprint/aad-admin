@@ -54,8 +54,8 @@ const SubmissionPage = () => {
             {submissions.map((submission) => (
               <TableRow key={submission.id}>
                 <TableCell>{submission.submittedBy?.name}</TableCell>
-                <TableCell>{(submission.createdAt).toLocaleString()}</TableCell>
-                <TableCell>{(submission.updatedAt).toLocaleString()}</TableCell>
+                <TableCell>{submission.createdAt.toLocaleString()}</TableCell>
+                <TableCell>{submission.updatedAt.toLocaleString()}</TableCell>
                 <TableCell>{submission.collection?.name}</TableCell>
               </TableRow>
             ))}
