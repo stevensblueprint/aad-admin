@@ -15,6 +15,7 @@
     "db:push": "prisma db push",
     "db:forms": "tsx src/schemas/populateForms.ts",
     "db:seed": "prisma db seed && pnpm run types:gen && pnpm run db:forms",
+    "db:populate": "tsx src/server/populate.ts",
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
@@ -65,6 +66,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/cookies": "^0.9.0",
     "@types/eslint": "^8.56.2",
     "@types/node": "^20.11.16",
@@ -82,6 +84,7 @@
     "prisma": "^5.9.1",
     "tailwindcss": "^3.4.1",
     "trpc-panel": "^1.3.4",
+    "ts-node": "^10.9.2",
     "tsx": "^4.7.1"
   },
   "ct3aMetadata": {
