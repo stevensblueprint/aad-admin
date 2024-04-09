@@ -3,7 +3,7 @@ import { Fragment } from "react";
 
 export type ProfileHeaderProps = {
   name: string;
-  image: string;
+  image: string | null;
   roleName: string;
   email: string;
   phoneNumber: string;
