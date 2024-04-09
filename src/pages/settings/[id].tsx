@@ -12,7 +12,8 @@ import {
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import DefaultLoadingPage from "../../components/loading/defaultLoadingPage";
+import DefaultLoadingPage from "../../components/loading/loading";
+import ErrorPage from "../../components/error/error";
 import AvatarWrapper from "../../components/settings/AvatarWrapper";
 import EditProfile from "../../components/settings/EditProfile";
 import EditNotifications from "../../components/settings/EditNotifications";
@@ -50,11 +51,14 @@ const Sidebar = ({ selectedSection, handleListItemClick }: SideBarProps) => {
         sx={{
           flexShrink: 0,
           "& .MuiDrawer-paper": {
+            position: "relative",
             width: 250,
-            backgroundColor: "transparent",
             color: "white",
+            backgroundColor: "transparent",
+            boxSizing: "border-box",
           },
         }}
+        anchor="left"
       >
         <p className="mb-3 mt-6 text-center text-3xl text-white">Settings</p>
         <List>
@@ -85,7 +89,7 @@ export default function SettingsPage() {
     id: router.query.id as string,
   });
   if (isLoading) return <DefaultLoadingPage />;
-  if (error) return <div>Error: {JSON.stringify(error)}</div>;
+  if (error) return <ErrorPage errorMessage={error.message} />;
   if (data.profile === null) {
     return <div>Error: User does not have a profile!</div>;
   }
@@ -118,6 +122,15 @@ export default function SettingsPage() {
                 }
                 email={data.email ? data.email : "Missing Email"}
                 bio={data.profile?.bio ? data.profile.bio : "Missing Bio"}
+                dateOfBirth={
+                  data.profile?.dateOfBirth ? data.profile.dateOfBirth : ""
+                }
+                university={
+                  data.profile?.university ? data.profile.university : ""
+                }
+                industries={
+                  data.profile?.industries ? data.profile.industries : []
+                }
                 editMode={editMode}
                 toggleEditMode={setEditMode}
               />

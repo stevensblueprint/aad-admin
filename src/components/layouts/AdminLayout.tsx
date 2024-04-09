@@ -11,6 +11,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import { useRouter } from "next/router";
 import { type Route } from "nextjs-routes";
 import React, { useTransition } from "react";
+import { useSession } from "next-auth/react";
 
 type MenuItem = {
   text: string;
@@ -38,12 +39,17 @@ export default function AdminLayout({
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const { data: sessionData } = useSession();
 
   const handleNavigation = (item: MenuItem) => {
     startTransition(() => {
       router.push(item.path).catch((error) => console.error(error));
     });
   };
+
+  if (!sessionData || sessionData?.user?.roleName !== "ADMIN") {
+    return children;
+  }
 
   return (
     <div className="flex">
@@ -52,6 +58,7 @@ export default function AdminLayout({
         sx={{
           flexShrink: 0,
           "& .MuiDrawer-paper": {
+            position: "relative",
             width: 250,
             boxSizing: "border-box",
           },

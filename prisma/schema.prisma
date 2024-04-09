@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -54,7 +55,7 @@ model User {
   name          String?
   email         String       @unique
   emailVerified DateTime?
-  image         String
+  image         String?
   roleName      String
   role          UserRole     @relation(fields: [roleName], references: [roleName])
   accounts      Account[]
@@ -73,12 +74,15 @@ model VerificationToken {
 
 // Profile schema
 model Profile {
-  id            Int     @id @default(autoincrement())
-  user          User    @relation(fields: [userId], references: [id])
-  userId        String  @unique
+  id            Int      @id @default(autoincrement())
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String   @unique
+  dateOfBirth   String?
   preferredName String?
   phoneNumber   String?
   bio           String?
+  university    String?
+  industries    String[]
 }
 
 model UserRole {

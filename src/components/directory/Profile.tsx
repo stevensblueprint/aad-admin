@@ -21,7 +21,10 @@ const Profile = ({ profile }: ProfileCardProps) => {
         p: 2,
       }}
     >
-      <Avatar src={profile.user.image} sx={{ width: 80, height: 80, m: 2 }} />
+      <Avatar
+        src={profile.user.image ?? undefined}
+        sx={{ width: 80, height: 80, m: 2 }}
+      />
       <CardContent
         sx={{
           flex: "1",

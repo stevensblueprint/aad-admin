@@ -11,7 +11,7 @@ import { Controller, useForm } from "react-hook-form";
 import { api } from "../../utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import DefaultLoadingPage from "../../components/loading/defaultLoadingPage";
+import DefaultLoadingPage from "../loading/loading";
 
 export const createCollectionSchema = z.object({
   formName: z.string(),
