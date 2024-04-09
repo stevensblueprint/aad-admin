@@ -1,5 +1,6 @@
 import { type Dispatch, type SetStateAction, useState } from "react";
 import { z } from "zod";
+import { api } from "../../utils/api";
 import {
   Button,
   TextField,
@@ -11,12 +12,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import MultipleSelectChip from "./MulitpleSelectChip";
 import universities from "./us_universities.json";
-import industries from "./industries.json";
+import industryOptions from "./industries.json";
 
 type EditProfileProps = {
   preferredName: string;
   email: string;
   bio: string;
+  dateOfBirth: string;
+  university: string;
+  industries: string[];
   editMode: boolean;
   toggleEditMode: Dispatch<SetStateAction<boolean>>;
 };
@@ -25,7 +29,7 @@ type EditProfileProps = {
 const formSchema = z.object({
   name: z.string().min(1, "Full name is required"),
   emailAddress: z.string().email("Invalid email address"),
-  dateOfBirth: z.string().min(1, "Date of Birth is required"),
+  dob: z.string().min(1, "Date of Birth is required"),
   biography: z.string().min(1, "Bio is required"),
   selectedUniversity: z.string().min(1, "College/University is required"),
   topIndustries: z
@@ -37,18 +41,18 @@ const EditProfile = ({
   preferredName,
   email,
   bio,
-  // dateOfBirth,
-  // selectedUniversity,
-  // topIndustries,
+  dateOfBirth,
+  university,
+  industries,
   editMode,
   toggleEditMode,
 }: EditProfileProps) => {
   const [name, setName] = useState(preferredName);
   const [emailAddress, setEmailAddress] = useState(email);
-  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [dob, setDOB] = useState(dateOfBirth);
   const [biography, setBiography] = useState(bio);
-  const [selectedUniversity, setSelectedUniversity] = useState("");
-  const [topIndustries, setTopIndustries] = useState<string[]>([]);
+  const [selectedUniversity, setSelectedUniversity] = useState(university);
+  const [topIndustries, setTopIndustries] = useState<string[]>(industries); //Set to empty array always but will need to figure out how to set initial value
 
   const [formErrors, setFormErrors] = useState<z.inferFlattenedErrors<
     typeof formSchema
@@ -60,11 +64,14 @@ const EditProfile = ({
     limit: 500,
   });
 
+  const mutation = api.user.updateProfile.useMutation();
+
   const handleSubmit = () => {
+    console.log(dob);
     const result = formSchema.safeParse({
       name,
       emailAddress,
-      dateOfBirth,
+      dob,
       biography,
       selectedUniversity,
       topIndustries,
@@ -82,6 +89,7 @@ const EditProfile = ({
     toggleEditMode(false);
     setFormErrors(null);
     // Add your form submission logic here (e.g., API call)
+    mutation.mutate(result.data);
   };
 
   return (
@@ -184,28 +192,38 @@ const EditProfile = ({
               variant="outlined"
               color="primary"
               label="Date of Birth"
-              onChange={(e) => setDateOfBirth(e.target.value)}
-              value={dateOfBirth}
+              onChange={(e) => setDOB(e.target.value)}
+              value={dob}
               fullWidth
-              required
               InputProps={{
                 readOnly: !editMode,
               }}
               InputLabelProps={{ shrink: true }}
               sx={{ mb: 4 }}
-              error={formErrors?.fieldErrors.dateOfBirth !== undefined}
+              error={formErrors?.fieldErrors.dob !== undefined}
               helperText={
-                formErrors?.fieldErrors.dateOfBirth?.[0]
-                  ? formErrors?.fieldErrors.dateOfBirth?.[0]
+                formErrors?.fieldErrors.dob?.[0]
+                  ? formErrors?.fieldErrors.dob?.[0]
                   : ""
               }
             />
             <Autocomplete
               disablePortal
+              disableClearable={true}
               options={universities}
               filterOptions={filterOptions}
+              value={{ label: selectedUniversity }}
+              defaultValue={{ label: selectedUniversity }}
+              isOptionEqualToValue={(option, value) => {
+                return (
+                  (option as { label: string }).label ===
+                  (value as { label: string }).label
+                );
+              }}
               onChange={(e, value) =>
-                setSelectedUniversity((value as { label: string }).label)
+                setSelectedUniversity(
+                  value != null ? (value as { label: string }).label : "",
+                )
               }
               sx={{ mb: 4 }}
               renderInput={(params) => (
@@ -227,8 +245,9 @@ const EditProfile = ({
 
             <MultipleSelectChip
               label="Industries"
-              options={industries}
+              options={industryOptions}
               editMode={editMode}
+              defaultValue={topIndustries}
               updateValue={setTopIndustries}
               error={formErrors?.fieldErrors.topIndustries !== undefined}
               helperText={

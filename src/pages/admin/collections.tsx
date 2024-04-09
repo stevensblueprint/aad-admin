@@ -12,7 +12,8 @@ import { type SubmitHandler } from "react-hook-form";
 import CollectionForm, {
   type CreateCollectionData,
 } from "../../components/admin/CollectionForm";
-import DefaultLoadingPage from "../../components/loading/defaultLoadingPage";
+import DefaultLoadingPage from "../../components/loading/loading";
+import ErrorPage from "../../components/error/error";
 
 const Collections = () => {
   const { data, error, isLoading } = api.collection.getCollections.useQuery();
@@ -23,7 +24,7 @@ const Collections = () => {
     await mutateAsync(data);
   };
   if (isLoading) return <DefaultLoadingPage />;
-  if (error) return <div>Error: {error.message}</div>;
+  if (error) return <ErrorPage errorMessage={error.message} />;
   return (
     <Container>
       <CollectionForm onSubmit={onSubmit} />
