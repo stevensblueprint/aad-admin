@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { type JSONObject } from "superjson/dist/types";
 import DefaultLoadingPage from "../../components/loading/loading";
 import ErrorPage from "../../components/error/error";
+import { Container, Typography } from "@mui/material";
 
 /**
  * Form page that gets the collection by id and renders the form based
@@ -29,15 +30,20 @@ const Form = () => {
     submit({ collectionId: router.query.id as string, data });
   };
   return (
-    <>
-      {/* Info panel about form customizable when it is created */}
+    <Container className="flex flex-col p-4">
+      <Typography variant="h4" className="mb-4">
+        {data.name}
+      </Typography>
+      <Typography variant="body1" className="mb-4">
+        {data.instructions}
+      </Typography>
       <JsonForm
         schema={formSchema}
         uischema={uiSchema}
         initialData={{}}
         onSubmit={onSubmit}
       />
-    </>
+    </Container>
   );
 };
 
