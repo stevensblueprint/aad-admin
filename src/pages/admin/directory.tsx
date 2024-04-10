@@ -1,8 +1,9 @@
-import { api } from "../utils/api";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useState, type ReactElement } from "react";
-import AdminLayout from "../components/layouts/AdminLayout";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
+import Profile from "../../components/directory/Profile";
+import AdminLayout from "../../components/layouts/AdminLayout";
+import { api } from "../../utils/api";
 
 enum UserRole {
   MENTEE = "Mentee",

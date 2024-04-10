@@ -8,27 +8,39 @@ import {
 } from "@mui/material";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import FolderIcon from "@mui/icons-material/Folder";
+import PublishIcon from "@mui/icons-material/Publish";
 import { useRouter } from "next/router";
-import { type Route } from "nextjs-routes";
 import React, { useTransition } from "react";
 import { useSession } from "next-auth/react";
+import { type Route } from "nextjs-routes";
 
-type MenuItem = {
+interface MenuItem {
   text: string;
   icon: JSX.Element;
-  path: "/" | Route;
-};
+  path: Route["pathname"];
+}
 
 const menuItems: MenuItem[] = [
   {
     text: "Collections",
     icon: <InboxIcon />,
-    path: "/",
+    path: "/admin/collections",
   },
   {
     text: "Forms",
     icon: <MailIcon />,
-    path: "/",
+    path: "/admin/forms",
+  },
+  {
+    text: "Directory",
+    icon: <FolderIcon />,
+    path: "/admin/directory",
+  },
+  {
+    text: "Submissions",
+    icon: <PublishIcon />,
+    path: "/admin/submissions",
   },
 ];
 
@@ -43,7 +55,7 @@ export default function AdminLayout({
 
   const handleNavigation = (item: MenuItem) => {
     startTransition(() => {
-      router.push(item.path).catch((error) => console.error(error));
+      void router.push({ pathname: item.path } as Route);
     });
   };
 
