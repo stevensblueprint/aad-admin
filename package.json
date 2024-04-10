@@ -15,13 +15,14 @@
     "db:push": "prisma db push",
     "db:forms": "tsx src/schemas/populateForms.ts",
     "db:seed": "prisma db seed && pnpm run types:gen && pnpm run db:forms",
-    "db:populate": "tsx src/server/populate.ts",
+    "db:populate": "tsx prisma/populate.ts",
+    "db:stag-init": "pnpm run db:push --force-reset && pnpm run db:forms && pnpm run db:seed && pnpm run db:populate",
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "format:check": "prettier --check .",
     "format": "prettier --write . && prisma format",
-    "start": "next start",
+    "start": "pnpm run db:stag-init && next start",
     "types:gen": "tsx src/schemas/generateTypes.ts"
   },
   "husky": {
