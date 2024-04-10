@@ -14,12 +14,14 @@ declare module "nextjs-routes" {
     | StaticRoute<"/404">
     | StaticRoute<"/500">
     | StaticRoute<"/admin/collections">
+    | StaticRoute<"/directory">
+    | StaticRoute<"/admin/forms">
     | StaticRoute<"/admin">
     | StaticRoute<"/admin/submissions">
+    | StaticRoute<"/admin/directory">
     | DynamicRoute<"/api/auth/[...nextauth]", { "nextauth": string[] }>
     | StaticRoute<"/api/panel">
     | DynamicRoute<"/api/trpc/[trpc]", { "trpc": string }>
-    | StaticRoute<"/directory">
     | DynamicRoute<"/form/[id]", { "id": string }>
     | StaticRoute<"/">
     | DynamicRoute<"/profiles/[id]", { "id": string }>
@@ -46,7 +48,8 @@ declare module "nextjs-routes" {
     { pathname: P }
   >["query"];
 
-  export type Locale = undefined;
+  export type Locale = 
+    | "en";
 
   /**
    * A typesafe utility function for generating paths in your application.
@@ -65,9 +68,11 @@ declare module "nextjs-routes" {
   > = Omit<NextGetServerSidePropsContext, 'params' | 'query' | 'defaultLocale' | 'locale' | 'locales'> & {
     params: Extract<Route, { pathname: Pathname }>["query"];
     query: Query;
-    defaultLocale?: undefined;
-    locale?: Locale;
-    locales?: undefined;
+    defaultLocale: "en";
+    locale: Locale;
+    locales: [
+          "en"
+        ];
   };
 
   /**
@@ -101,7 +106,7 @@ declare module "next/link" {
     extends Omit<NextLinkProps, "href" | "locale">,
       AnchorHTMLAttributes<HTMLAnchorElement> {
     href: Route | StaticRoute | Omit<Route, "pathname">
-    locale?: false;
+    locale?: Locale | false;
   }
 
   type LinkReactElement = DetailedReactHTMLElement<
@@ -130,7 +135,7 @@ declare module "next/router" {
   type StaticRoute = Exclude<Route, { query: any }>["pathname"];
 
   interface TransitionOptions extends Omit<NextTransitionOptions, "locale"> {
-    locale?: false;
+    locale?: Locale | false;
   }
 
   type PathnameAndQuery<Pathname> = Required<
@@ -160,10 +165,12 @@ declare module "next/router" {
         | "replace"
         | "route"
       > & {
-        defaultLocale?: undefined;
+        defaultLocale: "en";
         domainLocales?: undefined;
-        locale?: Locale;
-        locales?: undefined;
+        locale: Locale;
+        locales: [
+          "en"
+        ];
         push(
           url: Route | StaticRoute | Omit<Route, "pathname">,
           as?: string,
