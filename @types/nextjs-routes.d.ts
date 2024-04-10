@@ -21,6 +21,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/directory">
     | DynamicRoute<"/form/[id]", { "id": string }>
     | StaticRoute<"/">
+    | StaticRoute<"/matching">
     | DynamicRoute<"/profiles/[id]", { "id": string }>
     | DynamicRoute<"/settings/[id]", { "id": string }>;
 
