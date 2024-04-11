@@ -1,5 +1,4 @@
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { useState, type ReactElement } from "react";
+import { type ReactElement } from "react";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import AdminLayout from "../../components/layouts/AdminLayout";
 import { api } from "../../utils/api";
@@ -11,11 +10,8 @@ enum UserRole {
 }
 
 const Directory = () => {
-  const [currentRole, setCurrentRole] = useState<UserRole>(UserRole.MENTEE);
 
-  const { data, isLoading } = api.user.getByRole.useQuery({
-    role: currentRole.toUpperCase(),
-  });
+  const { data, isLoading } = api.user.getAll.useQuery();
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 90 },
@@ -44,35 +40,15 @@ const Directory = () => {
   const rows = data
     ? data.map((user) => ({
         id: user.id,
-        name: user.user.name,
-        email: user.user.email,
-        role: user.user.roleName,
+        name: user.name,
+        email: user.email,
+        role: user.roleName,
       }))
     : [];
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center bg-clear">
-      <h1 className="mt-6 text-6xl font-bold text-aero">Directory</h1>
-      <ToggleButtonGroup
-        className="mb-4 mt-10"
-        size="large"
-        color="primary"
-        exclusive
-        value={currentRole}
-        onChange={(event, newRole: string | null) => {
-          if (newRole !== null) setCurrentRole(newRole as UserRole);
-        }}
-      >
-        {Object.values(UserRole).map((role) => (
-          <ToggleButton
-            key={role}
-            value={role.toLowerCase()}
-            disabled={isLoading}
-          >
-            {role}
-          </ToggleButton>
-        ))}
-      </ToggleButtonGroup>
+      <h1 className="mt-6 text-6xl font-bold text-aero mb-12">Directory</h1>
       <div style={{ height: 400, width: "100%" }}>
         <DataGrid
           rows={rows}
