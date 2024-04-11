@@ -128,7 +128,7 @@ export const formRouter = createTRPCRouter({
       } catch (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: `Failed to create form with ID '${id}': ${error}`,
+          message: `Failed to create form with ID '${id}': ${String(error)}`,
         });
       }
     }),
@@ -155,7 +155,7 @@ export const formRouter = createTRPCRouter({
       } catch (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: `Failed to delete form with ID '${id}': ${error}`,
+          message: `Failed to delete form with ID '${id}': ${String(error)}`,
         });
       }
     }),
