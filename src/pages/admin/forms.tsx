@@ -1,6 +1,9 @@
 import { type ReactElement } from "react";
 import AdminLayout from "../../components/layouts/AdminLayout";
 
+import JsonView from 'react18-json-view'
+import 'react18-json-view/src/style.css'
+
 const Forms = () => {
   const utils = api.useUtils();
   const { data, error, isLoading } = api.form.getForms.useQuery({
@@ -22,8 +25,15 @@ const Forms = () => {
             {data?.map((form) => (
               <TableRow key={form.name}>
                 <TableCell>{form.name}</TableCell>
-                <TableCell>{form.formSchema}</TableCell>
-                <TableCell>{form.uiSchema}</TableCell>
+                {/*https://github.com/YYsuni/react18-json-view?tab=readme-ov-file */}
+                <TableCell>
+                  <JsonView src={() => JSON.parse(form.formSchema)} />
+                </TableCell>
+                <TableCell>
+                  <JsonView src={() => JSON.parse(form.uiSchema)} />
+                </TableCell>
+                {/* <TableCell>{form.formSchema}</TableCell>
+                <TableCell>{form.uiSchema}</TableCell> */}
               </TableRow>
             ))}
           </TableBody>
