@@ -32,6 +32,28 @@ export const userRouter = createTRPCRouter({
     return await db.user.findMany();
   }),
 
+  creatUser: protectedProcedure
+    .input(
+      z.object({
+        name: z.string().min(1),
+        email: z.string().email(),
+        role: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      return await db.user.create({
+        data: {
+          email: input.email,
+          roleName: input.role,
+          profile: {
+            create: {
+              preferredName: input.name,
+            },
+          },
+        },
+      });
+    }),
+
   getByRole: protectedProcedure
     .input(z.object({ role: z.string() }))
     .query(async ({ input }) => {
