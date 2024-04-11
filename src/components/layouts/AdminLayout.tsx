@@ -35,7 +35,7 @@ const menuItems: MenuItem[] = [
   {
     text: "Directory",
     icon: <FolderIcon />,
-    path: "/admin/directory",
+    path: "/directory",
   },
   {
     text: "Submissions",
