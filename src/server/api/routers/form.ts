@@ -106,7 +106,6 @@ export const formRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input: { id, formSchema, uiSchema }, ctx: { db } }) => {
-      // TODO: Change this to create a collection and cascade to the form object
       const formExists = await db.form.findUnique({ where: { name: id } });
 
       if (formExists) {
