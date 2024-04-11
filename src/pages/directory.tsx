@@ -1,7 +1,7 @@
 import { useState, type ReactElement } from "react";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
-import AdminLayout from "../../components/layouts/AdminLayout";
-import { api } from "../../utils/api";
+import AdminLayout from "../components/layouts/AdminLayout";
+import { api } from "../utils/api";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 
 enum UserRole {
