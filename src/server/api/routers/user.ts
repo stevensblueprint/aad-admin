@@ -46,6 +46,23 @@ export const userRouter = createTRPCRouter({
         },
       });
     }),
+  
+  deleteById: protectedProcedure
+  .input(z.object({ id: z.string() }))
+  .mutation(async ({ input }) => {
+    try {
+      return await db.user.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    } catch (error) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: '"{input.id}" not found in database',
+      });
+    }
+  }),
 
   updateProfile: protectedProcedure
     .input(
