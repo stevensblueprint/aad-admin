@@ -160,11 +160,49 @@ export const formRouter = createTRPCRouter({
       }
     }),
   /**
-   * TODO: This method should be called/coupled with an interactive JSON Editor that 
+   * This method should be called/coupled with an interactive JSON Editor that
    * lets Admins change the schema and UI schema of the chosen form
-   * editForm: publicProcedure
-    .input(z.object({id : z.string(), newFormSchema: z.string(), newUiSchema: z.string()}))
-    .mutation(async ({ input: {id, newFormSchema, newUiSchema }, ctx: {db}}) => {
-    }),
    */
+  editForm: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        newFormSchema: z.string(),
+        newUiSchema: z.string(),
+      }),
+    )
+    .mutation(
+      async ({ input: { id, newFormSchema, newUiSchema }, ctx: { db } }) => {
+        const formExists = await db.form.findUnique({ where: { name: id } });
+
+        if (!formExists) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: `A form with the id '${id}' does not exist.`,
+          });
+        }
+
+        try {
+          // FIXME: Rewriting the whole json every time seems like an expensive operation, how can we optimize?
+          const updatedForm = await db.form.update({
+            where: {
+              name: id,
+            },
+            data: {
+              formSchema: newFormSchema,
+              uiSchema: newUiSchema,
+            },
+          });
+
+          return {
+            message: `Form with the id '${id}' successfully updated: ${String(updatedForm)}`,
+          };
+        } catch (error) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: `Failed to delete form with ID '${id}': ${String(error)}`,
+          });
+        }
+      },
+    ),
 });

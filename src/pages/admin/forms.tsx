@@ -10,6 +10,19 @@ const Forms = () => {
     includeSchemas: true,
   });
 
+  const { mutateAsync } = api.form.editForm.useMutation({
+    onSuccess: async () => {
+      await utils.form.getForms.invalidate();
+    },
+  });
+
+  const onSubmit: SubmitHandler<CreateCollectionData> = async (data) => {
+    await mutateAsync({
+      ...data,
+      roles: data.roles.map((role) => role.toUpperCase()),
+    });
+  };
+
   // Extract the JSON and check the proper type from database row
   // FIXME: Should uiSchema and formSchema just be stored as JSON in the database instead of strings?
   const parseJSON = <T,>(jsonString: string, defaultValue: T): T => {
@@ -20,6 +33,9 @@ const Forms = () => {
       return defaultValue;
     }
   };
+
+  if (isLoading) return <DefaultLoadingPage />;
+  if (error) return <ErrorPage errorMessage={error.message} />;
 
   return (
     <Container className="mt-4">
@@ -39,6 +55,7 @@ const Forms = () => {
                 {/*
                 https://github.com/YYsuni/react18-json-view?tab=readme-ov-file 
                 https://react18-json-view.vercel.app/?path=/docs/editable--docs
+                TODO: onEdit, onAdd, onDelete should all call the editForm procedure
                 */}
                 <TableCell>
                   <JsonView
