@@ -1,8 +1,43 @@
+import {
+  Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import { api } from "~/utils/api";
+
 const Forms = () => {
+  const utils = api.useUtils();
+  const { data, error, isLoading } = api.form.getForms.useQuery({
+    includeSchemas: true,
+  });
+
   return (
-    <div>
-      <h1>Forms</h1>
-    </div>
+    <Container className="mt-4">
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Form Name</TableCell>
+              <TableCell>Form Schema</TableCell>
+              <TableCell>Form UI Schema</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data?.map((form) => (
+              <TableRow key={form.name}>
+                <TableCell>{form.name}</TableCell>
+                <TableCell>{form.formSchema}</TableCell>
+                <TableCell>{form.uiSchema}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
   );
 };
 
