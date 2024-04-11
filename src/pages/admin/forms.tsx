@@ -10,6 +10,17 @@ const Forms = () => {
     includeSchemas: true,
   });
 
+  // Extract the JSON and check the proper type from database row
+  // FIXME: Should uiSchema and formSchema just be stored as JSON in the database instead of strings?
+  const parseJSON = <T,>(jsonString: string, defaultValue: T): T => {
+    try {
+      return JSON.parse(jsonString) as T;
+    } catch (error) {
+      console.error("Error parsing JSON", error);
+      return defaultValue;
+    }
+  };
+
   return (
     <Container className="mt-4">
       <TableContainer>
@@ -25,15 +36,22 @@ const Forms = () => {
             {data?.map((form) => (
               <TableRow key={form.name}>
                 <TableCell>{form.name}</TableCell>
-                {/*https://github.com/YYsuni/react18-json-view?tab=readme-ov-file */}
+                {/*
+                https://github.com/YYsuni/react18-json-view?tab=readme-ov-file 
+                https://react18-json-view.vercel.app/?path=/docs/editable--docs
+                */}
                 <TableCell>
-                  <JsonView src={() => JSON.parse(form.formSchema)} />
+                  <JsonView
+                    src={() => parseJSON<object>(form.formSchema, {})}
+                    editable={true}
+                  />
                 </TableCell>
                 <TableCell>
-                  <JsonView src={() => JSON.parse(form.uiSchema)} />
+                  <JsonView
+                    src={() => parseJSON<UISchemaElement>(form.uiSchema, {})}
+                    editable={true}
+                  />
                 </TableCell>
-                {/* <TableCell>{form.formSchema}</TableCell>
-                <TableCell>{form.uiSchema}</TableCell> */}
               </TableRow>
             ))}
           </TableBody>
