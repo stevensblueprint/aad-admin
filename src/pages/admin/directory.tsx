@@ -4,9 +4,9 @@ import AdminLayout from "../../components/layouts/AdminLayout";
 import { api } from "../../utils/api";
 
 enum UserRole {
-  MENTEE = "Mentee",
-  MENTOR = "Mentor",
-  ADMIN = "Admin",
+  MENTEE = "MENTEE",
+  MENTOR = "MENTOR",
+  ADMIN = "ADMIN",
 }
 
 const Directory = () => {
@@ -34,6 +34,7 @@ const Directory = () => {
       editable: false,
       type: "singleSelect",
       valueOptions: Object.values(UserRole),
+      filterable: true,
     },
   ];
 
