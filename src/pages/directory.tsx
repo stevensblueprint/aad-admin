@@ -82,15 +82,15 @@ const Directory = () => {
     <main className="flex min-h-screen w-full flex-col items-center bg-clear">
       <h1 className="mb-12 mt-6 text-6xl font-bold text-aero">Directory</h1>
       <div className="w-3/4">
-        <div className="flex justify-end mb-2">
+        <div className="mb-2 flex justify-end">
           <button
-            className="rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700 ml-2"
+            className="ml-2 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
             onClick={() => setAddModalOpen(true)}
           >
             Add New User
           </button>
           <button
-            className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700 ml-2"
+            className="ml-2 rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
             onClick={handleDelete}
             disabled={selectionModel.length === 0 || deleteMutation.isLoading}
           >
