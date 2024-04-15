@@ -14,12 +14,14 @@ declare module "nextjs-routes" {
     | StaticRoute<"/404">
     | StaticRoute<"/500">
     | StaticRoute<"/admin/collections">
+    | StaticRoute<"/directory">
+    | StaticRoute<"/admin/forms">
     | StaticRoute<"/admin">
     | StaticRoute<"/admin/submissions">
+    | StaticRoute<"/admin/directory">
     | DynamicRoute<"/api/auth/[...nextauth]", { "nextauth": string[] }>
     | StaticRoute<"/api/panel">
     | DynamicRoute<"/api/trpc/[trpc]", { "trpc": string }>
-    | StaticRoute<"/directory">
     | DynamicRoute<"/form/[id]", { "id": string }>
     | StaticRoute<"/">
     | StaticRoute<"/matching">
