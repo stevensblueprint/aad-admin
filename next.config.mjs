@@ -8,7 +8,7 @@ const withRoutes = nextRoutes();
 
 /** @type {import("next").NextConfig} */
 const config = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   output: "standalone",
 
   /**

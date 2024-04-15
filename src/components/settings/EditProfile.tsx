@@ -67,7 +67,6 @@ const EditProfile = ({
   const mutation = api.user.updateProfile.useMutation();
 
   const handleSubmit = () => {
-    console.log(dob);
     const result = formSchema.safeParse({
       name,
       emailAddress,

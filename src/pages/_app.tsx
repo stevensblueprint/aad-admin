@@ -1,11 +1,12 @@
 import { type Session } from "next-auth";
 import { SessionProvider, getSession } from "next-auth/react";
 import { type AppContext, type AppProps } from "next/app";
+import CssBaseline from "@mui/material/CssBaseline";
 
 import { api } from "~/utils/api";
 
-import "~/styles/globals.css";
 import { StyledEngineProvider } from "@mui/material";
+import "~/styles/globals.css";
 import { type ReactElement, type ReactNode } from "react";
 import { type NextPage } from "next";
 
@@ -30,6 +31,7 @@ const MyApp = ({
 
   return (
     <SessionProvider session={session}>
+      <CssBaseline />
       <StyledEngineProvider injectFirst>
         <RootLayout>{getLayout(<Component {...pageProps} />)}</RootLayout>,
       </StyledEngineProvider>

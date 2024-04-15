@@ -88,14 +88,8 @@ function ResponsiveAppBar() {
               variant="h6"
               noWrap
               component="a"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                color: "inherit",
-              }}
               href="/"
+              className="mr-4 hidden font-mono font-bold text-inherit no-underline md:flex"
             >
               AAD
             </Typography>

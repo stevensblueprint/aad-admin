@@ -1,5 +1,6 @@
 import AvatarWrapper from "../settings/AvatarWrapper";
 import { Fragment } from "react";
+import { sentenceCase } from "../../utils/roles";
 
 export type ProfileHeaderProps = {
   name: string;
@@ -19,7 +20,7 @@ const ProfileHeader = ({
   const info = [
     {
       key: "Role",
-      value: roleName.charAt(0) + roleName.slice(1).toLowerCase(),
+      value: sentenceCase(roleName),
     },
     { key: "Email", value: email },
     { key: "Phone", value: phoneNumber },
