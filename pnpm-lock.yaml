@@ -59,9 +59,6 @@ dependencies:
   '@trpc/server':
     specifier: ^10.45.0
     version: 10.45.2
-  '@types/react-beautiful-dnd':
-    specifier: ^13.1.8
-    version: 13.1.8
   ajv:
     specifier: ^8.12.0
     version: 8.12.0
@@ -130,6 +127,9 @@ devDependencies:
   '@types/react':
     specifier: ^18.2.55
     version: 18.2.64
+  '@types/react-beautiful-dnd':
+    specifier: ^13.1.8
+    version: 13.1.8
   '@types/react-dom':
     specifier: ^18.2.19
     version: 18.2.21
@@ -1586,7 +1586,7 @@ packages:
     resolution: {integrity: sha512-E3TyFsro9pQuK4r8S/OL6G99eq7p8v29sX0PM7oT8Z+PJfZvSQTx4zTQbUJ+QZXioAF0e7TGBEcA1XhYhCweyQ==}
     dependencies:
       '@types/react': 18.2.64
-    dev: false
+    dev: true
 
   /@types/react-dom@18.2.21:
     resolution: {integrity: sha512-gnvBA/21SA4xxqNXEwNiVcP0xSGHh/gi1VhWv9Bl46a0ItbTT5nFY+G9VSQpaG/8N/qdJpJ+vftQ4zflTtnjLw==}

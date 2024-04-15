@@ -3,6 +3,7 @@ import {
   Autocomplete,
   Box,
   Button,
+  Divider,
   FormControl,
   Step,
   StepContent,
@@ -13,10 +14,11 @@ import {
 } from "@mui/material";
 import { z } from "zod";
 import PreferenceDragAndDrop from "./PreferenceDragAndDrop";
+import { sentenceCase } from "../../utils/roles";
 
 export type Preference = {
   name: string;
-  id: number;
+  id: string;
   firstLetter: string;
 };
 
@@ -26,27 +28,24 @@ const formSchema = z.object({
     .array(
       z.object({
         name: z.string(),
-        id: z.number(),
+        id: z.string(),
         firstLetter: z.string(),
       }),
     )
     .min(5, "Minimum of 5 must be selected")
-    .max(5, "Maximum of 5 must be selected"), // Enforce maximum limit
+    .max(5, "Maximum of 5 must be selected"),
 });
 
 const MatchingFormSteps = ({
   menteeOrMentorText,
   preferenceOptions,
-  preferences,
-  setPreferences,
-  setSubmitted,
+  onSubmit,
 }: {
   menteeOrMentorText: string;
   preferenceOptions: Preference[];
-  preferences: Preference[];
-  setPreferences: React.Dispatch<React.SetStateAction<Preference[]>>;
-  setSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
+  onSubmit: (preferences: Preference[]) => void;
 }) => {
+  const [preferences, setPreferences] = useState<Preference[]>([]);
   const [activeStep, setActiveStep] = useState(0);
   const [formErrors, setFormErrors] = useState<z.inferFlattenedErrors<
     typeof formSchema
@@ -71,12 +70,7 @@ const MatchingFormSteps = ({
 
   const handleSubmit = () => {
     setFormErrors(null);
-
-    // TODO:
-    // Add your form submission logic here (e.g., API call)
-    // mutation.mutate(result.data);
-    console.log("Final preferences order:", preferences);
-    setSubmitted(true);
+    onSubmit(preferences);
   };
 
   const handleNext = () => {
@@ -84,6 +78,10 @@ const MatchingFormSteps = ({
   };
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const onPreferenceChange = (val: Preference[]) => {
+    setPreferences(val);
   };
 
   return (
@@ -95,13 +93,11 @@ const MatchingFormSteps = ({
             Select your top 5 {menteeOrMentorText} from the provided list. You
             can search for {menteeOrMentorText} by name.
           </Typography>
-          <FormControl sx={{ width: 1, marginTop: 2, marginBottom: 2 }}>
+          <FormControl className="mb-2 mt-2 w-full">
             <Autocomplete
               multiple
               id="top-5-selected"
-              options={preferenceOptions.sort(
-                (a, b) => -b.firstLetter.localeCompare(a.firstLetter),
-              )}
+              options={preferenceOptions}
               value={preferences}
               groupBy={(option) => option.firstLetter}
               getOptionLabel={({ name }) => name}
@@ -115,14 +111,8 @@ const MatchingFormSteps = ({
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={
-                    menteeOrMentorText.charAt(0).toUpperCase() +
-                    menteeOrMentorText.slice(1)
-                  }
-                  placeholder={
-                    menteeOrMentorText.charAt(0).toUpperCase() +
-                    menteeOrMentorText.slice(1)
-                  }
+                  label={sentenceCase(menteeOrMentorText)}
+                  placeholder={sentenceCase(menteeOrMentorText)}
                   error={formErrors?.fieldErrors.preferences !== undefined}
                   helperText={
                     formErrors?.fieldErrors.preferences?.[0]
@@ -133,23 +123,21 @@ const MatchingFormSteps = ({
               )}
             />
           </FormControl>
-          <Box sx={{ mb: 2 }}>
+          <Box>
             <div>
               <Button
                 variant="contained"
                 onClick={() => {
-                  if (handleFirstStepSubmit()) {
-                    handleNext();
-                  }
+                  handleFirstStepSubmit() && handleNext();
                 }}
-                sx={{ mt: 1, mr: 1 }}
+                className="mr-1 mt-2"
               >
                 Continue
               </Button>
               <Button
                 disabled={true}
                 onClick={handleBack}
-                sx={{ mt: 1, mr: 1 }}
+                className="mr-1 mt-2"
               >
                 Back
               </Button>
@@ -167,9 +155,10 @@ const MatchingFormSteps = ({
           </Typography>
           <PreferenceDragAndDrop
             preferences={preferences}
-            setPreferences={setPreferences}
+            onChange={onPreferenceChange}
           />
-          <Box sx={{ mb: 2 }}>
+          <Divider className="mb-4 mt-8" />
+          <Box className="mb-1">
             <div>
               <Button
                 variant="contained"
@@ -177,14 +166,14 @@ const MatchingFormSteps = ({
                   handleNext();
                   handleSubmit();
                 }}
-                sx={{ mt: 1, mr: 1 }}
+                className="mr-1 mt-2"
               >
                 Finish
               </Button>
               <Button
                 disabled={false}
                 onClick={handleBack}
-                sx={{ mt: 1, mr: 1 }}
+                className="mr-1 mt-2"
               >
                 Back
               </Button>

@@ -1,23 +1,39 @@
 import { api } from "../../utils/api";
 import DefaultLoadingPage from "../../components/loading/loading";
-import { useSession, signIn } from "next-auth/react";
-import { useState } from "react";
-import { Alert, AlertTitle, Button } from "@mui/material";
+import { useSession } from "next-auth/react";
+import { useState, useMemo } from "react";
+import { Alert, AlertTitle } from "@mui/material";
 import MatchingFormSteps from "../../components/matching/MatchingFormSteps";
+import PleaseSignInPage from "../../components/PleaseSignInPage";
+import { type Preference } from "../../components/matching/MatchingFormSteps";
+import { type RouterOutputs } from "../../utils/api";
 
-type Preference = {
-  name: string;
-  id: number;
-  firstLetter: string;
+export type getByRoleOutput = RouterOutputs["user"]["getByRole"];
+export type getByRoleOutputData = getByRoleOutput[0];
+
+const formatOptionsObject = (match: getByRoleOutputData): Preference => {
+  const firstLetter = match?.user.name ? match?.user.name.charAt(0) : "N";
+  return {
+    name: match?.user.name ? match?.user.name : "No Name",
+    id: match?.user?.id,
+    firstLetter: /[a-zA-Z]/.test(firstLetter) ? firstLetter : "#",
+  };
 };
 
 const MatchingPage = () => {
   const { data: sessionData } = useSession();
   const [submitted, setSubmitted] = useState(false);
-  const [preferences, setPreferences] = useState<Preference[]>([]);
 
   const otherRole =
     sessionData?.user?.roleName === "MENTEE" ? "MENTOR" : "MENTEE";
+
+  const onSubmit = (preferences: Preference[]) => {
+    // TODO:
+    // Add your form submission logic here (e.g., API call)
+    // mutation.mutate(result.data);
+    console.log("Final preferences order:", preferences);
+    setSubmitted(true);
+  };
 
   // if mentee, query all mentors and vice versa
   const {
@@ -25,38 +41,29 @@ const MatchingPage = () => {
     error,
     isLoading,
   } = api.user.getByRole.useQuery({ role: otherRole });
+
+  const preferenceOptions = useMemo(() => {
+    let options: Preference[] = [];
+    if (!allMatches) return options;
+
+    options = allMatches
+      .map(formatOptionsObject)
+      .toSorted((a, b) => -b.firstLetter.localeCompare(a.firstLetter));
+    return options;
+  }, [allMatches]);
+
   if (isLoading) return <DefaultLoadingPage />;
-  if (error)
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-midnight-sky to-aero">
-        <h1 className="p-4 font-sans text-3xl text-white">
-          Please Sign In to view this page
-        </h1>
-        <Button variant="outlined" onClick={() => void signIn()}>
-          Sign In
-        </Button>
-      </div>
-    );
+  if (error) return <PleaseSignInPage />;
+
   const menteeOrMentorText =
     sessionData?.user?.roleName === "MENTEE" ? "mentors" : "mentees";
 
-  const preferenceOptions = allMatches.map((match) => {
-    const firstLetter = match?.user.name ? match?.user.name.charAt(0) : "N";
-    return {
-      name: match?.user.name ? match?.user.name : "No Name",
-      id: match?.id,
-      firstLetter: /[a-zA-Z]/.test(firstLetter) ? firstLetter : "#",
-    };
-  });
-
   return (
     <div className="flex flex-col px-4 py-6 md:px-32">
-      <h1 className="text-center text-2xl md:text-6xl">Matching</h1>
-      <Alert
-        severity="info"
-        icon={false}
-        sx={{ marginTop: 2, marginBottom: 4, borderRadius: 2, fontSize: 16 }}
-      >
+      <h1 className="my-0 text-center text-3xl font-normal md:my-3 md:text-6xl">
+        Matching
+      </h1>
+      <Alert severity="info" icon={false} className="mb-4 mt-4 text-base">
         <AlertTitle>
           <strong>Instructions</strong>
         </AlertTitle>
@@ -82,9 +89,7 @@ const MatchingPage = () => {
       <MatchingFormSteps
         menteeOrMentorText={menteeOrMentorText}
         preferenceOptions={preferenceOptions}
-        preferences={preferences}
-        setPreferences={setPreferences}
-        setSubmitted={setSubmitted}
+        onSubmit={onSubmit}
       />
       {submitted && (
         <div className="my-4 px-10 md:px-20">

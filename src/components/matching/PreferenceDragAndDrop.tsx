@@ -8,25 +8,25 @@ import {
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { type Preference } from "./MatchingFormSteps";
 
+// Reorder function as before
+const reorder = (
+  list: Preference[],
+  startIndex: number,
+  endIndex: number,
+): Preference[] => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed!);
+  return result;
+};
+
 const PreferenceDragAndDrop = ({
   preferences,
-  setPreferences,
+  onChange,
 }: {
   preferences: Preference[];
-  setPreferences: React.Dispatch<React.SetStateAction<Preference[]>>;
+  onChange: (newPreferences: Preference[]) => void;
 }) => {
-  // Reorder function as before
-  const reorder = (
-    list: Preference[],
-    startIndex: number,
-    endIndex: number,
-  ): Preference[] => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed!);
-    return result;
-  };
-
   // Modified onDragEnd function using useCallback and updating the preferences state
   const onDragEnd = useCallback(
     (result: DropResult) => {
@@ -38,9 +38,9 @@ const PreferenceDragAndDrop = ({
         result.source.index,
         result.destination.index,
       );
-      setPreferences(newPreferences);
+      onChange(newPreferences);
     },
-    [preferences, setPreferences],
+    [preferences, onChange],
   );
 
   return (
@@ -71,7 +71,7 @@ const PreferenceDragAndDrop = ({
                       <div className="mr-3 inline w-3 rounded-xl font-bold text-blue-600">
                         {index + 1}
                       </div>
-                      <DragHandleIcon sx={{ marginRight: 2 }} />
+                      <DragHandleIcon className="mr-4" />
                       <span>{item.name}</span>
                     </div>
                   );
