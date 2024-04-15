@@ -24,6 +24,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/api/trpc/[trpc]", { "trpc": string }>
     | DynamicRoute<"/form/[id]", { "id": string }>
     | StaticRoute<"/">
+    | StaticRoute<"/matching">
     | DynamicRoute<"/profiles/[id]", { "id": string }>
     | DynamicRoute<"/settings/[id]", { "id": string }>;
 

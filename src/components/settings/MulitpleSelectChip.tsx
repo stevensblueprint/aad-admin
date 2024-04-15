@@ -37,6 +37,7 @@ const MultipleSelectChip = ({
   helperText,
   updateValue,
   error,
+  max = 3,
 }: {
   label: string;
   options: string[];
@@ -45,6 +46,7 @@ const MultipleSelectChip = ({
   helperText: string;
   updateValue: Dispatch<SetStateAction<string[]>>;
   error: boolean;
+  max?: number;
 }) => {
   const theme = useTheme();
   const [optionValue, setOptionValue] = useState<string[]>(defaultValue);
@@ -55,7 +57,7 @@ const MultipleSelectChip = ({
     } = event;
     // On autofill we get a stringified value.
     const selectValues = typeof value === "string" ? value.split(",") : value;
-    if (selectValues.length <= 3) {
+    if (selectValues.length <= max) {
       setOptionValue(selectValues);
       updateValue(selectValues);
     }

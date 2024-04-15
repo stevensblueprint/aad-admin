@@ -43,7 +43,11 @@
         ```
         pnpm run db:seed
         ```
-     3. (OPTIONAL) You can check contents of DB using Prisma GUI
+     3. Populate DB with large number of mentors and mentees
+        ```
+        pnpm run db:populate
+        ```
+     4. (OPTIONAL) You can check contents of DB using Prisma GUI
         ```
         pnpm exec prisma studio
         ```
