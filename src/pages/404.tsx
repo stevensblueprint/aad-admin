@@ -1,5 +1,5 @@
-import { Button } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
+import { Button } from "@mui/material";
 
 export default function Custom404() {
   return (

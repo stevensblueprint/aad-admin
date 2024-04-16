@@ -1,7 +1,7 @@
 "use client"; // Error components must be Client Components
 
+import { Alert, Button } from "@mui/material";
 import { useEffect } from "react";
-import { Button, Alert } from "@mui/material";
 
 export default function Error({ errorMessage }: { errorMessage: string }) {
   useEffect(() => {

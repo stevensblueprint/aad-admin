@@ -1,5 +1,5 @@
-import NavBar from "./Navbar";
 import Footer from "./Footer";
+import NavBar from "./Navbar";
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (

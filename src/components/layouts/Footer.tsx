@@ -1,10 +1,9 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
-import IconButton from "@mui/material/IconButton";
 import EmailIcon from "@mui/icons-material/Email";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import IconButton from "@mui/material/IconButton";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
 
 function Copyright() {
   return (

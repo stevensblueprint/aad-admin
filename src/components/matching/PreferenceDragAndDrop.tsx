@@ -1,3 +1,4 @@
+import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { useCallback } from "react";
 import {
   DragDropContext,
@@ -5,7 +6,6 @@ import {
   Droppable,
   type DropResult,
 } from "react-beautiful-dnd";
-import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { type Preference } from "./MatchingFormSteps";
 
 // Reorder function as before

@@ -1,5 +1,5 @@
-import NextAuth from "next-auth";
 import { type NextApiRequest, type NextApiResponse } from "next";
+import NextAuth from "next-auth";
 import { requestWrapper } from "../../../server/auth";
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
