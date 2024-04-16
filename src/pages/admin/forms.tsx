@@ -15,6 +15,7 @@ import "react18-json-view/src/style.css"; // Keep this
 import DefaultLoadingPage from "../../components/loading/loading";
 import ErrorPage from "../../components/error/error";
 import JsonForm from "~/components/forms/JsonForm";
+import { Troubleshoot } from "@mui/icons-material";
 
 const Forms = () => {
   const utils = api.useUtils();
@@ -52,6 +53,7 @@ const Forms = () => {
 
   // TODO: Changes should be cached, and admin should hit a submit button to confirm
   // Otherwise, multiple DB updates will start as opposed to one large one
+  // TODO: Traverse recursively through JSON, use depth, oldValue, & indexOrName to find the proper field on properties
   const handleSchemaChange = async (
     name: string,
     updatedFormSchema: string,
@@ -126,7 +128,7 @@ const Forms = () => {
                       })
                     }
                     editable={true}
-                    collapsed={t}
+                    collapsed={Troubleshoot}
                     onEdit={(event) =>
                       handleSchemaChange(
                         form.name,
