@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Container,
   Table,
@@ -13,9 +14,12 @@ import JsonView from "react18-json-view";
 import "react18-json-view/src/style.css"; // Keep this
 import DefaultLoadingPage from "../../components/loading/loading";
 import ErrorPage from "../../components/error/error";
+import JsonForm from "~/components/forms/JsonForm";
 
 const Forms = () => {
   const utils = api.useUtils();
+  const [formSchema, setFormSchema] = useState({});
+  const [uiSchema, setUiSchema] = useState<UISchemaElement>({});
   const { data, error, isLoading } = api.form.getForms.useQuery({
     includeSchemas: true,
   });
@@ -84,6 +88,7 @@ const Forms = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <JsonForm schema={formSchema} uischema={uiSchema} initialData={{}} />
     </Container>
   );
 };

@@ -18,7 +18,7 @@ interface FormProps {
   schema: object;
   uischema: UISchemaElement;
   initialData: unknown;
-  onSubmit: (data: JSONObject) => void;
+  onSubmit?: (data: JSONObject) => void;
 }
 
 // Generic Form Component that can be customized off of JSON schemas
@@ -50,7 +50,7 @@ export default function JsonForm({
 
   const handleSubmit = () => {
     setSubmitted(true);
-    if (formErrors?.length === 0) {
+    if (formErrors?.length === 0 && onSubmit) {
       onSubmit(formData as JSONObject);
     }
   };
