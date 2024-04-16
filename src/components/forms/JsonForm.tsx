@@ -66,7 +66,7 @@ export default function JsonForm({
         onChange={updateDataOnChange}
         validationMode={submitted ? "ValidateAndShow" : "ValidateAndHide"}
       />
-      <Button onClick={handleSubmit}>Submit</Button>
+      {onSubmit && <Button onClick={handleSubmit}>Submit</Button>}
     </Card>
   );
 }
