@@ -1,9 +1,9 @@
-import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { type JsonObject } from "@prisma/client/runtime/library";
 import { TRPCError } from "@trpc/server";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
-import { type JsonObject } from "@prisma/client/runtime/library";
+import { z } from "zod";
+import { createTRPCRouter, publicProcedure } from "../trpc";
 const ajv = new Ajv();
 addFormats(ajv);
 

@@ -1,3 +1,6 @@
+import MailIcon from "@mui/icons-material/Mail";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import PublishIcon from "@mui/icons-material/Publish";
 import {
   CircularProgress,
   Drawer,
@@ -6,13 +9,10 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import PublishIcon from "@mui/icons-material/Publish";
-import { useRouter } from "next/router";
-import React, { useTransition } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { type Route } from "nextjs-routes";
+import React, { useTransition } from "react";
 
 interface MenuItem {
   text: string;

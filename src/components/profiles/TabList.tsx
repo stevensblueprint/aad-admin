@@ -1,5 +1,5 @@
-import React, { type Dispatch, type SetStateAction } from "react";
 import { Tab, Tabs } from "@mui/material";
+import React, { type Dispatch, type SetStateAction } from "react";
 
 export type TabListProps = {
   roleName: string;

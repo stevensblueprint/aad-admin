@@ -1,17 +1,17 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import Cookies from "cookies";
+import { randomUUID } from "crypto";
 import { type NextApiRequest, type NextApiResponse } from "next";
 import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
 } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import { decode, encode } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import { env } from "~/env.mjs";
 import { db } from "~/server/db";
-import Cookies from "cookies";
-import { randomUUID } from "crypto";
-import { encode, decode } from "next-auth/jwt";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`

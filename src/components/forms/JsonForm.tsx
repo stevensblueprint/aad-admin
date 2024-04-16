@@ -1,18 +1,18 @@
-import { useState } from "react";
-import { JsonForms, type JsonFormsReactProps } from "@jsonforms/react";
-import {
-  materialCells,
-  materialRenderers,
-} from "@jsonforms/material-renderers";
 import {
   type JsonFormsRendererRegistryEntry,
   type UISchemaElement,
 } from "@jsonforms/core";
-import StarRatingControl from "./StarRatingControl";
-import StarRatingControlTester from "./StarRatingControlTester";
+import {
+  materialCells,
+  materialRenderers,
+} from "@jsonforms/material-renderers";
+import { JsonForms, type JsonFormsReactProps } from "@jsonforms/react";
 import { Button, Card } from "@mui/material";
 import { type ErrorObject } from "ajv";
+import { useState } from "react";
 import { type JSONObject } from "superjson/dist/types";
+import StarRatingControl from "./StarRatingControl";
+import StarRatingControlTester from "./StarRatingControlTester";
 
 interface FormProps {
   schema: object;

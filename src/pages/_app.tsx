@@ -1,14 +1,14 @@
+import CssBaseline from "@mui/material/CssBaseline";
 import { type Session } from "next-auth";
 import { SessionProvider, getSession } from "next-auth/react";
 import { type AppContext, type AppProps } from "next/app";
-import CssBaseline from "@mui/material/CssBaseline";
 
 import { api } from "~/utils/api";
 
 import { StyledEngineProvider } from "@mui/material";
-import "~/styles/globals.css";
-import { type ReactElement, type ReactNode } from "react";
 import { type NextPage } from "next";
+import { type ReactElement, type ReactNode } from "react";
+import "~/styles/globals.css";
 
 import RootLayout from "~/components/layouts/RootLayout";
 
