@@ -5,24 +5,34 @@ import JsonView from 'react18-json-view'
 import 'react18-json-view/src/style.css'
 
 const Forms = () => {
-  const utils = api.useUtils();
-  const [formSchema, setFormSchema] = useState({});
-  const [uiSchema, setUiSchema] = useState<UISchemaElement>({});
+  // const utils = api.useUtils();
+  const [formSchema, setFormSchema] = useState<object>({});
+  const [uiSchema, setUiSchema] = useState<UISchemaElement>({
+    type: "VerticalLayout",
+  });
   const { data, error, isLoading } = api.form.getForms.useQuery({
     includeSchemas: true,
   });
 
-  const { mutateAsync } = api.form.editForm.useMutation({
-    onSuccess: async () => {
-      await utils.form.getForms.invalidate();
-    },
-  });
+  // const { mutateAsync } = api.form.editForm.useMutation({
+  //   onSuccess: async () => {
+  //     await utils.form.getForms.invalidate();
+  //   },
+  // });
 
-  const onSubmit: SubmitHandler<CreateCollectionData> = async (data) => {
-    await mutateAsync({
-      ...data,
-      roles: data.roles.map((role) => role.toUpperCase()),
-    });
+  // const onSubmit: SubmitHandler<CreateCollectionData> = async (data) => {
+  //   await mutateAsync({
+  //     ...data,
+  //     roles: data.roles.map((role) => role.toUpperCase()),
+  //   });
+  // };
+
+  const handleRowClick = (
+    clickedFormSchema: object,
+    clickedUiSchema: UISchemaElement,
+  ) => {
+    setFormSchema(clickedFormSchema);
+    setUiSchema(clickedUiSchema);
   };
 
   // Extract the JSON and check the proper type from database row
@@ -52,7 +62,17 @@ const Forms = () => {
           </TableHead>
           <TableBody>
             {data?.map((form) => (
-              <TableRow key={form.name}>
+              <TableRow
+                key={form.name}
+                onClick={() =>
+                  handleRowClick(
+                    parseJSON<object>(form.formSchema, {}),
+                    parseJSON<UISchemaElement>(form.uiSchema, {
+                      type: "VerticalLayout",
+                    }),
+                  )
+                }
+              >
                 <TableCell>{form.name}</TableCell>
                 {/*
                 https://github.com/YYsuni/react18-json-view?tab=readme-ov-file 
@@ -67,7 +87,11 @@ const Forms = () => {
                 </TableCell>
                 <TableCell>
                   <JsonView
-                    src={() => parseJSON<UISchemaElement>(form.uiSchema, {})}
+                    src={() =>
+                      parseJSON<UISchemaElement>(form.uiSchema, {
+                        type: "VerticalLayout",
+                      })
+                    }
                     editable={true}
                   />
                 </TableCell>
