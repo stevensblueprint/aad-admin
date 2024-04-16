@@ -35,7 +35,10 @@ declare module "next-auth" {
   }
 }
 
-const credentialsAuthAvailable = () => process.env.NODE_ENV !== "production";
+// TODO: figure out how to determine which google logins are admins
+// this should work in dev and staging environments, process.env.CI is true in GH actions
+const credentialsAuthAvailable = () =>
+  process.env.NODE_ENV !== "production" || process.env.CI;
 
 /**
  * In order to get credential authentication to work with NextAuth sessions,

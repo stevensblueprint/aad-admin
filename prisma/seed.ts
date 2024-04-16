@@ -3,9 +3,9 @@ import { createRole, createUser } from "./createData";
 const prisma = new PrismaClient();
 
 const main = async () => {
-  const adminRole = await createRole(prisma, "admin");
-  const mentorRole = await createRole(prisma, "mentor");
-  const menteeRole = await createRole(prisma, "mentee");
+  const adminRole = await createRole(prisma, "ADMIN");
+  const mentorRole = await createRole(prisma, "MENTOR");
+  const menteeRole = await createRole(prisma, "MENTEE");
   const admin = await createUser(prisma, {
     id: "admin0",
     email: "admin0@email.com",
