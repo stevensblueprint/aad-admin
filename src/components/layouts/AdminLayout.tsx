@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import FolderIcon from "@mui/icons-material/Folder";
 import PublishIcon from "@mui/icons-material/Publish";
 import { useRouter } from "next/router";
 import React, { useTransition } from "react";
@@ -31,11 +30,6 @@ const menuItems: MenuItem[] = [
     text: "Forms",
     icon: <MailIcon />,
     path: "/admin/forms",
-  },
-  {
-    text: "Directory",
-    icon: <FolderIcon />,
-    path: "/admin/directory",
   },
   {
     text: "Submissions",
