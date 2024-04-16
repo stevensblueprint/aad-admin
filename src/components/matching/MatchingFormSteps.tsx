@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Autocomplete,
   Box,
@@ -12,9 +11,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
 import { z } from "zod";
-import PreferenceDragAndDrop from "./PreferenceDragAndDrop";
 import { sentenceCase } from "../../utils/roles";
+import PreferenceDragAndDrop from "./PreferenceDragAndDrop";
 
 export type Preference = {
   name: string;

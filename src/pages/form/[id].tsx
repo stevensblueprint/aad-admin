@@ -1,11 +1,11 @@
-import { api } from "../../utils/api";
-import JsonForm from "../../components/forms/JsonForm";
-import { useMemo } from "react";
-import { useRouter } from "next/router";
-import { type JSONObject } from "superjson/dist/types";
-import DefaultLoadingPage from "../../components/loading/loading";
-import ErrorPage from "../../components/error/error";
 import { Container, Typography } from "@mui/material";
+import { useRouter } from "next/router";
+import { useMemo } from "react";
+import { type JSONObject } from "superjson/dist/types";
+import ErrorPage from "../../components/error/error";
+import JsonForm from "../../components/forms/JsonForm";
+import DefaultLoadingPage from "../../components/loading/loading";
+import { api } from "../../utils/api";
 
 /**
  * Form page that gets the collection by id and renders the form based

@@ -1,6 +1,5 @@
-import React from "react";
 import { Avatar, Card, CardContent, Typography } from "@mui/material";
-import { type Profile, type Prisma } from "@prisma/client";
+import { type Prisma, type Profile } from "@prisma/client";
 
 interface ProfileCardProps {
   profile: Prisma.ProfileGetPayload<{

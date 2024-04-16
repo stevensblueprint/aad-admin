@@ -1,6 +1,6 @@
-import AvatarWrapper from "../settings/AvatarWrapper";
 import { Fragment } from "react";
 import { sentenceCase } from "../../utils/roles";
+import AvatarWrapper from "../settings/AvatarWrapper";
 
 export type ProfileHeaderProps = {
   name: string;

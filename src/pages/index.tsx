@@ -1,6 +1,6 @@
+import { Button, Container } from "@mui/material";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import { Container, Button } from "@mui/material";
 
 export default function Home() {
   return (

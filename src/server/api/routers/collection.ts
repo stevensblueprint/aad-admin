@@ -1,8 +1,8 @@
-import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
-import { db } from "../../db";
 import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 import { createCollectionSchema } from "../../../components/admin/CollectionForm";
+import { db } from "../../db";
+import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const collectionRouter = createTRPCRouter({
   createCollection: publicProcedure

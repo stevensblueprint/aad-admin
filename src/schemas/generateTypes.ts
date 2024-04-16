@@ -1,5 +1,5 @@
-import { compileFromFile } from "json-schema-to-typescript";
 import { readdir, writeFile } from "fs/promises";
+import { compileFromFile } from "json-schema-to-typescript";
 
 const forms = await readdir("src/schemas", { withFileTypes: true });
 await Promise.all(

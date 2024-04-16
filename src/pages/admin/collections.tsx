@@ -7,15 +7,15 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { api } from "../../utils/api";
 import { type SubmitHandler } from "react-hook-form";
+import CopyToClipboardButton from "../../components/CopyToClipboardButton";
 import CollectionForm, {
   type CreateCollectionData,
 } from "../../components/admin/CollectionForm";
-import DefaultLoadingPage from "../../components/loading/loading";
 import ErrorPage from "../../components/error/error";
+import DefaultLoadingPage from "../../components/loading/loading";
+import { api } from "../../utils/api";
 import { sentenceCase } from "../../utils/roles";
-import CopyToClipboardButton from "../../components/CopyToClipboardButton";
 
 const Collections = () => {
   const utils = api.useUtils();

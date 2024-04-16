@@ -1,14 +1,14 @@
-import { api } from "../../utils/api";
-import { useRouter } from "next/router";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState } from "react";
-import DefaultLoadingPage from "../../components/loading/loading";
 import ErrorPage from "../../components/error/error";
-import ProfileHeader from "../../components/profiles/ProfileHeader";
-import TabList from "../../components/profiles/TabList";
+import DefaultLoadingPage from "../../components/loading/loading";
 import About from "../../components/profiles/About";
 import Mentee from "../../components/profiles/Mentee";
 import Mentor from "../../components/profiles/Mentor";
+import ProfileHeader from "../../components/profiles/ProfileHeader";
+import TabList from "../../components/profiles/TabList";
+import { api } from "../../utils/api";
 
 export default function ProfilePage() {
   const [section, setSection] = useState("about");

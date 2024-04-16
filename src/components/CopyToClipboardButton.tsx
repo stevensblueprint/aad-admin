@@ -1,6 +1,6 @@
-import { Fade, IconButton } from "@mui/material";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Check from "@mui/icons-material/Check";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { Fade, IconButton } from "@mui/material";
 import { useState } from "react";
 
 interface CopyToClipboardButtonProps {

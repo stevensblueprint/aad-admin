@@ -1,18 +1,18 @@
-import { type Dispatch, type SetStateAction, useState } from "react";
-import { z } from "zod";
-import { api } from "../../utils/api";
-import {
-  Button,
-  TextField,
-  Autocomplete,
-  createFilterOptions,
-  FormControl,
-} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
+import {
+  Autocomplete,
+  Button,
+  FormControl,
+  TextField,
+  createFilterOptions,
+} from "@mui/material";
+import { useState, type Dispatch, type SetStateAction } from "react";
+import { z } from "zod";
+import { api } from "../../utils/api";
 import MultipleSelectChip from "./MulitpleSelectChip";
-import universities from "./us_universities.json";
 import industryOptions from "./industries.json";
+import universities from "./us_universities.json";
 
 type EditProfileProps = {
   preferredName: string;

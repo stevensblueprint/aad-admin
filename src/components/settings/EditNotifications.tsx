@@ -1,13 +1,13 @@
-import { useState } from "react";
+import SaveIcon from "@mui/icons-material/Save";
 import {
+  Button,
   FormControl,
+  FormControlLabel,
   FormGroup,
   FormLabel,
-  FormControlLabel,
   Switch,
-  Button,
 } from "@mui/material";
-import SaveIcon from "@mui/icons-material/Save";
+import { useState } from "react";
 
 const EditNotifications = () => {
   const [mentorship, setMentorship] = useState(false);

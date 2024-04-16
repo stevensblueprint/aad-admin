@@ -1,6 +1,6 @@
-import useProtectedPage from "../../utils/useProtectedPage";
-import AdminLayout from "../../components/layouts/AdminLayout";
 import { type ReactElement } from "react";
+import AdminLayout from "../../components/layouts/AdminLayout";
+import useProtectedPage from "../../utils/useProtectedPage";
 
 export default function Admin() {
   useProtectedPage(["ADMIN"]);

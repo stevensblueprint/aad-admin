@@ -1,22 +1,22 @@
-import { api } from "../../utils/api";
-import { useRouter } from "next/router";
-import Head from "next/head";
-import { useState } from "react";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import {
-  Stack,
   Drawer,
   List,
   ListItemButton,
-  ListItemText,
   ListItemIcon,
+  ListItemText,
+  Stack,
 } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import DefaultLoadingPage from "../../components/loading/loading";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import ErrorPage from "../../components/error/error";
+import DefaultLoadingPage from "../../components/loading/loading";
 import AvatarWrapper from "../../components/settings/AvatarWrapper";
-import EditProfile from "../../components/settings/EditProfile";
 import EditNotifications from "../../components/settings/EditNotifications";
+import EditProfile from "../../components/settings/EditProfile";
+import { api } from "../../utils/api";
 
 type SideBarProps = {
   selectedSection: string;

@@ -1,12 +1,12 @@
-import { api } from "../../utils/api";
-import DefaultLoadingPage from "../../components/loading/loading";
-import { useSession } from "next-auth/react";
-import { useState, useMemo } from "react";
 import { Alert, AlertTitle } from "@mui/material";
-import MatchingFormSteps from "../../components/matching/MatchingFormSteps";
+import { useSession } from "next-auth/react";
+import { useMemo, useState } from "react";
 import PleaseSignInPage from "../../components/PleaseSignInPage";
-import { type Preference } from "../../components/matching/MatchingFormSteps";
-import { type RouterOutputs } from "../../utils/api";
+import DefaultLoadingPage from "../../components/loading/loading";
+import MatchingFormSteps, {
+  type Preference,
+} from "../../components/matching/MatchingFormSteps";
+import { api, type RouterOutputs } from "../../utils/api";
 
 export type getByRoleOutput = RouterOutputs["user"]["getByRole"];
 export type getByRoleOutputData = getByRoleOutput[0];
