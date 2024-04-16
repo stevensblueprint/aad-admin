@@ -17,7 +17,7 @@ import ErrorPage from "../../components/error/error";
 import JsonForm from "~/components/forms/JsonForm";
 
 const Forms = () => {
-  // const utils = api.useUtils();
+  const utils = api.useUtils();
   const [formSchema, setFormSchema] = useState<object>({});
   const [uiSchema, setUiSchema] = useState<UISchemaElement>({
     type: "VerticalLayout",
@@ -26,7 +26,10 @@ const Forms = () => {
     includeSchemas: true,
   });
 
-  // const { mutateAsync } = api.form.editForm.useMutation({
+  const editForm = api.form.editForm.useMutation();
+
+  /** TODO: Form Creation Interface */
+  // const { mutateAsync } = api.form.createForm.useMutation({
   //   onSuccess: async () => {
   //     await utils.form.getForms.invalidate();
   //   },
@@ -47,8 +50,21 @@ const Forms = () => {
     setUiSchema(clickedUiSchema);
   };
 
+  // TODO: Changes should be cached, and admin should hit a submit button to confirm
+  // Otherwise, multiple DB updates will start as opposed to one large one
+  const handleSchemaChange = async (
+    name: string,
+    updatedFormSchema: string,
+    updatedUiSchema: string,
+  ) => {
+    await editForm.mutateAsync({
+      id: name,
+      newFormSchema: updatedFormSchema,
+      newUiSchema: updatedUiSchema,
+    });
+  };
+
   // Extract the JSON and check the proper type from database row
-  // FIXME: Should uiSchema and formSchema just be stored as JSON in the database instead of strings?
   const parseJSON = <T,>(jsonString: string, defaultValue: T): T => {
     try {
       return JSON.parse(jsonString) as T;
@@ -95,6 +111,11 @@ const Forms = () => {
                   <JsonView
                     src={() => parseJSON<object>(form.formSchema, {})}
                     editable={true}
+                    collapsed={true}
+                    onEdit={(event) => {
+                      console.log(event);
+                      // handleSchemaChange(form.name, event.newValue, form.uiSchema)
+                    }}
                   />
                 </TableCell>
                 <TableCell>
@@ -105,6 +126,14 @@ const Forms = () => {
                       })
                     }
                     editable={true}
+                    collapsed={t}
+                    onEdit={(event) =>
+                      handleSchemaChange(
+                        form.name,
+                        form.formSchema,
+                        event.newValue,
+                      )
+                    }
                   />
                 </TableCell>
               </TableRow>

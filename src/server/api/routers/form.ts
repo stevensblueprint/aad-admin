@@ -91,7 +91,7 @@ export const formRouter = createTRPCRouter({
         });
       },
     ),
-  addForm: protectedProcedure // Admin Protected Function
+  createForm: protectedProcedure // Admin Protected Function
     .input(
       z.object({
         id: z.string(),
