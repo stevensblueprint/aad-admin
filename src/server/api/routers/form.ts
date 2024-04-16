@@ -157,7 +157,7 @@ export const formRouter = createTRPCRouter({
    * This method should be called/coupled with an interactive JSON Editor that
    * lets Admins change the schema and UI schema of the chosen form
    */
-  editForm: publicProcedure
+  updateForm: publicProcedure
     .input(
       z.object({
         id: z.string(),
