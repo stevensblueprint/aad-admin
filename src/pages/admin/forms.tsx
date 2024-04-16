@@ -40,6 +40,7 @@ const Forms = () => {
 
   // TODO: Changes should be cached, and admin should hit a submit button to confirm
   // Otherwise, multiple DB updates will start as opposed to one large one
+  // TODO: Traverse recursively through JSON, use depth, oldValue, & indexOrName to find the proper field on properties
   const handleSchemaChange = async (
     name: string,
     updatedFormSchema: string,
@@ -114,7 +115,7 @@ const Forms = () => {
                       })
                     }
                     editable={true}
-                    collapsed={t}
+                    collapsed={Troubleshoot}
                     onEdit={(event) =>
                       handleSchemaChange(
                         form.name,
