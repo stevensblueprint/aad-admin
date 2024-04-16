@@ -184,6 +184,8 @@ export const formRouter = createTRPCRouter({
 
         try {
           // FIXME: Rewriting the whole json every time seems like an expensive operation, how can we optimize?
+          // TODO: When updating the form how does that effect the collections? Should I just leave the original and create a whole
+          // separate form with the updated fields?
           const updatedForm = await db.form.update({
             where: {
               name: id,

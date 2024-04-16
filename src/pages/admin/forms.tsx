@@ -6,6 +6,8 @@ import 'react18-json-view/src/style.css'
 
 const Forms = () => {
   const utils = api.useUtils();
+  const [formSchema, setFormSchema] = useState({});
+  const [uiSchema, setUiSchema] = useState<UISchemaElement>({});
   const { data, error, isLoading } = api.form.getForms.useQuery({
     includeSchemas: true,
   });
@@ -74,6 +76,7 @@ const Forms = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <JsonForm schema={formSchema} uischema={uiSchema} initialData={{}} />
     </Container>
   );
 };
