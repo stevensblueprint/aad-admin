@@ -14,7 +14,7 @@ const Forms = () => {
     includeSchemas: true,
   });
 
-  const editForm = api.form.editForm.useMutation();
+  const updateForm = api.form.updateForm.useMutation();
 
   /** TODO: Form Creation Interface */
   // const { mutateAsync } = api.form.createForm.useMutation({
@@ -46,7 +46,7 @@ const Forms = () => {
     updatedFormSchema: string,
     updatedUiSchema: string,
   ) => {
-    await editForm.mutateAsync({
+    await updateForm.mutateAsync({
       id: name,
       newFormSchema: updatedFormSchema,
       newUiSchema: updatedUiSchema,
@@ -94,7 +94,7 @@ const Forms = () => {
                 {/*
                 https://github.com/YYsuni/react18-json-view?tab=readme-ov-file 
                 https://react18-json-view.vercel.app/?path=/docs/editable--docs
-                TODO: onEdit, onAdd, onDelete should all call the editForm procedure
+                TODO: onEdit, onAdd, onDelete should all call the updateForm procedure
                 */}
                 <TableCell>
                   <JsonView
