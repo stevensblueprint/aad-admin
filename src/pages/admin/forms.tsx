@@ -54,7 +54,7 @@ const Forms = () => {
   // TODO: Changes should be cached, and admin should hit a submit button to confirm
   // Otherwise, multiple DB updates will start as opposed to one large one
   // TODO: Traverse recursively through JSON, use depth, oldValue, & indexOrName to find the proper field on properties
-  const handleSchemaChange = async (
+  const handleEdit = async (
     name: string,
     updatedFormSchema: string,
     updatedUiSchema: string,
@@ -64,6 +64,14 @@ const Forms = () => {
       newFormSchema: updatedFormSchema,
       newUiSchema: updatedUiSchema,
     });
+  };
+
+  const handleAdd = async () => {
+    console.log("Add");
+  };
+
+  const handleDelete = async () => {
+    console.log("Delete");
   };
 
   // Extract the JSON and check the proper type from database row
@@ -116,8 +124,10 @@ const Forms = () => {
                     collapsed={true}
                     onEdit={(event) => {
                       console.log(event);
-                      // handleSchemaChange(form.name, event.newValue, form.uiSchema)
+                      // handleEdit(form.name, event.newValue, form.uiSchema)
                     }}
+                    onAdd={() => handleAdd()}
+                    onDelete={() => handleDelete()}
                   />
                 </TableCell>
                 <TableCell>
@@ -128,14 +138,12 @@ const Forms = () => {
                       })
                     }
                     editable={true}
-                    collapsed={Troubleshoot}
+                    collapsed={true}
                     onEdit={(event) =>
-                      handleSchemaChange(
-                        form.name,
-                        form.formSchema,
-                        event.newValue,
-                      )
+                      handleEdit(form.name, form.formSchema, event.newValue)
                     }
+                    onAdd={() => handleAdd()}
+                    onDelete={() => handleDelete()}
                   />
                 </TableCell>
               </TableRow>
