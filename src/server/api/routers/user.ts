@@ -68,68 +68,68 @@ export const userRouter = createTRPCRouter({
         },
       });
     }),
+    deleteById: protectedProcedure
+  .input(z.object({ id: z.string() }))
+  .mutation(async ({ input }) => {
+    try {
+      const user = await db.user.delete({
+        where: {
+          id: input.id,
+        },
+      });
+      return user;
+    } catch (error) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: `${input.id} not found in database`,
+      });
+    }
+  }),
 
-  deleteById: protectedProcedure
-    .input(z.object({ id: z.string() }))
-    .mutation(async ({ input }) => {
-      try {
-        return await db.user.delete({
-          where: {
-            id: input.id,
-          },
-        });
-      } catch (error) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: '"{input.id}" not found in database',
-        });
-      }
+updateProfile: protectedProcedure
+  .input(
+    z.object({
+      name: z.string().min(1),
+      emailAddress: z.string().email(),
+      dob: z.string().min(1),
+      biography: z.string().min(1),
+      selectedUniversity: z.string().min(1),
+      topIndustries: z.array(z.string()).min(1),
     }),
-
-  updateProfile: protectedProcedure
-    .input(
-      z.object({
-        name: z.string().min(1),
-        emailAddress: z.string().email(),
-        dob: z.string().min(1),
-        biography: z.string().min(1),
-        selectedUniversity: z.string().min(1),
-        topIndustries: z.array(z.string()).min(1),
-      }),
-    )
-    .mutation(async ({ input, ctx }) => {
-      //Update the user's information
-      try {
-        return await db.user.update({
-          where: {
-            id: ctx.session.user.id,
-          },
-          data: {
-            email: input.emailAddress,
-            profile: {
-              update: {
-                where: {
-                  userId: ctx.session.user.id,
-                },
-                data: {
-                  preferredName: input.name,
-                  dateOfBirth: input.dob,
-                  bio: input.biography,
-                  university: input.selectedUniversity,
-                  industries: input.topIndustries,
-                },
+  )
+  .mutation(async ({ input, ctx }) => {
+    try {
+      const updatedUser = await db.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          email: input.emailAddress,
+          profile: {
+            update: {
+              where: {
+                userId: ctx.session.user.id,
+              },
+              data: {
+                preferredName: input.name,
+                dateOfBirth: input.dob,
+                bio: input.biography,
+                university: input.selectedUniversity,
+                industries: input.topIndustries,
               },
             },
           },
-          include: {
-            profile: true,
-          },
-        });
-      } catch (error) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: '"{ctx.session.user.id}" not found in database',
-        });
-      }
-    }),
+        },
+        include: {
+          profile: true,
+        },
+      });
+      return updatedUser;
+    } catch (error) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: `${ctx.session.user.id} not found in database`,
+      });
+    }
+  }),
 });
