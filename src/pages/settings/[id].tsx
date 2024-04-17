@@ -82,7 +82,6 @@ const Sidebar = ({ selectedSection, handleListItemClick }: SideBarProps) => {
 
 export default function SettingsPage() {
   const [selectedSection, setSelectedSection] = useState("profile");
-  const [editMode, setEditMode] = useState(false);
 
   const router = useRouter();
   const { data, error, isLoading } = api.user.getById.useQuery({
@@ -131,8 +130,6 @@ export default function SettingsPage() {
                 industries={
                   data.profile?.industries ? data.profile.industries : []
                 }
-                editMode={editMode}
-                toggleEditMode={setEditMode}
               />
             ) : selectedSection === "notifications" ? (
               <EditNotifications />

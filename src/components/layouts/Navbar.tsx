@@ -95,7 +95,7 @@ function ResponsiveAppBar() {
             </Typography>
 
             {/* Small View */}
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <Box className="flex grow md:hidden">
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -120,20 +120,16 @@ function ResponsiveAppBar() {
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: "block", md: "none" },
-                }}
+                className="block md:hidden"
               >
                 {pageOptions.map((page) => (
-                  <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                    <Button
-                      key={page.name}
-                      onClick={handleCloseNavMenu}
-                      sx={{ my: 2, display: "block" }}
-                      href={page.path}
-                    >
-                      {page.name}
-                    </Button>
+                  <MenuItem
+                    key={page.name}
+                    onClick={handleCloseNavMenu}
+                    href={page.path}
+                    className="my-4 block"
+                  >
+                    {page.name}
                   </MenuItem>
                 ))}
               </Menu>
@@ -145,20 +141,11 @@ function ResponsiveAppBar() {
               noWrap
               component="a"
               href="/"
-              sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                color: "inherit",
-              }}
+              className="mr-4 flex font-mono grow font-bold text-inherit no-underline md:hidden"
             >
               AAD
             </Typography>
-            <Box
-              sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: 1 }}
-            >
+            <Box className="hidden md:flex grow gap-1">
               {pageOptions.map((page) => (
                 <Button
                   key={page.name}
@@ -171,11 +158,11 @@ function ResponsiveAppBar() {
               ))}
             </Box>
 
-            <Box sx={{ flexGrow: 0 }}>
+            <Box className="grow-0">
               {sessionData ? (
                 <>
                   <Tooltip title="Account">
-                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <IconButton onClick={handleOpenUserMenu} className="p-0">
                       <AvatarWrapper
                         alt={
                           sessionData?.user?.name

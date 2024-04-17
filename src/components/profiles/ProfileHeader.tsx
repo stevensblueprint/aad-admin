@@ -27,7 +27,7 @@ const ProfileHeader = ({
   ];
 
   return (
-    <div className="mb-5 mt-10 h-72 w-4/5 rounded-2xl bg-white">
+    <div className="mb-5 mt-10 w-4/5 rounded-2xl bg-white">
       <div className="flex h-full flex-row items-center">
         <div className="p-8">
           <AvatarWrapper
@@ -38,15 +38,17 @@ const ProfileHeader = ({
           />
         </div>
         <div className="flex flex-grow flex-col px-4 py-8">
-          <p className="pb-2 text-center text-3xl font-bold">{name}</p>
+          <p className="pb-2 my-0 leading-normal text-center text-3xl font-bold">
+            {name}
+          </p>
           <div className="grid grid-cols-12 gap-2 p-2">
             {info.map((item) => {
               return (
                 <Fragment key={item.key}>
-                  <p className="col-span-3 text-2xl text-gray-500">
+                  <p className="my-1 col-span-3 text-2xl text-gray-500">
                     {item.key}:
                   </p>
-                  <p className="col-span-9 text-2xl">{item.value}</p>
+                  <p className="my-1 col-span-9 text-2xl">{item.value}</p>
                 </Fragment>
               );
             })}

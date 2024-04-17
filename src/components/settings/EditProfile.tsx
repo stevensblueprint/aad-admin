@@ -7,7 +7,7 @@ import {
   TextField,
   createFilterOptions,
 } from "@mui/material";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { api } from "../../utils/api";
 import MultipleSelectChip from "./MulitpleSelectChip";
@@ -21,8 +21,6 @@ type EditProfileProps = {
   dateOfBirth: string;
   university: string;
   industries: string[];
-  editMode: boolean;
-  toggleEditMode: Dispatch<SetStateAction<boolean>>;
 };
 
 // Define the Zod schema for form validation
@@ -44,9 +42,8 @@ const EditProfile = ({
   dateOfBirth,
   university,
   industries,
-  editMode,
-  toggleEditMode,
 }: EditProfileProps) => {
+  const [editMode, setEditMode] = useState(false);
   const [name, setName] = useState(preferredName);
   const [emailAddress, setEmailAddress] = useState(email);
   const [dob, setDOB] = useState(dateOfBirth);
@@ -85,7 +82,7 @@ const EditProfile = ({
 
     // If validation is successful, proceed with form submission logic
     console.log("Form data is valid", result.data);
-    toggleEditMode(false);
+    setEditMode(false);
     setFormErrors(null);
     // Add your form submission logic here (e.g., API call)
     mutation.mutate(result.data);
@@ -95,8 +92,8 @@ const EditProfile = ({
     <>
       <div className="my-4 flex flex-col justify-center">
         <form className="flex flex-col">
-          <div className="mb-4 flex w-full flex-row justify-between">
-            <h3 className="justify-between text-2xl font-bold">
+          <div className="mb-4 flex w-full flex-row justify-between items-center">
+            <h3 className="my-1 justify-between text-2xl font-bold">
               Profile Information
             </h3>
             {editMode ? (
@@ -115,7 +112,7 @@ const EditProfile = ({
                 variant="outlined"
                 color="primary"
                 type="button"
-                onClick={() => toggleEditMode(true)}
+                onClick={() => setEditMode(true)}
                 sx={{ width: 100 }}
                 endIcon={<EditIcon />}
               >
