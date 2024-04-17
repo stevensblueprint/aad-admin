@@ -8,7 +8,7 @@ export type MentorProps = {
 const Mentor = ({ preferredName }: MentorProps) => {
   return (
     <div className="m-4 w-4/5 rounded-xl bg-white p-8">
-      <p className="text-center text-3xl font-bold">Mentor</p>
+      <p className="text-center my-1 text-3xl font-bold">Mentor</p>
       <Box
         component="span"
         sx={{

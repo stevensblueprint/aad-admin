@@ -9,8 +9,8 @@ export type AboutProps = {
 const About = ({ preferredName, bio }: AboutProps) => {
   return (
     <div className="m-4 w-4/5 rounded-xl bg-white p-8">
-      <p className="text-center text-3xl font-bold">About</p>
-      <p className="text-xl font-light">Preferred Name</p>
+      <p className="text-center my-1 text-3xl font-bold">About</p>
+      <p className="text-xl my-1 font-light">Preferred Name</p>
       <Box
         component="span"
         sx={{
