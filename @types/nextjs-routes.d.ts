@@ -48,7 +48,8 @@ GetServerSidePropsResult as NextGetServerSidePropsResult
     { pathname: P }
   >["query"];
 
-  export type Locale = undefined;
+  export type Locale = 
+    | "en";
 
   /**
    * A typesafe utility function for generating paths in your application.
@@ -67,9 +68,11 @@ GetServerSidePropsResult as NextGetServerSidePropsResult
   > = Omit<NextGetServerSidePropsContext, 'params' | 'query' | 'defaultLocale' | 'locale' | 'locales'> & {
     params: Extract<Route, { pathname: Pathname }>["query"];
     query: Query;
-    defaultLocale?: undefined;
-    locale?: Locale;
-    locales?: undefined;
+    defaultLocale: "en";
+    locale: Locale;
+    locales: [
+          "en"
+        ];
   };
 
   /**
@@ -103,7 +106,7 @@ PropsWithChildren,
     extends Omit<NextLinkProps, "href" | "locale">,
       AnchorHTMLAttributes<HTMLAnchorElement> {
     href: Route | StaticRoute | Omit<Route, "pathname">
-    locale?: false;
+    locale?: Locale | false;
   }
 
   type LinkReactElement = DetailedReactHTMLElement<
@@ -132,7 +135,7 @@ export { default } from "next/dist/client/router";
   type StaticRoute = Exclude<Route, { query: any }>["pathname"];
 
   interface TransitionOptions extends Omit<NextTransitionOptions, "locale"> {
-    locale?: false;
+    locale?: Locale | false;
   }
 
   type PathnameAndQuery<Pathname> = Required<
@@ -162,10 +165,12 @@ export { default } from "next/dist/client/router";
         | "replace"
         | "route"
       > & {
-        defaultLocale?: undefined;
+        defaultLocale: "en";
         domainLocales?: undefined;
-        locale?: Locale;
-        locales?: undefined;
+        locale: Locale;
+        locales: [
+          "en"
+        ];
         push(
           url: Route | StaticRoute | Omit<Route, "pathname">,
           as?: string,
