@@ -86,6 +86,28 @@ export const userRouter = createTRPCRouter({
         });
       }
     }),
+
+  deleteByIds: protectedProcedure
+    .input(z.object({ ids: z.array(z.string()) }))
+    .mutation(async ({ input }) => {
+      try {
+        return await db.$transaction(async (prisma) => {
+          for (const id of input.ids) {
+            await prisma.profile.deleteMany({ where: { userId: id } });
+            await prisma.account.deleteMany({ where: { userId: id } });
+            await prisma.session.deleteMany({ where: { userId: id } });
+            await prisma.user.delete({ where: { id } });
+          }
+        });
+      } catch (error) {
+        // Convert ids to string for error message
+        const ids = input.ids.join(", ");
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: `User ${ids} not found in database`,
+        });
+      }
+    }),
   updateProfile: protectedProcedure
     .input(
       z.object({
