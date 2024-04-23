@@ -54,6 +54,7 @@
     "classnames": "^2.5.1",
     "cookies": "^0.9.1",
     "husky": "^9.0.11",
+    "json-edit-react": "^1.8.4",
     "json-schema-to-typescript": "^13.1.2",
     "lodash": "^4.17.21",
     "next": "^14.1.0",
@@ -66,7 +67,8 @@
     "styled-components": "^6.1.8",
     "superjson": "^2.2.1",
     "typescript": "^5.3.3",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
