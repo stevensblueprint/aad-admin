@@ -6,7 +6,8 @@ import 'react18-json-view/src/style.css'
 
 const Forms = () => {
   const utils = api.useUtils();
-  const [formSchema, setFormSchema] = useState<object>({});
+  const [formName, setFormName] = useState<string>();
+  const [formSchema, setFormSchema] = useState<object>();
   const [uiSchema, setUiSchema] = useState<UISchemaElement>({
     type: "VerticalLayout",
   });
@@ -31,23 +32,25 @@ const Forms = () => {
   // };
 
   const handleRowClick = (
+    formName: string,
     clickedFormSchema: object,
     clickedUiSchema: UISchemaElement,
   ) => {
+    setFormName(formName);
     setFormSchema(clickedFormSchema);
     setUiSchema(clickedUiSchema);
   };
 
   // TODO: Changes should be cached, and admin should hit a submit button to confirm
   // Otherwise, multiple DB updates will start as opposed to one large one
-  // TODO: Traverse recursively through JSON, use depth, oldValue, & indexOrName to find the proper field on properties
-  const handleSchemaChange = async (
-    name: string,
+  // FIXME: updates are being written to database, but changes are not reflecting in the User Interface.
+  const handleEdit = async (
+    formName: string,
     updatedFormSchema: string,
     updatedUiSchema: string,
   ) => {
     await updateForm.mutateAsync({
-      id: name,
+      id: formName,
       newFormSchema: updatedFormSchema,
       newUiSchema: updatedUiSchema,
     });
@@ -83,6 +86,7 @@ const Forms = () => {
                 key={form.name}
                 onClick={() =>
                   handleRowClick(
+                    form.name,
                     parseJSON<object>(form.formSchema, {}),
                     parseJSON<UISchemaElement>(form.uiSchema, {
                       type: "VerticalLayout",
@@ -97,32 +101,31 @@ const Forms = () => {
                 TODO: onEdit, onAdd, onDelete should all call the updateForm procedure
                 */}
                 <TableCell>
-                  <JsonView
-                    src={() => parseJSON<object>(form.formSchema, {})}
-                    editable={true}
-                    collapsed={true}
-                    onEdit={(event) => {
-                      console.log(event);
-                      // handleSchemaChange(form.name, event.newValue, form.uiSchema)
+                  <JsonEditor
+                    data={() => parseJSON<object>(form.formSchema, {})}
+                    onUpdate={async (data) => {
+                      await handleEdit(
+                        formName,
+                        JSON.stringify(data.newData),
+                        JSON.stringify(uiSchema),
+                      );
                     }}
                   />
                 </TableCell>
                 <TableCell>
-                  <JsonView
-                    src={() =>
+                  <JsonEditor
+                    data={() =>
                       parseJSON<UISchemaElement>(form.uiSchema, {
                         type: "VerticalLayout",
                       })
                     }
-                    editable={true}
-                    collapsed={Troubleshoot}
-                    onEdit={(event) =>
-                      handleSchemaChange(
-                        form.name,
-                        form.formSchema,
-                        event.newValue,
-                      )
-                    }
+                    onUpdate={async (data) => {
+                      await handleEdit(
+                        formName,
+                        JSON.stringify(form.formSchema),
+                        JSON.stringify(data.newData),
+                      );
+                    }}
                   />
                 </TableCell>
               </TableRow>
