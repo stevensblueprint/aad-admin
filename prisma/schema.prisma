@@ -51,17 +51,18 @@ model Session {
 }
 
 model User {
-  id            String       @id @default(cuid())
-  name          String?
-  email         String       @unique
-  emailVerified DateTime?
-  image         String?
-  roleName      String
-  role          UserRole     @relation(fields: [roleName], references: [roleName])
-  accounts      Account[]
-  sessions      Session[]
-  profile       Profile?
-  Submission    Submission[]
+  id                     String                   @id @default(cuid())
+  name                   String?
+  email                  String                   @unique
+  emailVerified          DateTime?
+  image                  String?
+  roleName               String
+  role                   UserRole                 @relation(fields: [roleName], references: [roleName])
+  accounts               Account[]
+  sessions               Session[]
+  profile                Profile?
+  Submission             Submission[]
+  MatchingFormVisibility MatchingFormVisibility[]
 }
 
 model VerificationToken {
@@ -120,4 +121,12 @@ model Submission {
   updatedAt     DateTime   @updatedAt
   submittedBy   User?      @relation(fields: [submittedById], references: [id])
   submittedById String? // temporary
+}
+
+model MatchingFormVisibility {
+  id              String   @id @default(cuid())
+  isOpen          Boolean
+  lastUpdatedBy   User?    @relation(fields: [lastUpdatedById], references: [id])
+  lastUpdatedById String?
+  lastUpdated     DateTime @default(now())
 }

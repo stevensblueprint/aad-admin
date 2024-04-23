@@ -48,6 +48,15 @@ const main = async () => {
     university: "Stevens Institute of Technology",
     industries: ["Information Technology", "Economics", "Accounting"],
   });
+
+  const matchingForm = await prisma.matchingFormVisibility.create({
+    data: {
+      id: "matchingForm0",
+      isOpen: true,
+      lastUpdated: new Date(),
+      lastUpdatedById: "admin0",
+    },
+  });
 };
 
 main()
