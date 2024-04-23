@@ -10,8 +10,6 @@ import {
 } from "@mui/material";
 import { api } from "~/utils/api";
 import { type UISchemaElement } from "@jsonforms/core";
-import JsonView from "react18-json-view";
-import "react18-json-view/src/style.css"; // Keep this
 import DefaultLoadingPage from "../../components/loading/loading";
 import ErrorPage from "../../components/error/error";
 import JsonForm from "~/components/forms/JsonForm";
@@ -108,11 +106,6 @@ const Forms = () => {
                 }
               >
                 <TableCell>{form.name}</TableCell>
-                {/*
-                https://github.com/YYsuni/react18-json-view?tab=readme-ov-file 
-                https://react18-json-view.vercel.app/?path=/docs/editable--docs
-                TODO: onEdit, onAdd, onDelete should all call the updateForm procedure
-                */}
                 <TableCell>
                   <JsonEditor
                     data={() => parseJSON<object>(form.formSchema, {})}

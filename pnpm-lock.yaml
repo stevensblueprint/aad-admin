@@ -101,9 +101,6 @@ dependencies:
   react-hook-form:
     specifier: ^7.50.1
     version: 7.51.0(react@18.2.0)
-  react18-json-view:
-    specifier: 0.2.8-canary.6
-    version: 0.2.8-canary.6(react@18.2.0)
   styled-components:
     specifier: ^6.1.8
     version: 6.1.8(react-dom@18.2.0)(react@18.2.0)
@@ -4257,14 +4254,6 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
-  /react18-json-view@0.2.8-canary.6(react@18.2.0):
-    resolution: {integrity: sha512-8/TFnfx9uedfKEl0fIQhVsKxYtKgxxnrn96Z1BrhTqm4RhrmeGrQIheviCO5+neEzJ0ysBxSzeBJpM2BYaor8w==}
-    peerDependencies:
-      react: '>=16.8.0'
-    dependencies:
-      react: 18.2.0
     dev: false
 
   /react@18.2.0:
