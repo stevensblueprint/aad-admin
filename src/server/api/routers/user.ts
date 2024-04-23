@@ -32,26 +32,45 @@ export const userRouter = createTRPCRouter({
     return await db.user.findMany();
   }),
 
-  creatUser: protectedProcedure
+  createUser: protectedProcedure
     .input(
       z.object({
         name: z.string().min(1),
         email: z.string().email(),
-        role: z.string(),
+        role: z.string().min(1),
       }),
     )
     .mutation(async ({ input }) => {
-      return await db.user.create({
-        data: {
-          email: input.email,
-          roleName: input.role,
-          profile: {
-            create: {
-              preferredName: input.name,
+      try {
+        const existingUser = await db.user.findUnique({
+          where: {
+            email: input.email,
+          },
+        });
+        if (existingUser) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "A user with this email already exists.",
+          });
+        }
+        return await db.user.create({
+          data: {
+            email: input.email,
+            roleName: input.role,
+            profile: {
+              create: {
+                preferredName: input.name,
+              },
             },
           },
-        },
-      });
+        });
+      } catch (error) {
+        console.error(error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to create user.",
+        });
+      }
     }),
 
   getByRole: protectedProcedure

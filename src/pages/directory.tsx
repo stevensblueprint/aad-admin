@@ -2,6 +2,8 @@ import { useState } from "react";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { api } from "../utils/api";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import DefaultLoadingPage from "~/components/loading/loading";
+import ErrorPage from "../components/error/error";
 
 enum UserRole {
   EMPTY = "",
@@ -11,13 +13,47 @@ enum UserRole {
 }
 
 const Directory = () => {
-  const { data, isLoading } = api.user.getAll.useQuery();
+  const { data, error, isLoading } = api.user.getAll.useQuery();
   const [selectionModel, setSelectionModel] = useState<string[]>([]);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [userData, setUserData] = useState({ name: "", email: "", role: "" });
+  const { mutate: createUser } = api.user.createUser.useMutation();
+  const { mutate: deleteUser } = api.user.deleteByIds.useMutation();
 
-  const deleteMutation = api.user.deleteById.useMutation();
-  const addMutation = api.user.creatUser.useMutation();
+  if (isLoading) return <DefaultLoadingPage />;
+  if (error) return <ErrorPage errorMessage={error.message} />;
+
+  const handleSubmit = () => {
+    createUser(
+      {
+        name: userData.name,
+        email: userData.email,
+        role: userData.role,
+      },
+      {
+        onSuccess: () => {
+          setAddModalOpen(false);
+        },
+        onError: (error) => {
+          console.error(error);
+        },
+      },
+    );
+  };
+
+  const handleDelete = () => {
+    deleteUser(
+      { ids: selectionModel },
+      {
+        onSuccess: () => {
+          setSelectionModel([]);
+        },
+        onError: (error) => {
+          console.error(error);
+        },
+      },
+    );
+  };
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 90 },
@@ -53,31 +89,6 @@ const Directory = () => {
       }))
     : [];
 
-  const handleDelete = () => {
-    if (selectionModel.length > 0) {
-      Promise.all(
-        selectionModel.map((id) => deleteMutation.mutateAsync({ id })),
-      )
-        .then(() => {
-          setSelectionModel([]);
-        })
-        .catch((error) => {
-          console.error("Error deleting items:", error);
-        });
-    }
-  };
-
-  const handleAddUser = () => {
-    addMutation
-      .mutateAsync(userData)
-      .then(() => {
-        setAddModalOpen(false);
-      })
-      .catch((error) => {
-        console.error("Error adding user:", error);
-      });
-  };
-
   return (
     <main className="flex min-h-screen w-full flex-col items-center bg-clear">
       <h1 className="mb-12 mt-6 text-6xl font-bold text-aero">Directory</h1>
@@ -92,7 +103,6 @@ const Directory = () => {
           <button
             className="ml-2 rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
             onClick={handleDelete}
-            disabled={selectionModel.length === 0 || deleteMutation.isLoading}
           >
             Delete Selected
           </button>
@@ -152,7 +162,7 @@ const Directory = () => {
               </option>
             ))}
           </TextField>
-          <Button onClick={handleAddUser} variant="contained" color="primary">
+          <Button variant="contained" color="primary" onSubmit={handleSubmit}>
             Submit
           </Button>
         </Box>
@@ -166,7 +176,7 @@ const Directory = () => {
             setSelectionModel(newSelectionModel as string[]);
           }}
           rowSelectionModel={selectionModel}
-          loading={isLoading || deleteMutation.isLoading}
+          loading={isLoading}
         />
       </div>
     </main>
