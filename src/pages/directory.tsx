@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { api } from "../utils/api";
-import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import DefaultLoadingPage from "~/components/loading/loading";
 import ErrorPage from "../components/error/error";
+import UserForm, { type CreateUserData } from "~/components/UserForm";
+import { type SubmitHandler } from "react-hook-form";
 
 enum UserRole {
   EMPTY = "",
@@ -13,47 +14,23 @@ enum UserRole {
 }
 
 const Directory = () => {
+  const utils = api.useUtils();
   const { data, error, isLoading } = api.user.getAll.useQuery();
   const [selectionModel, setSelectionModel] = useState<string[]>([]);
-  const [isAddModalOpen, setAddModalOpen] = useState(false);
-  const [userData, setUserData] = useState({ name: "", email: "", role: "" });
-  const { mutate: createUser } = api.user.createUser.useMutation();
-  const { mutate: deleteUser } = api.user.deleteByIds.useMutation();
+  const { mutateAsync } = api.user.createUser.useMutation({
+    onSuccess: async () => {
+      await utils.collection.getCollections.invalidate();
+    },
+  });
 
+  const onSubmit: SubmitHandler<CreateUserData> = async (data) => {
+    await mutateAsync({
+      ...data,
+      role: data.role.toUpperCase(),
+    });
+  };
   if (isLoading) return <DefaultLoadingPage />;
   if (error) return <ErrorPage errorMessage={error.message} />;
-
-  const handleSubmit = () => {
-    createUser(
-      {
-        name: userData.name,
-        email: userData.email,
-        role: userData.role,
-      },
-      {
-        onSuccess: () => {
-          setAddModalOpen(false);
-        },
-        onError: (error) => {
-          console.error(error);
-        },
-      },
-    );
-  };
-
-  const handleDelete = () => {
-    deleteUser(
-      { ids: selectionModel },
-      {
-        onSuccess: () => {
-          setSelectionModel([]);
-        },
-        onError: (error) => {
-          console.error(error);
-        },
-      },
-    );
-  };
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 90 },
@@ -94,79 +71,12 @@ const Directory = () => {
       <h1 className="mb-12 mt-6 text-6xl font-bold text-aero">Directory</h1>
       <div className="w-3/4">
         <div className="mb-2 flex justify-end">
-          <button
-            className="ml-2 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
-            onClick={() => setAddModalOpen(true)}
-          >
-            Add New User
-          </button>
-          <button
-            className="ml-2 rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
-            onClick={handleDelete}
-          >
+          <UserForm onSubmit={onSubmit} />
+          <button className="ml-2 rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700">
             Delete Selected
           </button>
         </div>
       </div>
-      <Modal
-        open={isAddModalOpen}
-        onClose={() => setAddModalOpen(false)}
-        aria-labelledby="add-user-modal-title"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography id="add-user-modal-title" variant="h6" component="h2">
-            Add New User
-          </Typography>
-          <TextField
-            label="Name"
-            variant="standard"
-            fullWidth
-            margin="normal"
-            value={userData.name}
-            onChange={(e) => setUserData({ ...userData, name: e.target.value })}
-          />
-          <TextField
-            label="Email"
-            variant="standard"
-            fullWidth
-            margin="normal"
-            value={userData.email}
-            onChange={(e) =>
-              setUserData({ ...userData, email: e.target.value })
-            }
-          />
-          <TextField
-            select
-            label="Role"
-            value={userData.role}
-            onChange={(e) => setUserData({ ...userData, role: e.target.value })}
-            SelectProps={{ native: true }}
-            variant="standard"
-            fullWidth
-            margin="normal"
-          >
-            {Object.values(UserRole).map((role) => (
-              <option key={role} value={role}>
-                {role}
-              </option>
-            ))}
-          </TextField>
-          <Button variant="contained" color="primary" onSubmit={handleSubmit}>
-            Submit
-          </Button>
-        </Box>
-      </Modal>
       <div className="w-3/4">
         <DataGrid
           rows={rows}

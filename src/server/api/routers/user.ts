@@ -55,6 +55,7 @@ export const userRouter = createTRPCRouter({
         }
         return await db.user.create({
           data: {
+            name: input.name,
             email: input.email,
             roleName: input.role,
             profile: {
