@@ -6,9 +6,9 @@
 // prettier-ignore
 declare module "nextjs-routes" {
   import type {
-GetServerSidePropsContext as NextGetServerSidePropsContext,
-GetServerSidePropsResult as NextGetServerSidePropsResult
-} from "next";
+    GetServerSidePropsContext as NextGetServerSidePropsContext,
+    GetServerSidePropsResult as NextGetServerSidePropsResult
+  } from "next";
 
   export type Route =
     | StaticRoute<"/404">
@@ -90,14 +90,14 @@ GetServerSidePropsResult as NextGetServerSidePropsResult
 
 // prettier-ignore
 declare module "next/link" {
+  import type { Route } from "nextjs-routes";
   import type { LinkProps as NextLinkProps } from "next/dist/client/link";
-import type { Route } from "nextjs-routes";
-import type {
-AnchorHTMLAttributes,
-DetailedReactHTMLElement,
-MouseEventHandler,
-PropsWithChildren,
-} from "react";
+  import type {
+    AnchorHTMLAttributes,
+    DetailedReactHTMLElement,
+    MouseEventHandler,
+    PropsWithChildren,
+  } from "react";
   export * from "next/dist/client/link";
 
   type StaticRoute = Exclude<Route, { query: any }>["pathname"];
@@ -126,10 +126,10 @@ PropsWithChildren,
 
 // prettier-ignore
 declare module "next/router" {
+  import type { Locale, Route, RoutedQuery } from "nextjs-routes";
   import type { NextRouter as Router } from "next/dist/client/router";
-import type { Locale,Route } from "nextjs-routes";
   export * from "next/dist/client/router";
-export { default } from "next/dist/client/router";
+  export { default } from "next/dist/client/router";
 
   type NextTransitionOptions = NonNullable<Parameters<Router["push"]>[2]>;
   type StaticRoute = Exclude<Route, { query: any }>["pathname"];

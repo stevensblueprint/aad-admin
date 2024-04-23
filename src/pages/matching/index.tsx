@@ -27,10 +27,14 @@ const MatchingPage = () => {
   const otherRole =
     sessionData?.user?.roleName === "MENTEE" ? "MENTOR" : "MENTEE";
 
+  // The mutation function from user api to update a user's preferences
+  const mutation = api.user.updatePreferences.useMutation();
+
   const onSubmit = (preferences: Preference[]) => {
-    // TODO:
     // Add your form submission logic here (e.g., API call)
-    // mutation.mutate(result.data);
+    // Creating array of just the preference ids before calling the mutate
+    const preferenceIds = preferences.map((preference) => preference.id);
+    mutation.mutate({ preferences: preferenceIds });
     console.log("Final preferences order:", preferences);
     setSubmitted(true);
   };
