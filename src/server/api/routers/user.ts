@@ -50,8 +50,8 @@ export const userRouter = createTRPCRouter({
   //Update the user's preferences in their profile, and is used for the matching page
   updatePreferences: protectedProcedure
     .input(
-      z.object({ 
-        preferences: z.array(z.string()) 
+      z.object({
+        preferences: z.array(z.string()),
       }),
     )
     .mutation(async ({ input, ctx }) => {
