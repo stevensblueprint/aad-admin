@@ -95,11 +95,6 @@ const Forms = () => {
                 }
               >
                 <TableCell>{form.name}</TableCell>
-                {/*
-                https://github.com/YYsuni/react18-json-view?tab=readme-ov-file 
-                https://react18-json-view.vercel.app/?path=/docs/editable--docs
-                TODO: onEdit, onAdd, onDelete should all call the updateForm procedure
-                */}
                 <TableCell>
                   <JsonEditor
                     data={() => parseJSON<object>(form.formSchema, {})}
