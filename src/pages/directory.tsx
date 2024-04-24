@@ -26,7 +26,7 @@ const Directory = () => {
     onSuccess: () => {
       void utils.user.getAll.invalidate();
     },
-  })
+  });
 
   const onSubmit: SubmitHandler<CreateUserData> = async (data) => {
     await createUserMutation.mutateAsync({
@@ -37,19 +37,19 @@ const Directory = () => {
 
   const handleDeleteUsers = () => {
     if (selectionModel.length > 0) {
-        deleteUsersMutation.mutateAsync({ ids: selectionModel })
-            .then(() => {
-                setSelectionModel([]);
-            })
-            .catch(error => {
-                console.error("Failed to delete users:", error);
-            });
+      deleteUsersMutation
+        .mutateAsync({ ids: selectionModel })
+        .then(() => {
+          setSelectionModel([]);
+        })
+        .catch((error) => {
+          console.error("Failed to delete users:", error);
+        });
     } else {
-        alert("No users selected for deletion.");
+      alert("No users selected for deletion.");
     }
-};
+  };
 
-  
   if (isLoading) return <DefaultLoadingPage />;
   if (error) return <ErrorPage errorMessage={error.message} />;
 

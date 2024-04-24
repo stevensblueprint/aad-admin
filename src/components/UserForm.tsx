@@ -125,11 +125,7 @@ const UserForm = ({ onSubmit }: UserFormProps) => {
             )}
             name="role"
           />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-          >
+          <Button type="submit" variant="contained" color="primary">
             Submit
           </Button>
         </Box>
