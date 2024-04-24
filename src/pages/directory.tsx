@@ -8,9 +8,9 @@ import { type SubmitHandler } from "react-hook-form";
 
 enum UserRole {
   EMPTY = "",
-  MENTEE = "MENTEE",
-  MENTOR = "MENTOR",
-  ADMIN = "ADMIN",
+  MENTEE = "Mentee",
+  MENTOR = "Mentor",
+  ADMIN = "Admin",
 }
 
 const Directory = () => {
@@ -54,7 +54,11 @@ const Directory = () => {
   if (error) return <ErrorPage errorMessage={error.message} />;
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 90 },
+    { 
+      field: "id", 
+      headerName: "ID", 
+      width: 90 
+    },
     {
       field: "name",
       headerName: "Name",
@@ -101,7 +105,7 @@ const Directory = () => {
           </button>
         </div>
       </div>
-      <div className="w-3/4">
+      <div className="w-3/4" style={{height: "400px"}}>
         <DataGrid
           rows={rows}
           columns={columns}
