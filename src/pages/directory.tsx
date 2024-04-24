@@ -54,9 +54,9 @@ const Directory = () => {
   if (error) return <ErrorPage errorMessage={error.message} />;
 
   const columns: GridColDef[] = [
-    { 
-      field: "id", 
-      headerName: "ID", 
+    {
+      field: "id",
+      headerName: "ID",
       width: 90,
       sortable: false,
     },
@@ -106,7 +106,7 @@ const Directory = () => {
           </button>
         </div>
       </div>
-      <div className="w-3/4" style={{height: "400px"}}>
+      <div className="w-3/4" style={{ height: "400px" }}>
         <DataGrid
           rows={rows}
           columns={columns}
