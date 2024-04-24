@@ -57,25 +57,26 @@ const Directory = () => {
     { 
       field: "id", 
       headerName: "ID", 
-      width: 90 
+      width: 90,
+      sortable: false,
     },
     {
       field: "name",
       headerName: "Name",
-      width: 150,
-      editable: false,
+      width: 300,
+      editable: true,
     },
     {
       field: "email",
       headerName: "Email",
-      width: 150,
-      editable: false,
+      width: 400,
+      editable: true,
     },
     {
       field: "role",
       headerName: "Role",
       width: 110,
-      editable: false,
+      editable: true,
       type: "singleSelect",
       valueOptions: Object.values(UserRole),
       filterable: true,
