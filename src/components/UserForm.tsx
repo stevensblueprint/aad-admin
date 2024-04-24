@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Modal, TextField } from "@mui/material";
+import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -58,15 +58,28 @@ const UserForm = ({ onSubmit }: UserFormProps) => {
           component="form"
           onSubmit={(...args) => void handleSubmit(handleOnSubmit)(...args)}
           className="m-4 flex w-full max-w-md flex-col gap-4 rounded-lg bg-white p-6 shadow-xl"
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+          }}
         >
-          <h2 id="add-user-modal-title" className="mb-2 text-lg font-bold">
-            Add User
-          </h2>
+          <Typography id="add-user-modal-title" variant="h6" component="h2">
+            Add New User
+          </Typography>
           <Controller
             control={control}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 label="Name"
+                variant="standard"
+                fullWidth
+                margin="normal"
                 {...field}
                 error={!!error}
                 helperText={error?.message}
@@ -79,6 +92,9 @@ const UserForm = ({ onSubmit }: UserFormProps) => {
             render={({ field, fieldState: { error } }) => (
               <TextField
                 label="Email"
+                variant="standard"
+                fullWidth
+                margin="normal"
                 {...field}
                 error={!!error}
                 helperText={error?.message}
@@ -92,6 +108,9 @@ const UserForm = ({ onSubmit }: UserFormProps) => {
               <TextField
                 select
                 label="Role"
+                variant="standard"
+                fullWidth
+                margin="normal"
                 {...field}
                 error={!!error}
                 helperText={error?.message}

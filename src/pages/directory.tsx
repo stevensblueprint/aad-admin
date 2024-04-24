@@ -18,8 +18,8 @@ const Directory = () => {
   const { data, error, isLoading } = api.user.getAll.useQuery();
   const [selectionModel, setSelectionModel] = useState<string[]>([]);
   const { mutateAsync } = api.user.createUser.useMutation({
-    onSuccess: async () => {
-      await utils.collection.getCollections.invalidate();
+    onSuccess: () => {
+      void utils.user.getAll.invalidate();
     },
   });
 
