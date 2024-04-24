@@ -17,18 +17,39 @@ const Directory = () => {
   const utils = api.useUtils();
   const { data, error, isLoading } = api.user.getAll.useQuery();
   const [selectionModel, setSelectionModel] = useState<string[]>([]);
-  const { mutateAsync } = api.user.createUser.useMutation({
+  const createUserMutation = api.user.createUser.useMutation({
     onSuccess: () => {
       void utils.user.getAll.invalidate();
     },
   });
+  const deleteUsersMutation = api.user.deleteByIds.useMutation({
+    onSuccess: () => {
+      void utils.user.getAll.invalidate();
+    },
+  })
 
   const onSubmit: SubmitHandler<CreateUserData> = async (data) => {
-    await mutateAsync({
+    await createUserMutation.mutateAsync({
       ...data,
       role: data.role.toUpperCase(),
     });
   };
+
+  const handleDeleteUsers = () => {
+    if (selectionModel.length > 0) {
+        deleteUsersMutation.mutateAsync({ ids: selectionModel })
+            .then(() => {
+                setSelectionModel([]);
+            })
+            .catch(error => {
+                console.error("Failed to delete users:", error);
+            });
+    } else {
+        alert("No users selected for deletion.");
+    }
+};
+
+  
   if (isLoading) return <DefaultLoadingPage />;
   if (error) return <ErrorPage errorMessage={error.message} />;
 
@@ -72,7 +93,10 @@ const Directory = () => {
       <div className="w-3/4">
         <div className="mb-2 flex justify-end">
           <UserForm onSubmit={onSubmit} />
-          <button className="ml-2 rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700">
+          <button
+            className="ml-2 rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
+            onClick={handleDeleteUsers}
+          >
             Delete Selected
           </button>
         </div>
