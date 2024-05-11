@@ -3,8 +3,12 @@
  * for Docker builds.
  */
 await import("./src/env.mjs");
+import bundleAnalyzer from "@next/bundle-analyzer";
 import nextRoutes from "nextjs-routes/config";
 const withRoutes = nextRoutes();
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -25,4 +29,4 @@ const config = {
   },
 };
 
-export default withRoutes(config);
+export default withRoutes(withBundleAnalyzer(config));
