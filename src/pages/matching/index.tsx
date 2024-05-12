@@ -21,7 +21,7 @@ const formatOptionsObject = (match: getByRoleOutputData): Preference => {
 };
 
 const MatchingPage = () => {
-  const { data: sessionData } = useSession();
+  const { data: sessionData } = useSession({ required: true });
   const [submitted, setSubmitted] = useState(false);
 
   const otherRole =
