@@ -8,6 +8,11 @@ const withRoutes = nextRoutes();
 
 /** @type {import("next").NextConfig} */
 const config = {
+  modularizeImports: {
+    "@mui/icons-material/?(((\\w*)?/?)*)": {
+      transform: "@mui/icons-material/{{ matches.[1] }}/{{member}}",
+    },
+  },
   reactStrictMode: false,
   output: "standalone",
 
