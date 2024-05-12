@@ -47,6 +47,32 @@ export const userRouter = createTRPCRouter({
       });
     }),
 
+  //Update the user's preferences in their profile, and is used for the matching page
+  updatePreferences: protectedProcedure
+    .input(
+      z.object({
+        preferences: z.array(z.string()),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      //Update the user's preferences in their profile
+      try {
+        return await db.profile.update({
+          where: {
+            userId: ctx.session.user.id,
+          },
+          data: {
+            preferences: input.preferences,
+          },
+        });
+      } catch (error) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: '"{ctx.session.user.id}" not found in database',
+        });
+      }
+    }),
+
   updateProfile: protectedProcedure
     .input(
       z.object({

@@ -83,6 +83,7 @@ model Profile {
   bio           String?
   university    String?
   industries    String[]
+  preferences   String[] @default([])
 }
 
 model UserRole {
