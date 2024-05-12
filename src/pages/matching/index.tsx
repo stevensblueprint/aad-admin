@@ -11,11 +11,11 @@ import { api, type RouterOutputs } from "../../utils/api";
 export type getByRoleOutput = RouterOutputs["user"]["getByRole"];
 export type getByRoleOutputData = getByRoleOutput[0];
 
-const formatOptionsObject = (match: getByRoleOutputData): Preference => {
-  const firstLetter = match?.user.name ? match?.user.name.charAt(0) : "N";
+const formatOptionsObject = ({ name, id }: getByRoleOutputData): Preference => {
+  const firstLetter = name ? name.charAt(0) : "N";
   return {
-    name: match?.user.name ? match?.user.name : "No Name",
-    id: match?.user?.id,
+    name: name ? name : "No Name",
+    id,
     firstLetter: /[a-zA-Z]/.test(firstLetter) ? firstLetter : "#",
   };
 };
