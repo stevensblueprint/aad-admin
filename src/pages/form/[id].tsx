@@ -1,4 +1,5 @@
 import { Container, Typography } from "@mui/material";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { type JSONObject } from "superjson/dist/types";
@@ -12,6 +13,7 @@ import { api } from "../../utils/api";
  * on the schemas and uiSchemas from the collection
  */
 const Form = () => {
+  useSession({ required: true });
   const router = useRouter();
   const { data, error, isLoading } = api.collection.getCollectionById.useQuery({
     id: router.query.id as string,

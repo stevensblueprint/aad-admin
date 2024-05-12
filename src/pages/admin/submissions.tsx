@@ -7,8 +7,9 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { useMemo } from "react";
+import { ReactElement, useMemo } from "react";
 import DefaultLoadingPage from "~/components/loading/loading";
+import AdminLayout from "../../components/layouts/AdminLayout";
 import { api } from "../../utils/api";
 
 const SubmissionPage = () => {
@@ -66,6 +67,10 @@ const SubmissionPage = () => {
       </TableContainer>
     </Paper>
   );
+};
+
+SubmissionPage.getLayout = function getLayout(page: ReactElement) {
+  return <AdminLayout>{page}</AdminLayout>;
 };
 
 export default SubmissionPage;

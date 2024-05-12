@@ -1,19 +1,5 @@
-import { useState } from "react";
-import {
-  Container,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import { api } from "~/utils/api";
-import { type UISchemaElement } from "@jsonforms/core";
-import DefaultLoadingPage from "../../components/loading/loading";
-import ErrorPage from "../../components/error/error";
-import JsonForm from "~/components/forms/JsonForm";
-import { JsonEditor } from "json-edit-react";
+import { ReactElement } from "react";
+import AdminLayout from "../../components/layouts/AdminLayout";
 
 const Forms = () => {
   const utils = api.useUtils();
@@ -142,6 +128,10 @@ const Forms = () => {
       <JsonForm schema={formSchema} uischema={uiSchema} initialData={{}} />
     </Container>
   );
+};
+
+Forms.getLayout = function getLayout(page: ReactElement) {
+  return <AdminLayout>{page}</AdminLayout>;
 };
 
 export default Forms;
