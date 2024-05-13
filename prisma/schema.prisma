@@ -119,6 +119,6 @@ model Submission {
   data          Json
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
-  submittedBy   User?      @relation(fields: [submittedById], references: [id])
-  submittedById String? // temporary
+  submittedBy   User       @relation(fields: [submittedById], references: [id])
+  submittedById String
 }

@@ -3,7 +3,11 @@ import { TRPCError } from "@trpc/server";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import {
+  createTRPCRouter,
+  protectedProcedureWithRoles,
+  publicProcedure,
+} from "../trpc";
 const ajv = new Ajv();
 addFormats(ajv);
 
@@ -19,7 +23,23 @@ export const formRouter = createTRPCRouter({
         },
       });
     }),
-  submitForm: publicProcedure
+  getForm: publicProcedure
+    .input(z.object({ formName: z.string() }))
+    .query(async ({ input: { formName }, ctx: { db } }) => {
+      const form = await db.form.findFirst({
+        where: {
+          name: formName,
+        },
+      });
+      if (!form) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Form not found",
+        });
+      }
+      return form;
+    }),
+  submitForm: protectedProcedureWithRoles(["MENTOR", "MENTEE"])
     .input(
       z.object({
         data: z.record(z.unknown()),
