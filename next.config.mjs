@@ -38,7 +38,6 @@ const config = {
       "@jsonforms/material-renderers",
       "@jsonforms/react",
       "lodash",
-      "@mui/x-data-grid",
     ],
   },
 };
