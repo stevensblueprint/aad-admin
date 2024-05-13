@@ -1,10 +1,10 @@
 import { Button, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { useState } from "react";
-import { SubmitHandler } from "react-hook-form";
+import { type SubmitHandler } from "react-hook-form";
 import { api } from "../../utils/api";
-import UserForm, { CreateUserData } from "../admin/UserForm";
+import UserForm, { type CreateUserData } from "../admin/UserForm";
 import ConfirmDialog from "./ConfirmDelete";
 
 enum UserRole {

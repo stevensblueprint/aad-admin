@@ -25,7 +25,7 @@ interface FormProps {
   schema: object;
   uischema: UISchemaElement;
   initialData: unknown;
-  onSubmit: (data: JSONObject) => void;
+  onSubmit?: (data: JSONObject) => void;
 }
 
 const formTheme = createTheme({
@@ -68,8 +68,8 @@ export default function JsonForm({
   };
 
   const handleSubmit = () => {
-    setSubmitted(true);
-    if (formErrors?.length === 0) {
+    if (onSubmit && formErrors?.length === 0) {
+      setSubmitted(true);
       onSubmit(formData as JSONObject);
     }
   };
@@ -85,15 +85,18 @@ export default function JsonForm({
             renderers={renderers}
             cells={materialCells}
             onChange={updateDataOnChange}
+            readonly={!onSubmit}
             validationMode={submitted ? "ValidateAndShow" : "ValidateAndHide"}
           />
         </ThemeProvider>
       </CardContent>
-      <CardActions>
-        <Button onClick={handleSubmit} variant="contained">
-          Submit
-        </Button>
-      </CardActions>
+      {onSubmit && (
+        <CardActions>
+          <Button onClick={handleSubmit} variant="contained">
+            Submit
+          </Button>
+        </CardActions>
+      )}
     </Card>
   );
 }

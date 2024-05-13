@@ -7,7 +7,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { ReactElement } from "react";
+import { type ReactElement } from "react";
 import { type SubmitHandler } from "react-hook-form";
 import CopyToClipboardButton from "../../components/CopyToClipboardButton";
 import CollectionForm, {
