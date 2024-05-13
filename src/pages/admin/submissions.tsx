@@ -29,7 +29,7 @@ const SubmissionPage = () => {
 
   const submissions = useMemo(() => {
     if (!submissionsData) return []; // Return an empty array if submissionsData is not available
-    return submissionsData.flatMap((collection) => collection.Submission);
+    return submissionsData.flatMap((collection) => collection.submissions);
   }, [submissionsData]); // Dependency array containing submissionsData
 
   if (collectionLoading || submissionLoading) return <DefaultLoadingPage />;
