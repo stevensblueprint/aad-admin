@@ -17,7 +17,7 @@
     "db:seed": "prisma db seed && pnpm run types:gen && pnpm run db:forms",
     "db:populate": "tsx prisma/populate.ts",
     "db:stag-init": "pnpm run db:push --force-reset && pnpm run db:forms && pnpm run db:seed && pnpm run db:populate",
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "format:check": "prettier --check .",

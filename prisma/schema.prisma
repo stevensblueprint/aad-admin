@@ -75,7 +75,7 @@ model VerificationToken {
 // Profile schema
 model Profile {
   id            Int      @id @default(autoincrement())
-  user          User     @relation(fields: [userId], references: [id])
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String   @unique
   dateOfBirth   String?
   preferredName String?
