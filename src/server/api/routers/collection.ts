@@ -2,7 +2,11 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createCollectionSchema } from "../../../components/admin/CollectionForm";
 import { db } from "../../db";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import {
+  createTRPCRouter,
+  protectedProcedureWithRoles,
+  publicProcedure,
+} from "../trpc";
 
 export const collectionRouter = createTRPCRouter({
   createCollection: publicProcedure
@@ -73,6 +77,34 @@ export const collectionRouter = createTRPCRouter({
         },
       });
     }),
+  getMyCollectionSubmission: protectedProcedureWithRoles(["MENTEE", "MENTOR"])
+    .input(z.object({ collectionId: z.string() }))
+    .query(async ({ input: { collectionId }, ctx: { session } }) => {
+      const collection = await db.collection.findFirst({
+        where: {
+          id: collectionId,
+        },
+        include: {
+          form: true,
+        },
+      });
+      if (!collection) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Collection not found",
+        });
+      }
+      const submission = await db.submission.findFirst({
+        where: {
+          collectionId,
+          submittedById: session.user.id,
+        },
+      });
+      return {
+        collection,
+        submission,
+      };
+    }),
 
   getAllCollectionIds: publicProcedure.query(async () => {
     return db.collection.findMany({
@@ -90,7 +122,7 @@ export const collectionRouter = createTRPCRouter({
           const collection = await db.collection.findUnique({
             where: { id },
             include: {
-              Submission: {
+              submissions: {
                 include: {
                   submittedBy: true,
                   collection: true,
