@@ -32,21 +32,85 @@ export const userRouter = createTRPCRouter({
     return await db.user.findMany();
   }),
 
+  createUser: protectedProcedure
+    .input(
+      z.object({
+        name: z.string().min(1),
+        email: z.string().email(),
+        role: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      try {
+        const existingUser = await db.user.findUnique({
+          where: {
+            email: input.email,
+          },
+        });
+        if (existingUser) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "A user with this email already exists.",
+          });
+        }
+        return await db.user.create({
+          data: {
+            name: input.name,
+            email: input.email,
+            roleName: input.role,
+            profile: {
+              create: {
+                preferredName: input.name,
+              },
+            },
+          },
+        });
+      } catch (error) {
+        console.error(error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to create user.",
+        });
+      }
+    }),
+
   getByRole: protectedProcedure
     .input(z.object({ role: z.string() }))
     .query(async ({ input }) => {
-      return db.profile.findMany({
+      return db.user.findMany({
         where: {
-          user: {
-            roleName: input.role,
-          },
-        },
-        include: {
-          user: true,
+          roleName: input.role,
         },
       });
     }),
+  deleteById: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        return db.user.delete({ where: { id: input.id } });
+      } catch (error) {
+        console.error(error);
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: `User ${input.id} not found in database`,
+        });
+      }
+    }),
 
+  deleteByIds: protectedProcedure
+    .input(z.object({ ids: z.array(z.string()) }))
+    .mutation(async ({ input }) => {
+      try {
+        return db.user.deleteMany({ where: { id: { in: input.ids } } });
+      } catch (error) {
+        // Convert ids to string for error message
+        const ids = input.ids.join(", ");
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: `User ${ids} not found in database`,
+        });
+      }
+    }),
   //Update the user's preferences in their profile, and is used for the matching page
   updatePreferences: protectedProcedure
     .input(
@@ -85,9 +149,8 @@ export const userRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      //Update the user's information
       try {
-        return await db.user.update({
+        const updatedUser = await db.user.update({
           where: {
             id: ctx.session.user.id,
           },
@@ -112,10 +175,11 @@ export const userRouter = createTRPCRouter({
             profile: true,
           },
         });
+        return updatedUser;
       } catch (error) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: '"{ctx.session.user.id}" not found in database',
+          message: `${ctx.session.user.id} not found in database`,
         });
       }
     }),
