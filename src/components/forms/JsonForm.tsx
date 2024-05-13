@@ -91,7 +91,6 @@ export default function JsonForm({
       </CardContent>
       <CardActions>
         <Button onClick={handleSubmit} variant="contained">
-          {" "}
           Submit
         </Button>
       </CardActions>

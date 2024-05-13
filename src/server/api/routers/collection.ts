@@ -122,7 +122,7 @@ export const collectionRouter = createTRPCRouter({
           const collection = await db.collection.findUnique({
             where: { id },
             include: {
-              Submission: {
+              submissions: {
                 include: {
                   submittedBy: true,
                   collection: true,

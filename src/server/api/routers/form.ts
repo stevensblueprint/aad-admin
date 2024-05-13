@@ -50,15 +50,30 @@ export const formRouter = createTRPCRouter({
             message: ajv.errorsText(ajv.errors),
           });
         }
-        await db.submission.create({
-          data: {
-            data: {
-              ...(data as JsonObject),
-            },
+        const submission = await db.submission.findFirst({
+          where: {
             collectionId,
             submittedById: session?.user.id,
           },
         });
+        if (submission) {
+          await db.submission.update({
+            data: {
+              data: data as JsonObject,
+            },
+            where: {
+              id: submission.id,
+            },
+          });
+        } else {
+          await db.submission.create({
+            data: {
+              data: data as JsonObject,
+              submittedById: session?.user.id,
+              collectionId,
+            },
+          });
+        }
       },
     ),
 });

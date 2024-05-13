@@ -97,7 +97,7 @@ const Form = () => {
           schema={formSchema}
           uischema={uiSchema}
           initialData={data.submission?.data ?? {}}
-          onSubmit={onSubmit}
+          onSubmit={(data) => void onSubmit(data)}
         />
       </Container>
     );
