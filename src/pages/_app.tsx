@@ -5,7 +5,11 @@ import { type AppContext, type AppProps } from "next/app";
 
 import { api } from "~/utils/api";
 
-import { StyledEngineProvider } from "@mui/material";
+import {
+  StyledEngineProvider,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 import { type NextPage } from "next";
 import { type ReactElement, type ReactNode } from "react";
 import "~/styles/globals.css";
@@ -23,6 +27,20 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
+const container = () => document.getElementById("__next")!;
+
+// required to use tailwind classes in dialog, as by default MUI
+// uses a portal to render the dialog outside of the root div
+const theme = createTheme({
+  components: {
+    MuiDialog: {
+      defaultProps: {
+        container,
+      },
+    },
+  },
+});
+
 const MyApp = ({
   Component,
   pageProps: { session, ...pageProps },
@@ -31,10 +49,12 @@ const MyApp = ({
 
   return (
     <SessionProvider session={session}>
-      <CssBaseline />
-      <StyledEngineProvider injectFirst>
-        <RootLayout>{getLayout(<Component {...pageProps} />)}</RootLayout>,
-      </StyledEngineProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <StyledEngineProvider injectFirst>
+          <RootLayout>{getLayout(<Component {...pageProps} />)}</RootLayout>,
+        </StyledEngineProvider>
+      </ThemeProvider>
     </SessionProvider>
   );
 };

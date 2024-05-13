@@ -1,71 +1,153 @@
 import {
-  Paper,
+  Button,
+  Card,
+  CardContent,
+  FormControl,
+  InputLabel,
+  ListSubheader,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
-import { ReactElement, useMemo } from "react";
+import { useMemo, useState, type ReactElement } from "react";
 import DefaultLoadingPage from "~/components/loading/loading";
+import SubmissionDialog, {
+  type Submission,
+} from "../../components/admin/SubmissionDialog";
+import Error from "../../components/error/error";
 import AdminLayout from "../../components/layouts/AdminLayout";
 import { api } from "../../utils/api";
 
 const SubmissionPage = () => {
-  const {
-    data: collectionIds,
-    error: collectionError,
-    isLoading: collectionLoading,
-  } = api.collection.getAllCollectionIds.useQuery();
+  const { data, status, error } =
+    api.collection.getCollectionsWithSubmissions.useQuery();
+  const [selectedCollectionId, setSelectedCollectionId] = useState<
+    string | null
+  >(null);
+  const [selectedSubmission, setSelectedSubmission] =
+    useState<Submission | null>(null);
+  const [selectedFormName, setSelectedFormName] = useState<string | null>(null);
 
-  const {
-    data: submissionsData,
-    error: submissionError,
-    isLoading: submissionLoading,
-  } = api.collection.getCollectionWithSubmissionsById.useQuery({
-    ids: collectionIds ? collectionIds.map((collection) => collection.id) : [],
-  });
+  const closeSubmissionDialog = () => {
+    setSelectedSubmission(null);
+  };
 
-  const submissions = useMemo(() => {
-    if (!submissionsData) return []; // Return an empty array if submissionsData is not available
-    return submissionsData.flatMap((collection) => collection.submissions);
-  }, [submissionsData]); // Dependency array containing submissionsData
-
-  if (collectionLoading || submissionLoading) return <DefaultLoadingPage />;
-  if (collectionError ?? submissionError)
-    return <div>Error: {submissionError?.message}</div>;
-
-  console.log(collectionIds);
-  console.log(submissionsData);
-
+  const { collectionIdToSubmissions, collectionSelectItems } = useMemo(() => {
+    if (status !== "success")
+      return {
+        collectionSelectItems: [],
+        collectionIdToSubmissions: {},
+      };
+    const collectionIdToSubmissions = data.reduce<
+      Record<string, { formName: string; submissions: Submission[] }>
+    >((acc, collection) => {
+      const { id, submissions, formName } = collection;
+      acc[id] = { formName, submissions };
+      return acc;
+    }, {});
+    const formNames = [...new Set(data.map(({ formName }) => formName))];
+    const collectionSelectItems = formNames.flatMap((formName) => [
+      <ListSubheader key={formName}>{formName}</ListSubheader>,
+      ...data
+        .filter(({ formName: name }) => name === formName)
+        .map(({ id, name }) => (
+          <MenuItem key={id} value={id}>
+            {name}
+          </MenuItem>
+        )),
+    ]);
+    return { collectionSelectItems, collectionIdToSubmissions };
+  }, [data, status]);
+  if (status === "loading") {
+    return <DefaultLoadingPage />;
+  }
+  if (status === "error") {
+    return <Error errorMessage={error.message} />;
+  }
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              <TableCell>User</TableCell>
-              <TableCell>Submitted</TableCell>
-              <TableCell>Last Updated</TableCell>
-              <TableCell>Collection</TableCell>
-              <TableCell>Data</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {submissions.map((submission) => (
-              <TableRow key={submission.id}>
-                <TableCell>{submission.submittedBy?.name}</TableCell>
-                <TableCell>{submission.createdAt.toLocaleString()}</TableCell>
-                <TableCell>{submission.updatedAt.toLocaleString()}</TableCell>
-                <TableCell>{submission.collection?.name}</TableCell>
-                <TableCell>{JSON.stringify(submission.data)}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Paper>
+    <div className="p-4 flex flex-col gap-4">
+      <SubmissionDialog
+        open={!!selectedSubmission}
+        close={closeSubmissionDialog}
+        submission={selectedSubmission}
+        formName={selectedFormName}
+      />
+      <Card>
+        <CardContent className="flex flex-row">
+          <Typography variant="body1">
+            Select which collection to view the submissions for:{" "}
+          </Typography>
+          <FormControl fullWidth>
+            <InputLabel>Collection</InputLabel>
+            <Select
+              onChange={(e) => {
+                const collectionId = e.target.value;
+                if (collectionId === "") {
+                  setSelectedCollectionId(null);
+                  return;
+                }
+                setSelectedCollectionId(collectionId);
+                setSelectedFormName(
+                  collectionIdToSubmissions[collectionId]?.formName ?? null,
+                );
+              }}
+              label="Collection"
+              value={selectedCollectionId ?? ""}
+            >
+              <MenuItem value="">Select a collection</MenuItem>
+              {collectionSelectItems}
+            </Select>
+          </FormControl>
+        </CardContent>
+      </Card>
+      <Card>
+        {selectedCollectionId && (
+          <TableContainer className="h-[600px]">
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>User</TableCell>
+                  <TableCell>Submitted</TableCell>
+                  <TableCell>Last Updated</TableCell>
+                  <TableCell>Data</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {collectionIdToSubmissions[
+                  selectedCollectionId
+                ]?.submissions.map((submission) => (
+                  <TableRow key={submission.id}>
+                    <TableCell>{submission.submittedBy.name}</TableCell>
+                    <TableCell>
+                      {submission.createdAt.toLocaleString()}
+                    </TableCell>
+                    <TableCell>
+                      {submission.updatedAt.toLocaleString()}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        onClick={() => {
+                          setSelectedSubmission(submission);
+                        }}
+                        variant="contained"
+                      >
+                        View Data
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                )) ?? []}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </Card>
+    </div>
   );
 };
 
