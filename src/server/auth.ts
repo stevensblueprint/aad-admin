@@ -40,6 +40,8 @@ declare module "next-auth" {
 const credentialsAuthAvailable = () =>
   process.env.NODE_ENV !== "production" || process.env.CI;
 
+const adminEmails = ["rkirk@stevens.edu"];
+
 /**
  * In order to get credential authentication to work with NextAuth sessions,
  * we need to wrap the NextAuth handler with this so we can manually
@@ -71,10 +73,11 @@ export function requestWrapper(
     adapter: {
       ...adapter,
       createUser: async (data) => {
+        const roleName = adminEmails.includes(data.email) ? "ADMIN" : "MENTEE";
         const user = await db.user.create({
           data: {
             ...data,
-            roleName: "MENTEE",
+            roleName,
           },
         });
         return user as { roleName: RoleName } & typeof user;
