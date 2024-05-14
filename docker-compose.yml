@@ -9,6 +9,9 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
+    networks:
+      aad:
+        ipv4_address: 10.10.2.2
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     healthcheck:
