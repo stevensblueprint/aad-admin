@@ -112,7 +112,7 @@ const SubmissionPage = () => {
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
-                  <TableCell>User</TableCell>
+                  <TableCell>Preferred Name</TableCell>
                   <TableCell>Submitted</TableCell>
                   <TableCell>Last Updated</TableCell>
                   <TableCell>Data</TableCell>
@@ -123,7 +123,10 @@ const SubmissionPage = () => {
                   selectedCollectionId
                 ]?.submissions.map((submission) => (
                   <TableRow key={submission.id}>
-                    <TableCell>{submission.submittedBy.name}</TableCell>
+                    <TableCell>
+                      {submission.submittedBy.profile?.preferredName ??
+                        submission.submittedBy.name}
+                    </TableCell>
                     <TableCell>
                       {submission.createdAt.toLocaleString()}
                     </TableCell>

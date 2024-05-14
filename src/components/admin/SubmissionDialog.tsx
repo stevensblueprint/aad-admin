@@ -54,7 +54,9 @@ const SubmissionDialog = ({
     <Dialog open={open} onClose={close}>
       {submission && (
         <DialogTitle>
-          Viewing submission for {submission.submittedBy.name}
+          Viewing submission for{" "}
+          {submission.submittedBy.profile.preferredName ??
+            submission.submittedBy.name}
         </DialogTitle>
       )}
       <DialogContent>
