@@ -49,6 +49,7 @@ ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
+COPY --from=builder /app/src ./src
 COPY --from=builder /app/schemas ./schemas
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/next.config.mjs ./
