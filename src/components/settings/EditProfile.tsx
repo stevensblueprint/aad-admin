@@ -125,7 +125,7 @@ const EditProfile = ({
               type="text"
               variant="outlined"
               color="primary"
-              label="Full Name"
+              label="Preferred Name"
               onChange={(e) => setName(e.target.value)}
               value={name}
               fullWidth

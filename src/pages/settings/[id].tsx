@@ -107,10 +107,7 @@ export default function SettingsPage() {
           <div className="min-h-screen flex-grow bg-white px-6">
             <Stack direction="row" spacing={2} className="pt-6">
               <h1 className="text-4xl">Hi, {data.profile.preferredName}!</h1>
-              <AvatarWrapper
-                alt={data.name ? data.name : "user name"}
-                src={data.image}
-              />
+              <AvatarWrapper alt="image avatar" src={data.image} />
             </Stack>
             {selectedSection === "profile" ? (
               <EditProfile

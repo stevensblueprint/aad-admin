@@ -78,6 +78,11 @@ export function requestWrapper(
           data: {
             ...data,
             roleName,
+            profile: {
+              create: {
+                preferredName: data.name,
+              },
+            },
           },
         });
         return user as { roleName: RoleName } & typeof user;

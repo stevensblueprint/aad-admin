@@ -33,7 +33,7 @@ const Profile = ({ profile }: ProfileCardProps) => {
         }}
       >
         <Typography variant="h6" color="text.primary">
-          {profile.user.name}
+          {profile.preferredName ?? profile.user.name}
         </Typography>
         <Typography variant="body1" color="text.secondary">
           {profile.user.email}

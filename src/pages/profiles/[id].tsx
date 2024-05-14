@@ -29,11 +29,13 @@ export default function ProfilePage() {
   return (
     <>
       <Head>
-        <title>{data.name} - AAD</title>
+        <title>
+          {data.profile.preferredName ?? data.name ?? "Profile"} - AAD
+        </title>
       </Head>
       <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-midnight-sky to-aero">
         <ProfileHeader
-          name={data.name ? data.name : "Missing Name"}
+          name={data.profile.preferredName ?? data.name ?? "Missing Name"}
           image={data.image}
           phoneNumber={
             data.profile?.phoneNumber

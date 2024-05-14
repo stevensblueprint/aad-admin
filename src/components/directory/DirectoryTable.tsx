@@ -103,9 +103,9 @@ const DirectoryTable = ({ adminMode = false }: DirectoryTableProps) => {
   ];
 
   const rows = data
-    ? data.map(({ id, name, email, roleName }) => ({
+    ? data.map(({ id, email, roleName, profile: { preferredName }, name }) => ({
         id,
-        name,
+        name: preferredName ?? name,
         email,
         role: roleName,
       }))

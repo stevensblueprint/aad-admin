@@ -164,11 +164,7 @@ function ResponsiveAppBar() {
                   <Tooltip title="Account">
                     <IconButton onClick={handleOpenUserMenu} className="p-0">
                       <AvatarWrapper
-                        alt={
-                          sessionData?.user?.name
-                            ? sessionData?.user?.name
-                            : "user name"
-                        }
+                        alt="image avatar"
                         src={
                           sessionData?.user?.image
                             ? sessionData?.user?.image
