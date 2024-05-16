@@ -1,8 +1,9 @@
+import FolderSharedIcon from "@mui/icons-material/FolderShared";
+import HomeIcon from "@mui/icons-material/Home";
 import MailIcon from "@mui/icons-material/Mail";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import PublishIcon from "@mui/icons-material/Publish";
 import {
-  CircularProgress,
   Drawer,
   List,
   ListItemButton,
@@ -12,7 +13,8 @@ import {
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { type Route } from "nextjs-routes";
-import React, { useTransition } from "react";
+import React from "react";
+import useProtectedPage from "../../utils/useProtectedPage";
 
 interface MenuItem {
   text: string;
@@ -21,6 +23,11 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
+  {
+    text: "Home",
+    icon: <HomeIcon />,
+    path: "/admin",
+  },
   {
     text: "Collections",
     icon: <InboxIcon />,
@@ -36,6 +43,11 @@ const menuItems: MenuItem[] = [
     icon: <PublishIcon />,
     path: "/admin/submissions",
   },
+  {
+    text: "Directory",
+    icon: <FolderSharedIcon />,
+    path: "/admin/directory",
+  },
 ];
 
 export default function AdminLayout({
@@ -43,19 +55,13 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  useProtectedPage(["ADMIN"]);
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
   const { data: sessionData } = useSession();
 
   const handleNavigation = (item: MenuItem) => {
-    startTransition(() => {
-      void router.push({ pathname: item.path } as Route);
-    });
+    void router.push({ pathname: item.path } as Route);
   };
-
-  if (!sessionData || sessionData?.user?.roleName !== "ADMIN") {
-    return children;
-  }
 
   return (
     <div className="flex">
@@ -73,6 +79,7 @@ export default function AdminLayout({
         <List>
           {menuItems.map((item, _) => (
             <ListItemButton
+              selected={router.pathname === item.path}
               key={item.text}
               onClick={() => {
                 void (() => {
@@ -83,11 +90,9 @@ export default function AdminLayout({
                   }
                 })();
               }}
-              disabled={isPending}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
-              {isPending && <CircularProgress />}
             </ListItemButton>
           ))}
         </List>

@@ -3,11 +3,21 @@
  * for Docker builds.
  */
 await import("./src/env.mjs");
+import bundleAnalyzer from "@next/bundle-analyzer";
 import nextRoutes from "nextjs-routes/config";
 const withRoutes = nextRoutes();
 
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
+
 /** @type {import("next").NextConfig} */
 const config = {
+  modularizeImports: {
+    "@mui/icons-material/?(((\\w*)?/?)*)": {
+      transform: "@mui/icons-material/{{ matches.[1] }}/{{member}}",
+    },
+  },
   reactStrictMode: false,
   output: "standalone",
 
@@ -22,7 +32,14 @@ const config = {
   },
   experimental: {
     instrumentationHook: true,
+    optimizePackageImports: [
+      "ajv",
+      "@jsonforms/core",
+      "@jsonforms/material-renderers",
+      "@jsonforms/react",
+      "lodash",
+    ],
   },
 };
 
-export default withRoutes(config);
+export default withRoutes(withBundleAnalyzer(config));

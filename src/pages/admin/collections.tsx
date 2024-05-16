@@ -7,12 +7,14 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { type ReactElement } from "react";
 import { type SubmitHandler } from "react-hook-form";
 import CopyToClipboardButton from "../../components/CopyToClipboardButton";
 import CollectionForm, {
   type CreateCollectionData,
 } from "../../components/admin/CollectionForm";
 import ErrorPage from "../../components/error/error";
+import AdminLayout from "../../components/layouts/AdminLayout";
 import DefaultLoadingPage from "../../components/loading/loading";
 import { api } from "../../utils/api";
 import { sentenceCase } from "../../utils/roles";
@@ -70,6 +72,10 @@ const Collections = () => {
       </TableContainer>
     </Container>
   );
+};
+
+Collections.getLayout = function getLayout(page: ReactElement) {
+  return <AdminLayout>{page}</AdminLayout>;
 };
 
 export default Collections;

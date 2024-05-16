@@ -75,7 +75,7 @@ model VerificationToken {
 // Profile schema
 model Profile {
   id            Int      @id @default(autoincrement())
-  user          User     @relation(fields: [userId], references: [id])
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String   @unique
   dateOfBirth   String?
   preferredName String?
@@ -83,6 +83,7 @@ model Profile {
   bio           String?
   university    String?
   industries    String[]
+  preferences   String[] @default([])
 }
 
 model UserRole {
@@ -101,14 +102,14 @@ model Collection {
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
   isOpen       Boolean
-  Submission   Submission[]
+  submissions  Submission[]
 }
 
 model Form {
-  name       String       @id @unique
-  formSchema String
-  uiSchema   String
-  Collection Collection[]
+  name        String       @id @unique
+  formSchema  String
+  uiSchema    String
+  collections Collection[]
 }
 
 model Submission {
@@ -118,6 +119,6 @@ model Submission {
   data          Json
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
-  submittedBy   User?      @relation(fields: [submittedById], references: [id])
-  submittedById String? // temporary
+  submittedBy   User       @relation(fields: [submittedById], references: [id])
+  submittedById String
 }

@@ -58,7 +58,6 @@
     "json-schema-to-typescript": "^13.1.2",
     "next": "^14.1.0",
     "next-auth": "^4.24.5",
-    "nextjs-routes": "^2.1.0",
     "react": "18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "18.2.0",
@@ -70,6 +69,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
+    "@next/bundle-analyzer": "^14.2.3",
     "@types/cookies": "^0.9.0",
     "@types/eslint": "^8.56.2",
     "@types/node": "^20.11.16",
@@ -81,6 +81,7 @@
     "autoprefixer": "^10.4.17",
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.1.0",
+    "nextjs-routes": "^2.1.0",
     "picsum-photos": "^3.0.10",
     "postcss": "^8.4.34",
     "prettier": "^3.2.5",
@@ -95,5 +96,5 @@
   "ct3aMetadata": {
     "initVersion": "7.20.2"
   },
-  "packageManager": "pnpm@9.0.3"
+  "packageManager": "pnpm@9.1.1"
 }

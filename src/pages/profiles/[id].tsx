@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -11,6 +12,8 @@ import TabList from "../../components/profiles/TabList";
 import { api } from "../../utils/api";
 
 export default function ProfilePage() {
+  useSession({ required: true });
+
   const [section, setSection] = useState("about");
 
   const router = useRouter();
