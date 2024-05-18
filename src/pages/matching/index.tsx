@@ -60,12 +60,12 @@ const MatchingPage = () => {
   if (error) return <PleaseSignInPage />;
 
   const menteeOrMentorText =
-    sessionData?.user?.roleName === "MENTEE" ? "mentors" : "mentees";
+    sessionData?.user?.roleName === "MENTEE" ? "Kin Mentors" : "Kin Mentees";
 
   return (
     <div className="flex flex-col px-4 py-6 md:px-32">
       <h1 className="my-0 text-center text-3xl font-normal md:my-3 md:text-6xl">
-        Matching
+        Kin Mentorship Program Matching
       </h1>
       <Alert severity="info" icon={false} className="mb-4 mt-4 text-base">
         <AlertTitle>

@@ -65,7 +65,7 @@ export const collectionRouter = createTRPCRouter({
       // TODO: visibility level
       return collection;
     }),
-  getCollections: protectedProcedureWithRoles(["ADMIN"]).query(
+  getCollections: protectedProcedureWithRoles(["ADMIN", "MENTEE", "MENTOR"]).query(
     async ({ ctx: { db } }) => {
       const collections = db.collection.findMany({
         include: {

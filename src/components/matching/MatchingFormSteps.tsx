@@ -111,8 +111,8 @@ const MatchingFormSteps = ({
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={sentenceCase(menteeOrMentorText)}
-                  placeholder={sentenceCase(menteeOrMentorText)}
+                  label={menteeOrMentorText}
+                  placeholder={menteeOrMentorText}
                   error={formErrors?.fieldErrors.preferences !== undefined}
                   helperText={
                     formErrors?.fieldErrors.preferences?.[0]

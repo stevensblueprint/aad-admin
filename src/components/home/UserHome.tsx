@@ -59,7 +59,7 @@ export default function UserHome({ sessionData } : { sessionData: Session }) {
         <div className="flex items-center bg-yellow-100 py-2 px-4 my-2 rounded-xl shadow-md">
           <div className="flex-grow">
             <h2 className="mt-2 mb-1">
-              Matching Form
+              Kin Mentorship Program Matching Form
             </h2>
             <p className="mt-1">
               The matching form is now open! Please fill out the form before <u>{matchingPageDeadline}</u>

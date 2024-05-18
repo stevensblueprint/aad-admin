@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { createRole, createUser } from "./createData";
+import { createRole, createUser, createAnnouncement } from "./createData";
 const prisma = new PrismaClient();
 
 const main = async () => {
@@ -48,6 +48,16 @@ const main = async () => {
     university: "Stevens Institute of Technology",
     industries: ["Information Technology", "Economics", "Accounting"],
   });
+
+  // create announcment
+  const announcement = await createAnnouncement(prisma, {
+    title: "Welcome to Kin!",
+    content: "We are excited to have you here!",
+    type: "info",
+  });
+
+  // open matching form
+  
 };
 
 main()

@@ -77,3 +77,27 @@ export const createUser = async (
 
   return user;
 };
+
+export const createAnnouncement = async (
+  prisma: PrismaClient,
+  announcementInput: {
+    title: string;
+    content: string;
+    type?: "info" | "warning" | "error";
+    expirationDate?: Date;
+    active?: boolean;
+  },
+) => {
+  const { title, content, type, expirationDate } = announcementInput;
+
+  const announcement = await prisma.announcement.create({
+    data: {
+      title,
+      content,
+      type,
+      expirationDate,
+    },
+  });
+
+  return announcement;
+}

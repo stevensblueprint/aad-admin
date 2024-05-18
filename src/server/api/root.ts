@@ -3,6 +3,8 @@ import { collectionRouter } from "./routers/collection";
 import { exampleRouter } from "./routers/example";
 import { formRouter } from "./routers/form";
 import { userRouter } from "./routers/user";
+import { kinMatchingRouter } from "./routers/kinMatching";
+import { announcementRouter } from "./routers/announcement";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +16,8 @@ export const appRouter = createTRPCRouter({
   user: userRouter,
   collection: collectionRouter,
   form: formRouter,
+  kinMatching: kinMatchingRouter,
+  announcement: announcementRouter,
 });
 
 // export type definition of API
