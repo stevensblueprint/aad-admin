@@ -126,8 +126,7 @@ model Submission {
 model Announcement {
   id        Int      @id @default(autoincrement())
   type      String   @default("info")
-  title     String
-  content   String
+  message   String
   createdAt DateTime @default(now())
   expirationDate DateTime?
   updatedAt DateTime @updatedAt

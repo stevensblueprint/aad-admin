@@ -1,5 +1,5 @@
 
-import { IconButton, Tooltip, Alert, type AlertColor } from "@mui/material";
+import { CircularProgress, IconButton, Tooltip, Alert, type AlertColor } from "@mui/material";
 import { type Session } from "next-auth";
 import { useMemo } from "react";
 import Error from "~/components/error/error";
@@ -17,6 +17,12 @@ export default function UserHome({ sessionData } : { sessionData: Session }) {
     isLoading: collectionLoading,
   } = api.collection.getCollections.useQuery();
 
+  const {
+    data: announcements,
+    error: announcementsError,
+    isLoading: announcementsLoading,
+  } = api.announcement.getActiveAnnouncements.useQuery();
+
   const userForms = useMemo(() => {
       if (!collections) return [];
       return collections.filter((collection) => {
@@ -25,11 +31,6 @@ export default function UserHome({ sessionData } : { sessionData: Session }) {
       });
   }, [collections, roleName]);
 
-  // Hardcoded announcements and matching page open status for no 
-  const announcements = [
-    { id: 1, type: 'info', message: 'The 2024 Kin Mentorship Matching page is now live!' },
-    { id: 2, type: 'warning', message: 'Site maintanence will be occuring from Friday, May 4th 12am EST to Sunday, May 6th 8am EST. We apologize for any inconveniences this may cause.' },
-  ];
   const matchingPageOpen = true;
   const matchingPageDeadline = "May 4th, 2024 11:59pm EST";
 
@@ -37,22 +38,27 @@ export default function UserHome({ sessionData } : { sessionData: Session }) {
   if (collectionError) return <Error errorMessage={collectionError.message}/>
 
   return (
-    <>
     <div className="flex w-full flex-col px-4 py-6 md:px-32">
       <h1>Welcome, {sessionData.user?.name}!</h1>
       <div className="bg-blue-100 p-2 rounded-xl shadow-md">
         <h1 className="my-1 text-center">
           Announcements
         </h1>
-        <p className="px-2 text-center">
-          {announcements ? 
-            announcements.map((announcement) => (
+        <div className="px-2 text-center">
+          { 
+            announcementsLoading ? <CircularProgress /> 
+            :
+            announcementsError ? "There was an issue getting your announcments at this time. Try again later!"
+            : 
+            announcements && announcements.length !== 0 ? announcements.map((announcement) => (
               <Alert key={announcement.id} severity={announcement.type as AlertColor} className="p-2 rounded-xl my-2">
                 {announcement.message}
               </Alert>
-            )) : "No new announcments at this time. Check back later!"
+            )) 
+            : 
+            "No new announcments at this time. Check back later!"
           }
-        </p>
+        </div>
       </div>
       <h2 className="mb-0">Forms</h2>
       {matchingPageOpen && (
@@ -90,6 +96,5 @@ export default function UserHome({ sessionData } : { sessionData: Session }) {
         </div>
       ))}
     </div>
-    </>
   )
 }

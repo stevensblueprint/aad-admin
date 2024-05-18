@@ -9,16 +9,14 @@ import {
 export const announcementRouter = createTRPCRouter({
   createAnnouncement: protectedProcedureWithRoles(["ADMIN"])
     .input(z.object({
-      title: z.string(),
-      content: z.string(),
+      message: z.string(),
       type: z.enum(["info", "warning", "error"]).optional(),
       expirationDate: z.date().optional(),
     }))
     .query(async ({ input, ctx }) => {
       const newAnnouncement = await ctx.db.announcement.create({
         data: {
-          title: input.title,
-          content: input.content,
+          message: input.message,
           type: input.type,
           expirationDate: input.expirationDate,
         },
@@ -26,7 +24,25 @@ export const announcementRouter = createTRPCRouter({
       return newAnnouncement;
     }),
 
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.db.announcement.findMany();
+  getActiveAnnouncements: publicProcedure.query(({ ctx: { db } }) => {
+    return db.announcement.findMany({
+      where: {
+        active: true,
+        OR: [
+          {
+            expirationDate: {
+              gte: new Date(),
+            },
+          },
+          {
+            expirationDate: null,
+          },
+        ],
+      }
+    });
+  }),
+
+  getAnnouncements: publicProcedure.query(({ ctx: { db } }) => {
+    return db.announcement.findMany();
   }),
 });

@@ -49,11 +49,14 @@ const main = async () => {
     industries: ["Information Technology", "Economics", "Accounting"],
   });
 
-  // create announcment
-  const announcement = await createAnnouncement(prisma, {
-    title: "Welcome to Kin!",
-    content: "We are excited to have you here!",
+  const announcementInfo = await createAnnouncement(prisma, {
+    message: "Welcome! We are excited to have you here!",
     type: "info",
+  });
+
+  const announcementWarning = await createAnnouncement(prisma, {
+    message: "Please remember to complete your profile! Deadline Approaching soon!",
+    type: "warning",
   });
 
   // open matching form
