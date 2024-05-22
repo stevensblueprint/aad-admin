@@ -26,7 +26,6 @@ interface FormProps {
   uischema: UISchemaElement;
   initialData: unknown;
   onSubmit?: (data: JSONObject) => void;
-  onSubmit?: (data: JSONObject) => void;
 }
 
 const formTheme = createTheme({
