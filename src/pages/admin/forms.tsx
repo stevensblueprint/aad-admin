@@ -113,7 +113,7 @@ const Forms = () => {
                     data={() => parseJSON<object>(form.formSchema, {})}
                     onUpdate={async (data) => {
                       await handleEdit(
-                        formName,
+                        formName!,
                         JSON.stringify(data.newData),
                         JSON.stringify(uiSchema),
                       );
@@ -129,7 +129,7 @@ const Forms = () => {
                     }
                     onUpdate={async (data) => {
                       await handleEdit(
-                        formName,
+                        formName!,
                         JSON.stringify(form.formSchema),
                         JSON.stringify(data.newData),
                       );
@@ -141,7 +141,7 @@ const Forms = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <JsonForm schema={formSchema} uischema={uiSchema} initialData={{}} />
+      <JsonForm schema={formSchema!} uischema={uiSchema} initialData={{}} />
     </Container>
   );
 };
