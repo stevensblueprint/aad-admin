@@ -44,6 +44,10 @@ const pagesAdmin: NavbarLink[] = [
     name: "Submissions",
     path: "/admin/submissions",
   },
+  {
+    name: "Forms",
+    path: "/admin/forms",
+  },
 ];
 
 function ResponsiveAppBar() {

@@ -5,6 +5,7 @@ import addFormats from "ajv-formats";
 import { z } from "zod";
 import {
   createTRPCRouter,
+  protectedProcedure,
   protectedProcedureWithRoles,
   publicProcedure,
 } from "../trpc";
