@@ -50,12 +50,13 @@ const FormBuilder = ({ onSubmit }: FormBuilderProps) => {
     elements: [],
   });
 
+  // TODO: Debug This, data is currently writing default values
   const { handleSubmit, control, reset } = useForm<CreateFormData>({
     resolver: zodResolver(createFormSchema),
     defaultValues: {
       id: "",
-      formSchema: "{}",
-      uiSchema: "{}",
+      formSchema: JSON.stringify(formSchema),
+      uiSchema: JSON.stringify(uiSchema),
     },
   });
 
@@ -82,8 +83,16 @@ const FormBuilder = ({ onSubmit }: FormBuilderProps) => {
         )}
         name="id"
       />
-      <JsonEditor data={formSchema} />
-      <JsonEditor data={uiSchema} restrictEdit={true} />
+      <Controller
+        control={control}
+        render={() => <JsonEditor data={formSchema} />}
+        name="formSchema"
+      />
+      <Controller
+        control={control}
+        render={() => <JsonEditor data={uiSchema} restrictEdit={true} />}
+        name="uiSchema"
+      />
       <div>PUT COMPONENT MENU HERE</div>
       <Button type="submit" variant="outlined">
         Create
