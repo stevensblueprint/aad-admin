@@ -18,11 +18,13 @@
  */
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { UISchemaElement } from "@jsonforms/core";
 import { Box, Button, TextField } from "@mui/material";
 import { JsonEditor } from "json-edit-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
+import JsonForm from "../forms/JsonForm";
 
 export const createFormSchema = z.object({
   id: z.string().min(1, { message: "Must provide a form name" }),
@@ -39,18 +41,16 @@ interface FormBuilderProps {
 }
 
 const FormBuilder = ({ onSubmit }: FormBuilderProps) => {
-  const [id, setid] = useState<string>();
   const [formSchema, setFormSchema] = useState<object>({
-    type: "Object",
+    type: "object",
     properties: {},
     required: [],
   });
   const [uiSchema, setUiSchema] = useState<object>({
-    type: "verticalLayout",
+    type: "VerticalLayout",
     elements: [],
   });
 
-  // TODO: Debug This, data is currently writing default values
   const { handleSubmit, control, reset } = useForm<CreateFormData>({
     resolver: zodResolver(createFormSchema),
     defaultValues: {
@@ -61,7 +61,7 @@ const FormBuilder = ({ onSubmit }: FormBuilderProps) => {
   });
 
   const handleOnSubmit = (data: CreateFormData) => {
-    onSubmit(data);
+    onSubmit({ ...data });
     reset();
   };
 
@@ -69,7 +69,7 @@ const FormBuilder = ({ onSubmit }: FormBuilderProps) => {
     <Box
       component="form"
       onSubmit={(...args) => void handleSubmit(handleOnSubmit)(...args)}
-      className="flex gap-2"
+      className="flex flex-col gap-4"
     >
       <Controller
         control={control}
@@ -93,6 +93,13 @@ const FormBuilder = ({ onSubmit }: FormBuilderProps) => {
         render={() => <JsonEditor data={uiSchema} restrictEdit={true} />}
         name="uiSchema"
       />
+      <div>
+        <JsonForm
+          schema={formSchema}
+          uischema={uiSchema as UISchemaElement}
+          initialData={{}}
+        />
+      </div>
       <div>PUT COMPONENT MENU HERE</div>
       <Button type="submit" variant="outlined">
         Create

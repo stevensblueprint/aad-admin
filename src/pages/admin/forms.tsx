@@ -10,12 +10,12 @@ import {
 } from "@mui/material";
 import { JsonEditor } from "json-edit-react";
 import { useState, type ReactElement } from "react";
-import { SubmitHandler } from "react-hook-form";
+import { type SubmitHandler } from "react-hook-form";
 import "react18-json-view/src/style.css"; // Keep this
 import JsonForm from "~/components/forms/JsonForm";
 import { api } from "~/utils/api";
 import FormBuilder, {
-  CreateFormData,
+  type CreateFormData,
 } from "../../components/admin/FormBuilder";
 import ErrorPage from "../../components/error/error";
 import AdminLayout from "../../components/layouts/AdminLayout";
@@ -40,13 +40,6 @@ const Forms = () => {
   });
 
   const updateForm = api.form.updateForm.useMutation();
-
-  // const onSubmit: SubmitHandler<CreateCollectionData> = async (data) => {
-  //   await mutateAsync({
-  //     ...data,
-  //     roles: data.roles.map((role) => role.toUpperCase()),
-  //   });
-  // };
 
   // FIXME: Might have to abstract to onEdit functionality, than do separate functions for onDelete & onAd
   const handleFormSelect = (
