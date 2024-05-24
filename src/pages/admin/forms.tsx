@@ -10,9 +10,13 @@ import {
 } from "@mui/material";
 import { JsonEditor } from "json-edit-react";
 import { useState, type ReactElement } from "react";
+import { SubmitHandler } from "react-hook-form";
 import "react18-json-view/src/style.css"; // Keep this
 import JsonForm from "~/components/forms/JsonForm";
 import { api } from "~/utils/api";
+import FormBuilder, {
+  CreateFormData,
+} from "../../components/admin/FormBuilder";
 import ErrorPage from "../../components/error/error";
 import AdminLayout from "../../components/layouts/AdminLayout";
 import DefaultLoadingPage from "../../components/loading/loading";
@@ -24,18 +28,18 @@ const Forms = () => {
   const [uiSchema, setUiSchema] = useState<UISchemaElement>({
     type: "VerticalLayout",
   });
+  const { mutateAsync } = api.form.createForm.useMutation({
+    onSuccess: async () => {
+      await utils.form.getForms.invalidate();
+    },
+  });
+
+  // Retrieve all of the forms in the datbase on page load
   const { data, error, isLoading } = api.form.getForms.useQuery({
     includeSchemas: true,
   });
 
   const updateForm = api.form.updateForm.useMutation();
-
-  /** TODO: Form Creation Interface */
-  // const { mutateAsync } = api.form.createForm.useMutation({
-  //   onSuccess: async () => {
-  //     await utils.form.getForms.invalidate();
-  //   },
-  // });
 
   // const onSubmit: SubmitHandler<CreateCollectionData> = async (data) => {
   //   await mutateAsync({
@@ -44,7 +48,8 @@ const Forms = () => {
   //   });
   // };
 
-  const handleRowClick = (
+  // FIXME: Might have to abstract to onEdit functionality, than do separate functions for onDelete & onAd
+  const handleFormSelect = (
     formName: string,
     clickedFormSchema: object,
     clickedUiSchema: UISchemaElement,
@@ -69,6 +74,14 @@ const Forms = () => {
     });
   };
 
+  const handleFormBuilderSubmission: SubmitHandler<CreateFormData> = async (
+    data,
+  ) => {
+    await mutateAsync({
+      ...data,
+    });
+  };
+
   // Extract the JSON and check the proper type from database row
   const parseJSON = <T,>(jsonString: string, defaultValue: T): T => {
     try {
@@ -84,6 +97,8 @@ const Forms = () => {
 
   return (
     <Container className="mt-4">
+      <FormBuilder onSubmit={handleFormBuilderSubmission} />
+
       <TableContainer>
         <Table>
           <TableHead>
@@ -98,7 +113,7 @@ const Forms = () => {
               <TableRow
                 key={form.name}
                 onClick={() =>
-                  handleRowClick(
+                  handleFormSelect(
                     form.name,
                     parseJSON<object>(form.formSchema, {}),
                     parseJSON<UISchemaElement>(form.uiSchema, {
