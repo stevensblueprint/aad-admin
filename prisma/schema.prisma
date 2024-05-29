@@ -114,7 +114,7 @@ model Form {
 
 model Submission {
   id            String     @id @default(cuid())
-  collection    Collection @relation(fields: [collectionId], references: [id])
+  collection    Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
   collectionId  String
   data          Json
   createdAt     DateTime   @default(now())

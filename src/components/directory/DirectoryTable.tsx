@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { type SubmitHandler } from "react-hook-form";
 import { api } from "../../utils/api";
+import ConfirmDialog from "../ConfirmDialog";
 import UserForm, { type CreateUserData } from "../admin/UserForm";
-import ConfirmDialog from "./ConfirmDelete";
 
 enum UserRole {
   MENTEE = "Mentee",
@@ -23,6 +23,7 @@ const DirectoryTable = ({ adminMode = false }: DirectoryTableProps) => {
   >(null);
   const [currentRole, setCurrentRole] = useState<UserRole>(UserRole.MENTEE);
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+  const [action, setAction] = useState<"delete" | null>(null);
   const { data, isLoading } = api.user.getByRole.useQuery({
     role: currentRole.toUpperCase(),
   });
@@ -44,18 +45,7 @@ const DirectoryTable = ({ adminMode = false }: DirectoryTableProps) => {
     });
   };
 
-  const onDelete = async () => {
-    try {
-      await new Promise((resolve, reject) => {
-        setDeleteDialogConfirm(
-          () => (yes: boolean) => (yes ? resolve(null) : reject()),
-        );
-      });
-      await handleDeleteUsers();
-      setDeleteDialogConfirm(null);
-      setSelectedUsers([]);
-    } catch (_) {}
-  };
+  const onDelete = async () => {};
 
   const handleDeleteUsers = async () => {
     if (selectedUsers.length > 0) {
@@ -120,7 +110,7 @@ const DirectoryTable = ({ adminMode = false }: DirectoryTableProps) => {
           <Button
             variant="contained"
             color="error"
-            onClick={void onDelete}
+            onClick={() => void onDelete()}
             disabled={selectedUsers.length === 0}
           >
             Delete Selected

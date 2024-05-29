@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -14,7 +15,6 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { api } from "../../utils/api";
-import DefaultLoadingPage from "../loading/loading";
 import MultipleSelectChip from "../settings/MulitpleSelectChip";
 
 export const createCollectionSchema = z.object({
@@ -35,15 +35,16 @@ export type CreateCollectionData = z.infer<typeof createCollectionSchema>;
 
 interface CollectionFormProps {
   onSubmit: (data: CreateCollectionData) => void;
+  initialData?: CreateCollectionData;
 }
 
-const CollectionForm = ({ onSubmit }: CollectionFormProps) => {
+const CollectionForm = ({ onSubmit, initialData }: CollectionFormProps) => {
   const { data: forms, isLoading: formsLoading } = api.form.getForms.useQuery(
     {},
   );
   const { handleSubmit, control, reset } = useForm<CreateCollectionData>({
     resolver: zodResolver(createCollectionSchema),
-    defaultValues: {
+    defaultValues: initialData ?? {
       formName: "",
       roles: [],
       isOpen: false,
@@ -56,7 +57,11 @@ const CollectionForm = ({ onSubmit }: CollectionFormProps) => {
     reset();
   };
   if (formsLoading) {
-    return <DefaultLoadingPage />;
+    return (
+      <Box className="flex justify-center">
+        <CircularProgress />
+      </Box>
+    );
   }
   return (
     <Box
@@ -111,7 +116,7 @@ const CollectionForm = ({ onSubmit }: CollectionFormProps) => {
         control={control}
         render={({ field, fieldState: { error } }) => (
           <MultipleSelectChip
-            defaultValue={[]}
+            defaultValue={initialData?.roles ?? []}
             options={roles}
             editMode
             error={!!error}
@@ -128,13 +133,14 @@ const CollectionForm = ({ onSubmit }: CollectionFormProps) => {
           <FormControlLabel
             control={<Checkbox />}
             label="Enable collection on creation"
+            checked={field.value}
             {...field}
           />
         )}
         name="isOpen"
       />
       <Button type="submit" variant="outlined">
-        Create
+        {initialData ? "Edit" : "Create"}
       </Button>
     </Box>
   );

@@ -1,6 +1,6 @@
 import Check from "@mui/icons-material/Check";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import { Fade, IconButton } from "@mui/material";
+import { Fade, IconButton, Tooltip } from "@mui/material";
 import { useState } from "react";
 
 interface CopyToClipboardButtonProps {
@@ -17,15 +17,17 @@ const CopyToClipboardButton = ({ link }: CopyToClipboardButtonProps) => {
     }, 2000);
   };
   return (
-    <IconButton onClick={handleClick}>
-      {clicked ? (
-        <Fade in={clicked}>
-          <Check />
-        </Fade>
-      ) : (
-        <ContentCopyIcon />
-      )}
-    </IconButton>
+    <Tooltip title="Copy link to clipboard">
+      <IconButton onClick={handleClick}>
+        {clicked ? (
+          <Fade in={clicked}>
+            <Check />
+          </Fade>
+        ) : (
+          <ContentCopyIcon />
+        )}
+      </IconButton>
+    </Tooltip>
   );
 };
 

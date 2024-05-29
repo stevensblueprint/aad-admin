@@ -8,6 +8,10 @@ import {
   publicProcedure,
 } from "../trpc";
 
+const editCollectionSchema = createCollectionSchema.extend({
+  id: z.string(),
+});
+
 export const collectionRouter = createTRPCRouter({
   createCollection: publicProcedure
     .input(createCollectionSchema)
@@ -45,6 +49,75 @@ export const collectionRouter = createTRPCRouter({
         }
       },
     ),
+  editCollection: protectedProcedureWithRoles(["ADMIN"])
+    .input(editCollectionSchema)
+    .mutation(
+      async ({
+        input: { id, formName, instructions, isOpen, name, roles },
+        ctx: { db },
+      }) => {
+        const collection = await db.collection.findFirst({
+          where: {
+            id,
+          },
+        });
+        if (!collection) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Collection not found",
+          });
+        }
+        const form = await db.form.findFirst({
+          where: {
+            name: formName,
+          },
+        });
+        if (!form) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Form not found",
+          });
+        }
+        const newCollection = await db.collection.update({
+          where: {
+            id,
+          },
+          data: {
+            formName,
+            instructions,
+            isOpen,
+            name,
+            roles: {
+              set: roles.map((roleName) => ({ roleName })),
+            },
+          },
+          include: {
+            roles: true,
+          },
+        });
+        return newCollection;
+      },
+    ),
+  deleteCollection: protectedProcedureWithRoles(["ADMIN"])
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input: { id }, ctx: { db } }) => {
+      const collection = await db.collection.findFirst({
+        where: {
+          id,
+        },
+      });
+      if (!collection) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Collection not found",
+        });
+      }
+      await db.collection.delete({
+        where: {
+          id,
+        },
+      });
+    }),
   getCollectionById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input: { id } }) => {
