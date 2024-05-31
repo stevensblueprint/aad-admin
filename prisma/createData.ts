@@ -99,3 +99,28 @@ export const createAnnouncement = async (
 
   return announcement;
 }
+
+export const createKinMatchingCycle = async (
+  prisma: PrismaClient,
+  kinMatchingInput: {
+    cycleName: string;
+    dueDate: Date;
+    formDisplayName?: string;
+    isOpen?: boolean;
+    archived?: boolean;
+  },
+) => {
+  const { cycleName, dueDate, formDisplayName, isOpen, archived } = kinMatchingInput;
+
+  const kinMatchingCycle = await prisma.kinMatching.create({
+    data: {
+      cycleName,
+      dueDate,
+      formDisplayName,
+      isOpen,
+      archived,
+    },
+  });
+
+  return kinMatchingCycle;
+}

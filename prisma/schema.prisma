@@ -135,8 +135,10 @@ model Announcement {
 
 model KinMatching {
   id          Int       @id @default(autoincrement())
-  year        String
-  isOpen      Boolean   @default(true)
+  cycleName   String
+  formDisplayName String @default("Kin Mentorship Program Matching Form")
+  isOpen      Boolean   @default(false)
   dueDate     DateTime
   lastOpened  DateTime? @default(now())
+  archived    Boolean   @default(false)
 }

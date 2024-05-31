@@ -23,6 +23,12 @@ export default function UserHome({ sessionData } : { sessionData: Session }) {
     isLoading: announcementsLoading,
   } = api.announcement.getActiveAnnouncements.useQuery();
 
+  const {
+    data: kinMatchingCycle,
+    error: kinMatchingCycleError,
+    isLoading: kinMatchingCycleLoading,
+  } = api.kinMatching.getOpenKinMatchingForms.useQuery();
+
   const userForms = useMemo(() => {
       if (!collections) return [];
       return collections.filter((collection) => {
@@ -61,40 +67,72 @@ export default function UserHome({ sessionData } : { sessionData: Session }) {
         </div>
       </div>
       <h2 className="mb-0">Forms</h2>
-      {matchingPageOpen && (
-        <div className="flex items-center bg-yellow-100 py-2 px-4 my-2 rounded-xl shadow-md">
-          <div className="flex-grow">
-            <h2 className="mt-2 mb-1">
-              Kin Mentorship Program Matching Form
-            </h2>
-            <p className="mt-1">
-              The matching form is now open! Please fill out the form before <u>{matchingPageDeadline}</u>
-            </p>
+      { kinMatchingCycle && kinMatchingCycle.length !== 0 ? 
+        kinMatchingCycle.map((cycle) => {
+          return (
+            <div key={cycle.id} className="flex items-center bg-yellow-100 py-2 px-4 my-2 rounded-xl shadow-md">
+              <div className="flex-grow">
+                <h2 className="mt-2 mb-1">
+                  {cycle.formDisplayName}
+                </h2>
+                <p className="mt-1">
+                  The matching form is open! Press the button on the right to begin. Please fill it out before <u>{cycle.dueDate.toDateString()}</u>
+                </p>
+              </div>
+              <div className="flex-0 p-3">
+                <Tooltip title="Fill out matching form">
+                  <IconButton aria-label="Fill out matching form" href="/matching" className="border-4 border-black">
+                    <GroupsIcon fontSize="large" />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            </div>
+          )
+        })
+        :
+        null
+      }
+      {
+        userForms && userForms.length !== 0 ? userForms.map((form) => (
+          <div key={form.id} className="flex items-center bg-gray-100 px-4 rounded-xl my-2 shadow-md">
+            <div className="flex-col grow">
+              <h3 className="mb-1" >{form.name}</h3>
+              <p className="mt-1">{form.instructions}</p>
+            </div>
+            <div className="flex-0 p-3">
+              <Tooltip title="Fill out form">
+                <IconButton aria-label="Fill out form" href={'/form/'+form.id}>
+                  <EditNoteIcon color="primary" fontSize="large" />
+                </IconButton>
+              </Tooltip>
+            </div>
           </div>
-          <div className="flex-0 p-3">
-            <Tooltip title="Fill out matching form">
-              <IconButton aria-label="Fill out matching form" href="/matching">
-                <GroupsIcon fontSize="large" />
-              </IconButton>
-            </Tooltip>
-          </div>
-        </div>
-      )}
-      {userForms.map((form) => (
-        <div key={form.id} className="flex items-center bg-gray-100 px-4 rounded-xl my-2 shadow-md">
-          <div className="flex-col grow">
-            <h3 className="mb-1" >{form.name}</h3>
-            <p className="mt-1">{form.instructions}</p>
-          </div>
-          <div className="flex-0 p-3">
-            <Tooltip title="Fill out form">
-              <IconButton aria-label="Fill out form" href={'/form/'+form.id}>
-                <EditNoteIcon color="primary" fontSize="large" />
-              </IconButton>
-            </Tooltip>
-          </div>
-        </div>
-      ))}
+        )) 
+        : 
+        kinMatchingCycle && kinMatchingCycle.length !== 0 ? null 
+        :
+        <p className="text-center">You ar enot There are no forms required to fill out any forms at this time!</p>
+      }
     </div>
   )
 }
+
+  // (
+        //   <div className="flex items-center bg-yellow-100 py-2 px-4 my-2 rounded-xl shadow-md">
+        //     <div className="flex-grow">
+        //       <h2 className="mt-2 mb-1">
+        //         Kin Mentorship Program Matching Form
+        //       </h2>
+        //       <p className="mt-1">
+        //         The matching form is now open! Please fill out the form before <u>{matchingPageDeadline}</u>
+        //       </p>
+        //     </div>
+        //     <div className="flex-0 p-3">
+        //       <Tooltip title="Fill out matching form">
+        //         <IconButton aria-label="Fill out matching form" href="/matching">
+        //           <GroupsIcon fontSize="large" />
+        //         </IconButton>
+        //       </Tooltip>
+        //     </div>
+        //   </div>
+        // )

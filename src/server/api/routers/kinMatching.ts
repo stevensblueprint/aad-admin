@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import {
@@ -9,23 +10,171 @@ import {
 // be able to open, close, update form announcement
 
 export const kinMatchingRouter = createTRPCRouter({
-  updateForm: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
+	// adds new row to kinMatching table
+  createNewCycle: protectedProcedureWithRoles(["ADMIN"])
+		.input(z.object({
+			cycleName: z.string(),
+			dueDate: z.date(),
+		}))
+		.query(async ({ input, ctx }) => {
+			const newMatchingCycle = await ctx.db.kinMatching.create({
+				data: {
+					cycleName: input.cycleName,
+					dueDate: input.dueDate,
+				},
+			});
+			return newMatchingCycle;
+		}),
 
-  getAll: publicProcedure.query(({ ctx: { db } }) => {
-    return db.example.findMany();
+	//   openForm: protectedProcedureWithRoles(["ADMIN"])
+  openForm: publicProcedure
+		.input(z.object({
+			id: z.number(),
+			cycleName: z.string(),
+		}))
+		.query(({ input, ctx }) => {
+			const kinMatchingCycle = ctx.db.kinMatching.findFirst({
+				where: {
+					id: input.id,
+					cycleName: input.cycleName,
+				}
+			});
+
+			if (!kinMatchingCycle) {
+				throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Kin Matching Cycle not found. Incorrect cycle name or id",
+        });
+			}
+
+			const updatedKinMatching = ctx.db.kinMatching.update({
+				where: {
+					id: input.id,
+					cycleName: input.cycleName,
+				},
+				data: {
+					isOpen: true,
+				}
+			});
+
+			return updatedKinMatching;
   }),
 
-  openForm: protectedProcedureWithRoles(["ADMIN"]).query(({ ctx: { db } }) => {
-    return db.announcement.findMany();;
+	closeForm: publicProcedure
+		.input(z.object({
+			id: z.number(),
+			cycleName: z.string(),
+		}))
+		.query(({ input, ctx }) => {
+			const kinMatchingCycle = ctx.db.kinMatching.findFirst({
+				where: {
+					id: input.id,
+					cycleName: input.cycleName,
+				}
+			});
+
+			if (!kinMatchingCycle) {
+				throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Kin Matching Cycle not found. Incorrect cycle name or id",
+        });
+			}
+
+			const updatedKinMatching = ctx.db.kinMatching.update({
+				where: {
+					id: input.id,
+					cycleName: input.cycleName,
+				},
+				data: {
+					isOpen: false,
+				}
+			});
+
+			return updatedKinMatching;
   }),
 
-	closeForm: protectedProcedureWithRoles(["ADMIN"]).query(() => {
-		return "you can now see this secret message!";
-	}),
+	archiveForm: publicProcedure
+		.input(z.object({
+			id: z.number(),
+			cycleName: z.string(),
+		}))
+		.query(({ input, ctx }) => {
+			const kinMatchingCycle = ctx.db.kinMatching.findFirst({
+				where: {
+					id: input.id,
+					cycleName: input.cycleName,
+				}
+			});
+
+			if (!kinMatchingCycle) {
+				throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Kin Matching Cycle not found. Incorrect cycle name or id",
+        });
+			}
+
+			const updatedKinMatching = ctx.db.kinMatching.update({
+				where: {
+					id: input.id,
+					cycleName: input.cycleName,
+				},
+				data: {
+					archived: true,
+				}
+			});
+
+			return updatedKinMatching;
+  }),
+
+	unarchiveForm: publicProcedure
+		.input(z.object({
+			id: z.number(),
+			cycleName: z.string(),
+		}))
+		.query(({ input, ctx }) => {
+			const kinMatchingCycle = ctx.db.kinMatching.findFirst({
+				where: {
+					id: input.id,
+					cycleName: input.cycleName,
+				}
+			});
+
+			if (!kinMatchingCycle) {
+				throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Kin Matching Cycle not found. Incorrect cycle name or id",
+        });
+			}
+
+			const updatedKinMatching = ctx.db.kinMatching.update({
+				where: {
+					id: input.id,
+					cycleName: input.cycleName,
+				},
+				data: {
+					archived: false,
+				}
+			});
+
+			return updatedKinMatching;
+  }),
+	
+	getKinMatchingForms: publicProcedure.query(({ ctx: { db } }) => {
+    return db.kinMatching.findMany({
+			orderBy: [
+				{
+					isOpen: "desc",
+				}
+			]
+		});
+  }),
+
+	getOpenKinMatchingForms: publicProcedure.query(({ ctx: { db } }) => {
+    return db.kinMatching.findMany({
+			where: {
+				isOpen: true,
+				archived: false,
+			}
+		});
+  }),
 });
