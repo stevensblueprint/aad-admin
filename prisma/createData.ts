@@ -77,3 +77,51 @@ export const createUser = async (
 
   return user;
 };
+
+export const createAnnouncement = async (
+  prisma: PrismaClient,
+  announcementInput: {
+    message: string;
+    type?: "info" | "warning" | "error";
+    expirationDate?: Date;
+    active?: boolean;
+  },
+) => {
+  const { message, type, expirationDate } = announcementInput;
+
+  const announcement = await prisma.announcement.create({
+    data: {
+      message,
+      type,
+      expirationDate,
+    },
+  });
+
+  return announcement;
+};
+
+export const createKinMatchingCycle = async (
+  prisma: PrismaClient,
+  kinMatchingInput: {
+    cycleName: string;
+    dueDate: Date;
+    formDisplayName?: string;
+    isOpen?: boolean;
+    archived?: boolean;
+  },
+) => {
+  const { cycleName, dueDate, formDisplayName, isOpen, archived } =
+    kinMatchingInput;
+
+  const kinMatchingCycle = await prisma.kinMatching.create({
+    data: {
+      cycleName,
+      dueDate,
+      formDisplayName,
+      isOpen,
+      archived,
+    },
+  });
+
+  return kinMatchingCycle;
+};

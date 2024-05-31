@@ -1,5 +1,10 @@
 import { PrismaClient } from "@prisma/client";
-import { createRole, createUser } from "./createData";
+import {
+  createAnnouncement,
+  createKinMatchingCycle,
+  createRole,
+  createUser,
+} from "./createData";
 const prisma = new PrismaClient();
 
 const main = async () => {
@@ -47,6 +52,35 @@ const main = async () => {
     roleName: "MENTEE",
     university: "Stevens Institute of Technology",
     industries: ["Information Technology", "Economics", "Accounting"],
+  });
+
+  const announcementInfo = await createAnnouncement(prisma, {
+    message: "Welcome! We are excited to have you here!",
+    type: "info",
+  });
+
+  const announcementWarning = await createAnnouncement(prisma, {
+    message:
+      "Please remember to complete your profile! Deadline Approaching soon!",
+    type: "warning",
+  });
+
+  const kinMatchingCycle = await createKinMatchingCycle(prisma, {
+    cycleName: "2024 Matching Cycle",
+    dueDate: new Date("2024-12-31"),
+    formDisplayName: "2024 Kin Mentorship Matching Form",
+    isOpen: true,
+  });
+
+  const kinMatchingCycleClosed = await createKinMatchingCycle(prisma, {
+    cycleName: "2024 Matching Cycle [Closed]",
+    dueDate: new Date("2024-11-31"),
+  });
+
+  const kinMatchingCycleArchived = await createKinMatchingCycle(prisma, {
+    cycleName: "2023 Matching Cycle",
+    dueDate: new Date("2023-12-31"),
+    archived: true,
   });
 };
 
