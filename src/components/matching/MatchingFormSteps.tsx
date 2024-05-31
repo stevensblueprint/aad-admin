@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { z } from "zod";
-import { sentenceCase } from "../../utils/roles";
 import PreferenceDragAndDrop from "./PreferenceDragAndDrop";
 
 export type Preference = {

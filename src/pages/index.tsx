@@ -11,6 +11,6 @@ export default function Home() {
   if (sessionData.user.roleName === "ADMIN") {
     return <AdminHome sessionData={sessionData} />;
   }
-  
-  return <UserHome sessionData={sessionData}/>;
+
+  return <UserHome sessionData={sessionData} />;
 }

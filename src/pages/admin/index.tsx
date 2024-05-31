@@ -1,9 +1,8 @@
-import { type ReactElement, useState } from "react";
-import { Button, Checkbox } from "@mui/material";
-import Link from "next/link";
-import { api } from "../../utils/api";
-import AdminLayout from "../../components/layouts/AdminLayout";
+import { Button } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
+import { useState, type ReactElement } from "react";
+import AdminLayout from "../../components/layouts/AdminLayout";
+import { api } from "../../utils/api";
 
 export default function Admin() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,9 +15,8 @@ export default function Admin() {
   } = api.kinMatching.getKinMatchingForms.useQuery();
 
   console.log(kinMatchingCycle);
-	const toggleKinMatchingForm = () => {
+  const toggleKinMatchingForm = () => {
     setIsOpen(!isOpen);
-    
   };
 
   const columns: GridColDef[] = [
@@ -44,16 +42,18 @@ export default function Admin() {
     },
   ];
 
-  const rows = kinMatchingCycle ? kinMatchingCycle.map((cycle) => {
-    return {
-      id: cycle.id,
-      cycleName: cycle.cycleName,
-      isOpen: cycle.isOpen,
-      openAction: cycle.id,
-      archived: cycle.archived,
-      archivedAction: cycle.id,
-    };
-  }) : [];
+  const rows = kinMatchingCycle
+    ? kinMatchingCycle.map((cycle) => {
+        return {
+          id: cycle.id,
+          cycleName: cycle.cycleName,
+          isOpen: cycle.isOpen,
+          openAction: cycle.id,
+          archived: cycle.archived,
+          archivedAction: cycle.id,
+        };
+      })
+    : [];
 
   return (
     <div className="flex min-h-screen flex-col p-8">
@@ -61,16 +61,24 @@ export default function Admin() {
       <p className="font-base py-2">Welcome to your main Admin Page!</p>
       <h2 className="py-2 my-0 text-3xl">Kin Mentorship Matching Forms</h2>
       <div className="inline">
-        {isOpen ?   
-          <Button variant="outlined" onClick={toggleKinMatchingForm} color="success">
+        {isOpen ? (
+          <Button
+            variant="outlined"
+            onClick={toggleKinMatchingForm}
+            color="success"
+          >
             Open Kin Mentorship Matching Form
           </Button>
-          :
-          <Button variant="contained" onClick={toggleKinMatchingForm} color="error">
-            Close Kin Mentorship Matching Form  
+        ) : (
+          <Button
+            variant="contained"
+            onClick={toggleKinMatchingForm}
+            color="error"
+          >
+            Close Kin Mentorship Matching Form
           </Button>
-        }
-        <DataGrid 
+        )}
+        <DataGrid
           rows={rows}
           columns={columns}
           checkboxSelection

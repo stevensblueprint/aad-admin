@@ -98,7 +98,7 @@ export const createAnnouncement = async (
   });
 
   return announcement;
-}
+};
 
 export const createKinMatchingCycle = async (
   prisma: PrismaClient,
@@ -110,7 +110,8 @@ export const createKinMatchingCycle = async (
     archived?: boolean;
   },
 ) => {
-  const { cycleName, dueDate, formDisplayName, isOpen, archived } = kinMatchingInput;
+  const { cycleName, dueDate, formDisplayName, isOpen, archived } =
+    kinMatchingInput;
 
   const kinMatchingCycle = await prisma.kinMatching.create({
     data: {
@@ -123,4 +124,4 @@ export const createKinMatchingCycle = async (
   });
 
   return kinMatchingCycle;
-}
+};

@@ -8,11 +8,13 @@ import {
 
 export const announcementRouter = createTRPCRouter({
   createAnnouncement: protectedProcedureWithRoles(["ADMIN"])
-    .input(z.object({
-      message: z.string(),
-      type: z.enum(["info", "warning", "error"]).optional(),
-      expirationDate: z.date().optional(),
-    }))
+    .input(
+      z.object({
+        message: z.string(),
+        type: z.enum(["info", "warning", "error"]).optional(),
+        expirationDate: z.date().optional(),
+      }),
+    )
     .query(async ({ input, ctx }) => {
       const newAnnouncement = await ctx.db.announcement.create({
         data: {
@@ -38,7 +40,7 @@ export const announcementRouter = createTRPCRouter({
             expirationDate: null,
           },
         ],
-      }
+      },
     });
   }),
 

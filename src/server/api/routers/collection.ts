@@ -138,16 +138,18 @@ export const collectionRouter = createTRPCRouter({
       // TODO: visibility level
       return collection;
     }),
-  getCollections: protectedProcedureWithRoles(["ADMIN", "MENTEE", "MENTOR"]).query(
-    async ({ ctx: { db } }) => {
-      const collections = db.collection.findMany({
-        include: {
-          roles: true,
-        },
-      });
-      return collections;
-    },
-  ),
+  getCollections: protectedProcedureWithRoles([
+    "ADMIN",
+    "MENTEE",
+    "MENTOR",
+  ]).query(async ({ ctx: { db } }) => {
+    const collections = db.collection.findMany({
+      include: {
+        roles: true,
+      },
+    });
+    return collections;
+  }),
   getCollectionsWithSubmissions: protectedProcedureWithRoles(["ADMIN"]).query(
     async ({ ctx: { db } }) => {
       const collections = db.collection.findMany({

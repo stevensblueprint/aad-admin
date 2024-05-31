@@ -1,5 +1,10 @@
 import { PrismaClient } from "@prisma/client";
-import { createRole, createUser, createAnnouncement, createKinMatchingCycle } from "./createData";
+import {
+  createAnnouncement,
+  createKinMatchingCycle,
+  createRole,
+  createUser,
+} from "./createData";
 const prisma = new PrismaClient();
 
 const main = async () => {
@@ -55,7 +60,8 @@ const main = async () => {
   });
 
   const announcementWarning = await createAnnouncement(prisma, {
-    message: "Please remember to complete your profile! Deadline Approaching soon!",
+    message:
+      "Please remember to complete your profile! Deadline Approaching soon!",
     type: "warning",
   });
 
