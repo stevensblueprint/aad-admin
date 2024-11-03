@@ -11,7 +11,7 @@ interface ConfirmDialogProps {
   open: boolean;
   title: string;
   action?: string;
-  confirm: (yes: boolean) => void;
+  confirm?: (yes: boolean) => void;
 }
 const ConfirmDialog = ({
   open,

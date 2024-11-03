@@ -117,11 +117,12 @@ const DirectoryTable = ({ adminMode = false }: DirectoryTableProps) => {
           </Button>
           <ConfirmDialog
             title={`Are you sure you would like to delete the ${selectedUsers.length} selected users?`}
-            content="This cannot be undone."
             action="Delete"
-            close={deleteDialogConfirm ?? undefined}
+            confirm={deleteDialogConfirm}
             open={!!deleteDialogConfirm}
-          />
+          >
+            This cannot be undone.
+          </ConfirmDialog>
         </div>
       )}
       <ToggleButtonGroup
