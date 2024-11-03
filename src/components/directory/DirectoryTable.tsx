@@ -45,7 +45,7 @@ const DirectoryTable = ({ adminMode = false }: DirectoryTableProps) => {
     });
   };
 
-  const onDelete = async () => {};
+  // const onDelete = async () => {};
 
   const handleDeleteUsers = async () => {
     if (selectedUsers.length > 0) {

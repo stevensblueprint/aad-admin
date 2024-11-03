@@ -61,7 +61,7 @@ export default function UserHome({ sessionData }: { sessionData: Session }) {
           ) : announcementsError ? (
             "There was an issue getting your announcments at this time. Try again later!"
           ) : announcements && announcements.length !== 0 ? (
-            announcements.map((announcement) => (
+            announcements?.map((announcement) => (
               <Alert
                 key={announcement.id}
                 severity={announcement.type as AlertColor}

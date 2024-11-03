@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import { type Session } from "next-auth";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function AdminHome({ sessionData }: { sessionData: Session }) {
@@ -16,7 +17,7 @@ export default function AdminHome({ sessionData }: { sessionData: Session }) {
       <h1>Welcome, {name}!</h1>
       <p>Maybe KPIs and Dashboard information here...</p>
       <p>
-        Should this whole page just redirect to <a href="/admin">/admin</a>{" "}
+        Should this whole page just redirect to <Link href="/admin">/admin</Link>{" "}
         route?
       </p>
       {/* can include percentage of mentees to fill out matching survey etc. */}

@@ -107,7 +107,7 @@ const Collections = () => {
         action={deleteStatus === "idle" ? "Delete" : undefined}
         open={deleteDialogOpen}
         title={`Delete collection ${deletingCollection?.name}`}
-        confirm={confirmDelete}
+        confirm={() => confirmDelete}
       >
         {deleteStatus === "idle" ? (
           <Stack gap={2}>
