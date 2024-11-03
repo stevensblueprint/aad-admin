@@ -118,7 +118,7 @@ const DirectoryTable = ({ adminMode = false }: DirectoryTableProps) => {
           <ConfirmDialog
             title={`Are you sure you would like to delete the ${selectedUsers.length} selected users?`}
             action="Delete"
-            confirm={deleteDialogConfirm}
+            confirm={() => deleteDialogConfirm}
             open={!!deleteDialogConfirm}
           >
             This cannot be undone.
