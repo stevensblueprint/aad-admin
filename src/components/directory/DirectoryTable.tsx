@@ -110,7 +110,7 @@ const DirectoryTable = ({ adminMode = false }: DirectoryTableProps) => {
           <Button
             variant="contained"
             color="error"
-            onClick={() => void onDelete()}
+            onClick={() => handleDeleteUsers}
             disabled={selectedUsers.length === 0}
           >
             Delete Selected
