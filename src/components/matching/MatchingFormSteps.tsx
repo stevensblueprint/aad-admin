@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { z } from "zod";
-import { sentenceCase } from "../../utils/roles";
 import PreferenceDragAndDrop from "./PreferenceDragAndDrop";
 
 export type Preference = {
@@ -111,8 +110,8 @@ const MatchingFormSteps = ({
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={sentenceCase(menteeOrMentorText)}
-                  placeholder={sentenceCase(menteeOrMentorText)}
+                  label={menteeOrMentorText}
+                  placeholder={menteeOrMentorText}
                   error={formErrors?.fieldErrors.preferences !== undefined}
                   helperText={
                     formErrors?.fieldErrors.preferences?.[0]

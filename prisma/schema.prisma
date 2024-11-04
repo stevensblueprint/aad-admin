@@ -122,3 +122,23 @@ model Submission {
   submittedBy   User       @relation(fields: [submittedById], references: [id])
   submittedById String
 }
+
+model Announcement {
+  id             Int       @id @default(autoincrement())
+  type           String    @default("info")
+  message        String
+  createdAt      DateTime  @default(now())
+  expirationDate DateTime?
+  updatedAt      DateTime  @updatedAt
+  active         Boolean   @default(true)
+}
+
+model KinMatching {
+  id              Int       @id @default(autoincrement())
+  cycleName       String
+  formDisplayName String    @default("Kin Mentorship Program Matching Form")
+  isOpen          Boolean   @default(false)
+  dueDate         DateTime
+  lastOpened      DateTime? @default(now())
+  archived        Boolean   @default(false)
+}

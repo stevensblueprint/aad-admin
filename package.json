@@ -23,7 +23,8 @@
     "format:check": "prettier --check .",
     "format": "prettier --write . && prisma format",
     "start": "pnpm run db:stag-init && next start",
-    "types:gen": "tsx src/schemas/generateTypes.ts"
+    "types:gen": "tsx src/schemas/generateTypes.ts",
+    "prepare": "husky"
   },
   "husky": {
     "hooks": {

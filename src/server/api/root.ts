@@ -1,7 +1,9 @@
 import { createTRPCRouter } from "~/server/api/trpc";
+import { announcementRouter } from "./routers/announcement";
 import { collectionRouter } from "./routers/collection";
 import { exampleRouter } from "./routers/example";
 import { formRouter } from "./routers/form";
+import { kinMatchingRouter } from "./routers/kinMatching";
 import { userRouter } from "./routers/user";
 
 /**
@@ -14,6 +16,8 @@ export const appRouter = createTRPCRouter({
   user: userRouter,
   collection: collectionRouter,
   form: formRouter,
+  kinMatching: kinMatchingRouter,
+  announcement: announcementRouter,
 });
 
 // export type definition of API

@@ -45,7 +45,7 @@ const DirectoryTable = ({ adminMode = false }: DirectoryTableProps) => {
     });
   };
 
-  const onDelete = async () => {};
+  // const onDelete = async () => {};
 
   const handleDeleteUsers = async () => {
     if (selectedUsers.length > 0) {
@@ -110,18 +110,19 @@ const DirectoryTable = ({ adminMode = false }: DirectoryTableProps) => {
           <Button
             variant="contained"
             color="error"
-            onClick={() => void onDelete()}
+            onClick={() => handleDeleteUsers}
             disabled={selectedUsers.length === 0}
           >
             Delete Selected
           </Button>
           <ConfirmDialog
             title={`Are you sure you would like to delete the ${selectedUsers.length} selected users?`}
-            content="This cannot be undone."
             action="Delete"
-            close={deleteDialogConfirm ?? undefined}
+            confirm={() => deleteDialogConfirm}
             open={!!deleteDialogConfirm}
-          />
+          >
+            This cannot be undone.
+          </ConfirmDialog>
         </div>
       )}
       <ToggleButtonGroup
