@@ -106,8 +106,8 @@ export const kinMatchingRouter = createTRPCRouter({
         cycleName: z.string(),
       }),
     )
-    .query(({ input, ctx }) => {
-      const kinMatchingCycle = ctx.db.kinMatching.findFirst({
+    .query(async ({ input, ctx }) => {
+      const kinMatchingCycle = await ctx.db.kinMatching.findFirst({
         where: {
           id: input.id,
           cycleName: input.cycleName,
@@ -121,7 +121,7 @@ export const kinMatchingRouter = createTRPCRouter({
         });
       }
 
-      const updatedKinMatching = ctx.db.kinMatching.update({
+      const updatedKinMatching = await ctx.db.kinMatching.update({
         where: {
           id: input.id,
           cycleName: input.cycleName,
