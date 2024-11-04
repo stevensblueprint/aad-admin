@@ -81,6 +81,9 @@ export const userRouter = createTRPCRouter({
         where: {
           roleName: input.role,
         },
+        include: {
+          profile: true,
+        },
       });
     }),
   deleteById: protectedProcedure

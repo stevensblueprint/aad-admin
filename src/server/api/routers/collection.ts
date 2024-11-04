@@ -157,7 +157,11 @@ export const collectionRouter = createTRPCRouter({
           roles: true,
           submissions: {
             include: {
-              submittedBy: true,
+              submittedBy: {
+                include: {
+                  profile: true,
+                },
+              },
             },
           },
         },
@@ -210,32 +214,4 @@ export const collectionRouter = createTRPCRouter({
       },
     });
   }),
-
-  getCollectionWithSubmissionsById: publicProcedure
-    .input(z.object({ ids: z.array(z.string()) }))
-    .query(async ({ input: { ids } }) => {
-      const collectionsWithSubmissions = await Promise.all(
-        ids.map(async (id) => {
-          const collection = await db.collection.findUnique({
-            where: { id },
-            include: {
-              submissions: {
-                include: {
-                  submittedBy: true,
-                  collection: true,
-                },
-              },
-            },
-          });
-          if (!collection) {
-            throw new TRPCError({
-              code: "NOT_FOUND",
-              message: `Collection with ID ${id} not found`,
-            });
-          }
-          return collection;
-        }),
-      );
-      return collectionsWithSubmissions;
-    }),
 });
